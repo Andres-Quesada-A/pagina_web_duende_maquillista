@@ -10,6 +10,8 @@ import Footer from "./components/footer";
 import ChangePasswordPage from "./Pages/ChangePassword";
 import Shop from "./Pages/shop/index";
 import ProductShop from "./Pages/shop/Product";
+import Gallery from "./Pages/gallery";
+import ImageGallery from "./Pages/gallery/Image";
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/register" element={<Register />} />
           <Route exact path="/forgot-password" element={<ForgotPassword />} />
+          <Route exact path="/gallery" element={<Gallery />} />
+          <Route exact path="/gallery/:idImage" element={<ImageGallery />} />
           <Route
             exact
             path="/change-password"
