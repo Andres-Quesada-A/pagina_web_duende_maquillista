@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 import Home from "./Pages/Home";
@@ -12,11 +12,21 @@ import Shop from "./Pages/shop/index";
 import ProductShop from "./Pages/shop/Product";
 import Gallery from "./Pages/gallery";
 import ImageGallery from "./Pages/gallery/Image";
+import ShoppingCart from "./Pages/shoppingCart";
+
+const noRequirement = [
+  "/login",
+  "/register",
+  "/forgot-password",
+  "/change-password",
+];
 
 function App() {
+  const { pathname } = useLocation();
+
   return (
     <>
-      <NavBar />
+      {!noRequirement.includes(pathname) && <NavBar />}
       <ScrollToTop>
         <Routes>
           <Route exact path="/" element={<Home />} />
@@ -32,6 +42,7 @@ function App() {
           />
           <Route exact path="/shop" element={<Shop />} />
           <Route exact path="/shop/:idProduct" element={<ProductShop />} />
+          <Route exact path="/shoppingCart" element={<ShoppingCart />} />
           <Route path="*" element={<Error404 />} />
         </Routes>
       </ScrollToTop>
