@@ -1,38 +1,38 @@
 --------------------------------------------------------------------------
--- Autor:       [nombre]
--- Fecha:       [año]-[mes]-[día]
--- Descripción: [descripción]
+-- Author:      [name]
+-- Date:        [year]-[month]-[day]
+-- Description: [description]
 --------------------------------------------------------------------------
 
-CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Nombre]
-    -- Parámetros
+CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_Name]
+    -- Parameters
 AS
 BEGIN
-    SET NOCOUNT ON;         -- No retorna metadatos
+    SET NOCOUNT ON;         -- No metadata returned
 
-    -- CONTROL DE ERRORES
+    -- ERROR HANDLING
     DECLARE @ErrorNumber INT, @ErrorSeverity INT, @ErrorState INT, @Message VARCHAR(200);
-    DECLARE @transaccionIniciada BIT = 0;
+    DECLARE @transactionBegun BIT = 0;
 
-    -- DECLARACIÓN DE VARIABLES
+    -- VARIABLE DECLARATION
     -- 
 
     BEGIN TRY
 
-        -- VALIDACIONES
+        -- VALIDATIONS
         --
 
-        -- INICIO DE LA TRANSACCIÓN
+        -- TRANSACTION BEGUN
         IF @@TRANCOUNT = 0
         BEGIN
-            SET @transaccionIniciada = 1;
+            SET @transactionBegun = 1;
             BEGIN TRANSACTION;
         END;
 
         --
 
-        -- COMMIT DE LA TRANSACCIÓN
-        IF @transaccionIniciada = 1
+        -- TRANSACTION COMMITTED
+        IF @transactionBegun = 1
         BEGIN
             COMMIT TRANSACTION;
         END;
@@ -45,15 +45,15 @@ BEGIN
         SET @ErrorState = ERROR_STATE();
         SET @Message = ERROR_MESSAGE();
 
-        IF @transaccionIniciada = 1
+        IF @transactionBegun = 1
         BEGIN
             ROLLBACK;
         END;
 
         IF @ErrorNumber != 50000
         BEGIN
-            -- Si no es un error personalizado, se registra el error
-            INSERT INTO [dbo].[Errores]
+            -- Non-custom errors are logged in the Errors table
+            INSERT INTO [dbo].[Errors]
             VALUES (
                 SUSER_NAME(),
                 ERROR_NUMBER(),
