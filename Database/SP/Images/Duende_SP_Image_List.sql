@@ -4,7 +4,7 @@
 -- Description: Retrieves a list of images.
 --------------------------------------------------------------------------
 
-CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_Image_GetList]
+CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_Image_List]
     
 AS
 BEGIN
