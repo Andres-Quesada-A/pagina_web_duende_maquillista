@@ -1,11 +1,11 @@
 --------------------------------------------------------------------------
--- Autor:       Luis Fernando Molina
--- Fecha:       2023-09-03
--- Descripci�n: agregamos la instancia de la imagen
--- 				 (adicionalmente se crean nuevos tags de ser necesarios)
+-- Author: 		Luis Fernando Molina
+-- Date:	 	2023-09-03
+-- Description: Add the image instance
+--              (Additionally, create new tags if necessary)
 --------------------------------------------------------------------------
 
-CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_Imagen_Agregar]
+CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_Image_Add]
     -- Par�metros
 	@IN_name VARCHAR(64) NOT NULL,
 	@IN_descripcion VARCHAR(128) NOT NULL,
@@ -30,7 +30,6 @@ BEGIN
 			[in_tags] VARCHAR(32) NOT NULL,
 			[id] INT
 		);
-
 
 	DECLARE @Imag TABLE(
 
@@ -66,108 +65,108 @@ BEGIN
 		idImage int NOT NULL,
 		erased BIT NOT NULL
 	)
-
-
+	
     BEGIN TRY
         -- VALIDACIONES
 
-		--validacion de Administradora(necesaria?)
+		-- Administrator validation (Is it necessary?)
 
 
-		IF(LTRIM(RTRIM(@IN_name)) = '')
-			BEGIN
-				RAISERROR('No se ingreso nombre', 16, 1)
-			END;
+		IF (LTRIM(RTRIM(@IN_name)) = '')
+        BEGIN
+            RAISERROR('No name was provided', 16, 1);
+        END;
 
-		IF(LTRIM(RTRIM(@IN_descripcion)) = '')
-			BEGIN
-				RAISERROR('No se ingreso descripcion', 16, 1)
-			END;
+        IF (LTRIM(RTRIM(@IN_description)) = '')
+        BEGIN
+            RAISERROR('No description was provided', 16, 1);
+        END;
 
-		IF(LTRIM(RTRIM(@IN_imageUrl)) = '')
-			BEGIN
-				RAISERROR('No se ingreso imagen', 16, 1)
-			END;
+        IF (LTRIM(RTRIM(@IN_imageUrl)) = '')
+        BEGIN
+            RAISERROR('No image was provided', 16, 1);
+        END;
 
-		--validacion category texto o id
-		IF ISNUMERIC(@IN_category) = 1
-		    BEGIN
-		        -- Attempt to cast the input variable as an integer
-		        DECLARE @InputAsInt INT;
-		        SET @InputAsInt = TRY_CAST(@IN_category AS INT);
 
-		        IF @InputAsInt IS NOT NULL
-		        BEGIN
-		            -- se le pasa un numero
-					SELECT @idcategory = C.id
-					FROM @Category C
-					WHERE C.id = @InputAsInt
-		        END
-		    END
-		    ELSE
-		    BEGIN
-		        -- se le pasa texto
-				SELECT @idcategory = C.id
-				FROM @Category C
-				WHERE C.name = @IN_name
-		    END;
+		-- Category validation: text or ID
 
-		IF(@idcategory IS NULL)
-			BEGIN
-				RAISERROR('No se ingreso categoria valida', 16, 1);
-			END
+        IF ISNUMERIC(@IN_category) = 1
+        BEGIN
+            -- Attempt to cast the input variable as an integer
+            DECLARE @InputAsInt INT;
+            SET @InputAsInt = TRY_CAST(@IN_category AS INT);
 
-		--validacion subcategory texto o id
-		IF ISNUMERIC(@IN_subcategory) = 1
-			BEGIN
-			    -- Attempt to cast the input variable as an integer
-			    DECLARE @InputAsInt INT;
-			    SET @InputAsInt = TRY_CAST(@IN_subcategory AS INT);
+            IF @InputAsInt IS NOT NULL
+            BEGIN
+                -- Passed a number
+                SELECT @idcategory = C.id
+                FROM @Category C
+                WHERE C.id = @InputAsInt;
+            END;
+        END
+        ELSE
+        BEGIN
+            -- Passed text
+            SELECT @idcategory = C.id
+            FROM @Category C
+            WHERE C.name = @IN_category;
+        END;
 
-			    IF @InputAsInt IS NOT NULL
-			    BEGIN
-			        -- se le pasa un numero
-			        SELECT @idsubcategory = S.id
-			        FROM @Subcategory S
-			        WHERE S.id = @InputAsInt
-			    END
-			END
-			ELSE
-			BEGIN
-			    -- se le pasa texto
-			    SELECT @idsubcategory = S.id
-			    FROM @Subcategory S
-			    WHERE S.name = @IN_name
-			END;
+        IF (@idcategory IS NULL)
+        BEGIN
+            RAISERROR('No valid category was provided', 16, 1);
+        END;
+
+        -- Subcategory validation: text or ID
+
+        IF ISNUMERIC(@IN_subcategory) = 1
+        BEGIN
+            -- Attempt to cast the input variable as an integer
+            DECLARE @InputAsInt INT;
+            SET @InputAsInt = TRY_CAST(@IN_subcategory AS INT);
+
+            IF @InputAsInt IS NOT NULL
+            BEGIN
+                -- Passed a number
+                SELECT @idsubcategory = S.id
+                FROM @Subcategory S
+                WHERE S.id = @InputAsInt;
+            END;
+        END
+        ELSE
+        BEGIN
+            -- Passed text
+            SELECT @idsubcategory = S.id
+            FROM @Subcategory S
+            WHERE S.name = @IN_subcategory;
+        END;
 
 		IF (@idsubcategory IS NULL)
-			BEGIN
-			    RAISERROR('No se ingreso subcategoria valida', 16, 1);
-			END
+        BEGIN
+            RAISERROR('No valid subcategory was provided', 16, 1);
+        END;
 
-		--validaciones de los tags
-		IF EXISTS (SELECT TOP 1 1 FROM @IN_tags) 
-			--
-			
-			BEGIN
-				SET @usarTags = 1;
+        -- Tag validations
 
-				INSERT INTO @tempTagsID (
-				[in_tags], 
-				[id])
-			SELECT 
-				LTRIM(RTRIM(It.[IN_tags])) AS 'etiqueta' ,
-				CASE WHEN LTRIM(RTRIM(T.[name])) = LTRIM(RTRIM(It.[IN_tags]))  COLLATE Latin1_General_CI_AI
-					THEN T.[id]
-					ELSE NULL END AS 'id'
-			FROM @Tags T
-			RIGHT JOIN @IN_tags It
-				ON LTRIM(RTRIM(T.[name])) = LTRIM(RTRIM(It.[IN_tags]))  COLLATE Latin1_General_CI_AI; -- Para omitir tildes
+        IF EXISTS (SELECT TOP 1 1 FROM @IN_tags) 
+        BEGIN
+            SET @useTags = 1;
 
-			END;
+            INSERT INTO @tempTagsID (
+                [in_tags], 
+                [id]
+            )
+            SELECT 
+                LTRIM(RTRIM(It.[IN_tags])) AS 'tag' ,
+                CASE WHEN LTRIM(RTRIM(T.[name])) = LTRIM(RTRIM(It.[IN_tags]))  COLLATE Latin1_General_CI_AI
+                    THEN T.[id]
+                    ELSE NULL END AS 'id'
+            FROM @Tags T
+            RIGHT JOIN @IN_tags It
+            ON LTRIM(RTRIM(T.[name])) = LTRIM(RTRIM(It.[IN_tags]))  COLLATE Latin1_General_CI_AI; -- To ignore accents
+        END;
 
-
-		-- INICIO DE LA TRANSACCI�N
+		-- TRANSACTION START
 		IF @@TRANCOUNT = 0
 		BEGIN
 		    SET @transaccionIniciada = 1;
@@ -176,7 +175,7 @@ BEGIN
 		
 		IF(@usarTags = 1)
 			BEGIN
-				--insertamos las nuevas etiquetas
+				-- Insert new tags
 				INSERT INTO @Tags(
 					name
 				)
@@ -185,7 +184,7 @@ BEGIN
 				WHERE tTID.[id] IS NULL;
 			END;
 
-		-- creamos la nueva imagen
+		-- Create the new image
 		INSERT INTO @Imag (
 			name,
 			descripcion,
@@ -209,7 +208,7 @@ BEGIN
 
 		IF(@usarTags = 1)
 		BEGIN
-			--asociamos las etiquetas a la imagen
+			-- Associate tags with the image
 			INSERT INTO @Tagsfromimage(
 				idTags,
 				idImage,
@@ -223,10 +222,10 @@ BEGIN
 					FROM @Tags T
 					INNER JOIN @IN_tags It
 						ON LTRIM(RTRIM(T.name)) = LTRIM(RTRIM(It.[IN_tags]))  COLLATE Latin1_General_CI_AI
-				) AS ideti -- Para omitir tildes
+				) AS ideti -- To ignore accents
 		END;
 
-		-- COMMIT DE LA TRANSACCI�N
+		-- TRANSACTION COMMIT
 		IF @transaccionIniciada = 1
 		BEGIN
 		    COMMIT TRANSACTION;
