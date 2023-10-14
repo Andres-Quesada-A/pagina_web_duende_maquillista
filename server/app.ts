@@ -1,8 +1,8 @@
-import express, { Application, json } from 'express'; // importar express y otras dependencias
+import express from 'express'; // importar express y otras dependencias
 // import { corsMiddleware } from './middlewares/cors'; // importar el middleware de CORS
 
-const app: Application = express(); // crear una instancia de la aplicación Express
-app.use(json()); // usar middleware para manejar datos JSON
+const app = express(); // crear una instancia de la aplicación Express
+//app.use(json()); // usar middleware para manejar datos JSON
 // app.use(corsMiddleware()); // usar middleware de CORS
 app.disable('x-powered-by'); // desactivar el encabezado "x-powered-by"
 
