@@ -3,6 +3,7 @@ import SwitchFormInputs from "../components/form/SwitchFormInputs";
 import Image from "../images/imageLogin.png";
 import { Register } from "../Structures/LoginStructure";
 import { Helmet } from "react-helmet-async";
+import axios from "axios"
 
 function RegisterPage() {
   const [data, setData] = useState({});
@@ -11,8 +12,14 @@ function RegisterPage() {
     setData({ ...data, [e.target.id]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const response = await axios.post(`http://localhost:1234/api/register_user`, data)
+      console.log(response)
+    } catch (error) {
+      console.log(error.message)
+    }
   };
   return (
     <>

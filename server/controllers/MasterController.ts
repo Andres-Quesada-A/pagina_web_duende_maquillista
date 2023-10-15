@@ -1,3 +1,4 @@
+import { Request, Response } from "express";
 import { Image } from "../models/Image";
 import { ImageCategory } from "../models/ImageCategory";
 import { Order } from "../models/Order";
@@ -43,23 +44,29 @@ export class MasterController {
     }
 
     // Method to edit user information
-    editUser(password: string, idUser: number): boolean {
+    editUser(req: Request, res: Response): boolean {
+        // password: string, idUser: number
         // Logic to edit user information
         // Returns true if the editing is successful, otherwise returns false
         return true; // Change this with real logic
     }
 
     // Method to register a new user
-    registerUser(name: string, lastName: string, email: string, password: string): boolean {
+    registerUser(req: Request, res: Response): boolean {
+        const {name, lastName, email, password} = req.body;
+        res.json({name, lastName, email, password})
+        // name: string, lastName: string, email: string, password: string
         // Logic to register a new user in the database
         // Returns true if the registration is successful, otherwise returns false
         return true; // Change this with real logic
     }
 
     // Method to log in
-    login(email: string, password: string): boolean {
+    // login(email: string, password: string): boolean {
+    login(req: Request, res: Response): boolean {
         // Logic to verify credentials and perform the login
         // Returns true if the login is successful, otherwise returns false
+        res.json(req.params)
         return true; // Change this with real logic
     }
 

@@ -1,12 +1,18 @@
-import express from 'express'; // importar express y otras dependencias
+import express, {json} from 'express'; // importar express y otras dependencias
+import cors from 'cors'
 // import { corsMiddleware } from './middlewares/cors'; // importar el middleware de CORS
 
+
+// ROUTES
+import UserRouter from './routes/User.routes'
+
 const app = express(); // crear una instancia de la aplicación Express
-//app.use(json()); // usar middleware para manejar datos JSON
+app.use(json()); // usar middleware para manejar datos JSON
+app.use(cors());
 // app.use(corsMiddleware()); // usar middleware de CORS
 app.disable('x-powered-by'); // desactivar el encabezado "x-powered-by"
 
-// app.use('/movies', moviesRouter); 
+app.use('/api', UserRouter); 
 
 // const PORT: number = parseInt(process.env.PORT) || 1234; // obtener el puerto del entorno o utilizar el puerto 1234 por defecto
 const PORT: number = 1234; // obtener el puerto del entorno o utilizar el puerto 1234 por defecto

@@ -3,16 +3,23 @@ import SwitchFormInputs from "../components/form/SwitchFormInputs";
 import Image from "../images/imageLogin.png";
 import { Login } from "../Structures/LoginStructure";
 import { Helmet } from "react-helmet-async";
+import axios from "axios"
 
 function LoginPage() {
-  const [data, setData] = useState({});
+  const [data, setData] = useState({email: "Andres@gmail.com", password: "1234Hello"});
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.id]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const response = await axios.get(`http://localhost:1234/api/login/${data.email}/${data.password}`)
+      console.log(response)
+    } catch (error) {
+      console.log(error.message)
+    }
   };
   return (
     <>
