@@ -4,6 +4,24 @@
 -- Description: Script to create the tables in the database
 --------------------------------------------------------------------------
 
+-- 0. ERROR LOGS
+
+CREATE TABLE [dbo].[Errors]
+(
+    -- Keys
+    [id] INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+
+    -- Other fields
+    [username] VARCHAR(100) NULL,
+    [errorNumber] INT NULL,
+    [errorState] INT NULL,
+    [errorSeverity] INT NULL,
+    [errorLine] INT NULL,
+    [errorProcedure] VARCHAR(MAX) NULL,
+    [errorMessage] VARCHAR(MAX) NULL,
+    [errorDatetime] DATETIME NOT NULL
+);
+
 -- 1. USERS
 
 CREATE TABLE [dbo].[Users]
