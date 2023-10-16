@@ -28,13 +28,13 @@ BEGIN
            LTRIM(RTRIM(@IN_password)) = '' OR
            LTRIM(RTRIM(@IN_token)) = ''
         BEGIN
-            RAISEERROR('Todos los campos son obligatorios. Por favor, complete la información.', 16, 1);
+            RAISERROR('Todos los campos son obligatorios. Por favor, complete la información.', 16, 1);
         END;
 
         -- Check if the email is already registered
         IF EXISTS (SELECT 1 FROM [dbo].[Users] WHERE email = LTRIM(RTRIM(@IN_email)))
         BEGIN
-            RAISEERROR('El correo electrónico ya está registrado. Por favor, utilice otro correo.', 16, 1);
+            RAISERROR('El correo electrónico ya está registrado. Por favor, utilice otro correo.', 16, 1);
         END;
 
         -- TRANSACTION BEGUN
@@ -89,7 +89,7 @@ BEGIN
             );
         END;
 
-        RAISEERROR('%s - Error Number: %i', 
+        RAISERROR('%s - Error Number: %i', 
             @ErrorSeverity, @ErrorState, @Message, @ErrorNumber);
     END CATCH;
 END;

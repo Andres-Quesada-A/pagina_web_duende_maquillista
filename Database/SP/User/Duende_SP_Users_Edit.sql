@@ -24,7 +24,7 @@ BEGIN
         -- VALIDATIONS
         IF(LTRIM(RTRIM(@IN_name)) = '' OR LTRIM(RTRIM(@IN_lastName1)) = '' OR LTRIM(RTRIM(@IN_lastName2)) = '' OR LTRIM(RTRIM(@IN_email)) = '' OR LTRIM(RTRIM(@IN_password)) = '' OR LTRIM(RTRIM(@IN_token)) = '')
         BEGIN
-            RAISEERROR('Todos los campos son obligatorios. Por favor, complete la información.', 16, 1);
+            RAISERROR('Todos los campos son obligatorios. Por favor, complete la información.', 16, 1);
         END;
 
         -- TRANSACTION BEGUN
@@ -79,7 +79,7 @@ BEGIN
             );
         END;
 
-        RAISEERROR('%s - Error Number: %i', 
+        RAISERROR('%s - Error Number: %i', 
             @ErrorSeverity, @ErrorState, @Message, @ErrorNumber);
     END CATCH;
 END;

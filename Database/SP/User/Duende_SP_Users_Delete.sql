@@ -60,7 +60,7 @@ BEGIN
             );
         END;
 
-        RAISEERROR('%s - Error Number: %i', 
+        RAISERROR('%s - Error Number: %i', 
             @ErrorSeverity, @ErrorState, @Message, @ErrorNumber);
     END CATCH;
 END;
