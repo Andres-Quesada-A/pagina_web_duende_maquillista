@@ -9,33 +9,33 @@ function NavBar() {
         <div className="flex flex-nowrap gap-8 items-center">
           <a
             href="/"
-            className="text-white hover:text-indigo-400 transition-colors"
+            className="text-white hover:text-indigo-400 transition-colors uppercase"
           >
-            INICIO
+            Inicio
           </a>
           <a
             href="/about-us"
-            className="text-white hover:text-indigo-400 transition-colors"
+            className="text-white hover:text-indigo-400 transition-colors uppercase"
           >
-            SOBRE MÍ
+            Sobre mí
           </a>
           <a
             href="/gallery"
-            className="text-white hover:text-indigo-400 transition-colors"
+            className="text-white hover:text-indigo-400 transition-colors uppercase"
           >
-            GALERÍA
+            Galería
           </a>
           <a
             href="/shop"
-            className="text-white hover:text-indigo-400 transition-colors"
+            className="text-white hover:text-indigo-400 transition-colors uppercase"
           >
-            TIENDA DE DUENDE
+            Tienda de Duende
           </a>
           <a
             href="/login"
-            className="text-white hover:text-indigo-400 transition-colors"
+            className="text-white hover:text-indigo-400 transition-colors uppercase"
           >
-            INICIAR SESIÓN
+            Iniciar sesión
           </a>
           <Cart className="text-indigo-400 hover:text-indigo-500 transition-colors" />
         </div>
