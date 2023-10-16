@@ -35,7 +35,7 @@ function Shop() {
   return (
     <>
       <Helmet>
-        <title>Tienda del duende</title>
+        <title>Tienda de Duende</title>
         <meta
           name="description"
           content="Visita nuestra tienda y descubre todos nuestros productos disponibles"
