@@ -1,235 +1,89 @@
 --------------------------------------------------------------------------
--- Author: 		Luis Fernando Molina
--- Date:	 	2023-09-03
--- Description: Add the image instance
---              (Additionally, create new tags if necessary)
+-- Author:      Fabián Vargas
+-- Date:        2023-10-18
+-- Description: Adds an image and associate it with a tag
 --------------------------------------------------------------------------
 
 CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_Image_Add]
-    -- Par�metros
-	@IN_name VARCHAR(64) NOT NULL,
-	@IN_descripcion VARCHAR(128) NOT NULL,
-	@IN_category VARCHAR(32) NOT NULL,
-	@IN_subcategory VARCHAR(32) NOT NULL,
-	@IN_tags Tags READONLY,
-	@IN_imageUrl VARCHAR(256) NOT NULL
+    @IN_SubcategoryId INT,
+    @IN_Name VARCHAR(128),
+    @IN_Description VARCHAR(1024),
+    @IN_Date DATETIME,
+    @IN_ImageUrl VARCHAR(256),
+    @IN_Tags TagsTVP
+    
 AS
 BEGIN
-    SET NOCOUNT ON;         -- No retorna metadatos
+    SET NOCOUNT ON;         -- No metadata returned
 
-    -- CONTROL DE ERRORES
+    -- ERROR HANDLING
     DECLARE @ErrorNumber INT, @ErrorSeverity INT, @ErrorState INT, @Message VARCHAR(200);
-    DECLARE @transaccionIniciada BIT = 0;
+    DECLARE @transactionBegun BIT = 0;
 
-    -- DECLARACI�N DE VARIABLES
-	DECLARE @usarTags BIT;
-	DECLARE @idcategory INT = NULL;
-	DECLARE @idsubcategory INT = NULL;
-	DECLARE @usarIDImag INT = NULL;
-	DECLARE @tempTagsID TABLE(
-			[in_tags] VARCHAR(32) NOT NULL,
-			[id] INT
-		);
+    -- VARIABLE DECLARATION
+    DECLARE @ImageID INT;
 
-	DECLARE @Imag TABLE(
-
-		id int IDENTITY NOT NULL,
-		name VARCHAR(64) NOT NULL,
-		descripcion VARCHAR(128) NOT NULL,
-		date DATETIME NOT NULL,
-		idCategory int NOT NULL,
-		idSubcategory int NOT NULL,
-		imageUrl VARCHAR(256) NOT NULL,
-		erased BIT NOT NULL
-	)
-	DECLARE @Category TABLE(
-
-		id int IDENTITY NOT NULL,
-		name VARCHAR(32) NOT NULL,
-		erased BIT NOT NULL
-	)	
-	DECLARE @Subcategory TABLE(
-
-		id int IDENTITY NOT NULL,
-		name VARCHAR(32) NOT NULL,
-		erased BIT NOT NULL
-	)	
-	DECLARE @Tags TABLE(
-
-		id int IDENTITY NOT NULL,
-		name VARCHAR(32) NOT NULL
-	)
-	DECLARE @Tagsfromimage TABLE(
-		id int IDENTITY NOT NULL,
-		idTags int NOT NULL,
-		idImage int NOT NULL,
-		erased BIT NOT NULL
-	)
-	
     BEGIN TRY
-        -- VALIDACIONES
 
-		-- Administrator validation (Is it necessary?)
+        -- VALIDATIONS
 
+        -- Verify if Subcategory exists
+        IF NOT EXISTS (
+            SELECT 1
+            FROM ImageSubcategories
+            WHERE id = @IN_SubcategoryId
+        )
+        BEGIN
+            RAISERROR('Invalid Subcategory ID', 16, 1);
+        END;
 
-		IF (LTRIM(RTRIM(@IN_name)) = '')
+        -- Verify Name is provided
+        IF LTRIM(RTRIM(@IN_Name)) = ''
         BEGIN
             RAISERROR('No name was provided', 16, 1);
         END;
 
-        IF (LTRIM(RTRIM(@IN_description)) = '')
+        -- Verify Description is provided
+        IF LTRIM(RTRIM(@IN_Description)) = ''
         BEGIN
             RAISERROR('No description was provided', 16, 1);
         END;
 
-        IF (LTRIM(RTRIM(@IN_imageUrl)) = '')
+        -- Verify Date is provided
+        IF @IN_Date IS NULL
         BEGIN
-            RAISERROR('No image was provided', 16, 1);
+            RAISERROR('No date was provided', 16, 1);
         END;
 
-
-		-- Category validation: text or ID
-
-        IF ISNUMERIC(@IN_category) = 1
+        -- Verify ImageUrl is provided
+        IF LTRIM(RTRIM(@IN_ImageUrl)) = ''
         BEGIN
-            -- Attempt to cast the input variable as an integer
-            DECLARE @InputAsInt INT;
-            SET @InputAsInt = TRY_CAST(@IN_category AS INT);
-
-            IF @InputAsInt IS NOT NULL
-            BEGIN
-                -- Passed a number
-                SELECT @idcategory = C.id
-                FROM @Category C
-                WHERE C.id = @InputAsInt;
-            END;
-        END
-        ELSE
-        BEGIN
-            -- Passed text
-            SELECT @idcategory = C.id
-            FROM @Category C
-            WHERE C.name = @IN_category;
+            RAISERROR('No image URL was provided', 16, 1);
         END;
 
-        IF (@idcategory IS NULL)
+        -- TRANSACTION BEGUN
+        IF @@TRANCOUNT = 0
         BEGIN
-            RAISERROR('No valid category was provided', 16, 1);
+            SET @transactionBegun = 1;
+            BEGIN TRANSACTION;
         END;
 
-        -- Subcategory validation: text or ID
+        -- Insert into Images
+        INSERT INTO Images (subcategoryId, name, description, date, imageUrl, deleted)
+        VALUES (@IN_SubcategoryId, @IN_Name, @IN_Description, @IN_Date, @IN_ImageUrl, 0);
 
-        IF ISNUMERIC(@IN_subcategory) = 1
-        BEGIN
-            -- Attempt to cast the input variable as an integer
-            DECLARE @InputAsInt INT;
-            SET @InputAsInt = TRY_CAST(@IN_subcategory AS INT);
+        SET @ImageID = SCOPE_IDENTITY();
 
-            IF @InputAsInt IS NOT NULL
-            BEGIN
-                -- Passed a number
-                SELECT @idsubcategory = S.id
-                FROM @Subcategory S
-                WHERE S.id = @InputAsInt;
-            END;
-        END
-        ELSE
+        -- Insert tags from TVP into Tags table
+        INSERT INTO Tags (imageId, description, deleted)
+        SELECT @ImageID, tags, 0
+        FROM @IN_Tags;
+
+        -- TRANSACTION COMMITTED
+        IF @transactionBegun = 1
         BEGIN
-            -- Passed text
-            SELECT @idsubcategory = S.id
-            FROM @Subcategory S
-            WHERE S.name = @IN_subcategory;
+            COMMIT TRANSACTION;
         END;
-
-		IF (@idsubcategory IS NULL)
-        BEGIN
-            RAISERROR('No valid subcategory was provided', 16, 1);
-        END;
-
-        -- Tag validations
-
-        IF EXISTS (SELECT TOP 1 1 FROM @IN_tags) 
-        BEGIN
-            SET @useTags = 1;
-
-            INSERT INTO @tempTagsID (
-                [in_tags], 
-                [id]
-            )
-            SELECT 
-                LTRIM(RTRIM(It.[IN_tags])) AS 'tag' ,
-                CASE WHEN LTRIM(RTRIM(T.[name])) = LTRIM(RTRIM(It.[IN_tags]))  COLLATE Latin1_General_CI_AI
-                    THEN T.[id]
-                    ELSE NULL END AS 'id'
-            FROM @Tags T
-            RIGHT JOIN @IN_tags It
-            ON LTRIM(RTRIM(T.[name])) = LTRIM(RTRIM(It.[IN_tags]))  COLLATE Latin1_General_CI_AI; -- To ignore accents
-        END;
-
-		-- TRANSACTION START
-		IF @@TRANCOUNT = 0
-		BEGIN
-		    SET @transaccionIniciada = 1;
-		    BEGIN TRANSACTION;
-		END;
-		
-		IF(@usarTags = 1)
-			BEGIN
-				-- Insert new tags
-				INSERT INTO @Tags(
-					name
-				)
-				SELECT LTRIM(RTRIM(tTID.[in_tags]))
-				FROM @tempTagsID tTID
-				WHERE tTID.[id] IS NULL;
-			END;
-
-		-- Create the new image
-		INSERT INTO @Imag (
-			name,
-			descripcion,
-			date,
-			idCategory,
-			idSubcategory,
-			imageUrl,
-			erased
-		)
-		VALUES(
-			@IN_name,
-			@IN_descripcion,
-			GETUTCDATE(),
-			@idcategory,
-			@idsubcategory,
-			@IN_imageURL,
-			0
-		);
-
-		SET @usarIDImag = SCOPE_IDENTITY();
-
-		IF(@usarTags = 1)
-		BEGIN
-			-- Associate tags with the image
-			INSERT INTO @Tagsfromimage(
-				idTags,
-				idImage,
-				erased
-			)
-			SELECT ideti.[id], 
-				   @usarIDImag,
-				   0
-			FROM (
-					SELECT T.[id] AS 'id'
-					FROM @Tags T
-					INNER JOIN @IN_tags It
-						ON LTRIM(RTRIM(T.name)) = LTRIM(RTRIM(It.[IN_tags]))  COLLATE Latin1_General_CI_AI
-				) AS ideti -- To ignore accents
-		END;
-
-		-- TRANSACTION COMMIT
-		IF @transaccionIniciada = 1
-		BEGIN
-		    COMMIT TRANSACTION;
-		END;
 
     END TRY
     BEGIN CATCH
@@ -239,14 +93,14 @@ BEGIN
         SET @ErrorState = ERROR_STATE();
         SET @Message = ERROR_MESSAGE();
 
-        IF @transaccionIniciada = 1
+        IF @transactionBegun = 1
         BEGIN
             ROLLBACK;
         END;
 
         IF @ErrorNumber != 50000
         BEGIN
-            -- Si no es un error personalizado, se registra el error
+            -- Non-custom errors are logged in the Errors table
             INSERT INTO [dbo].[Errors]
             VALUES (
                 SUSER_NAME(),

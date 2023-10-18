@@ -32,10 +32,10 @@ BEGIN
             INNER JOIN OrderStatuses OS ON O.orderStatusId = OS.id
             INNER JOIN Users U ON O.userId = U.id
             INNER JOIN Addresses A ON O.addressId = A.id
-            INNER JOIN OrdersProducts OP ON O.id = OP.orderId
+            INNER JOIN OrderProducts OP ON O.id = OP.orderId
             INNER JOIN Products P ON OP.productId = P.id
         WHERE 
-            O.id = @OrderID
+            O.id = @IN_OrderID
             AND O.deleted = 0;
 
     END TRY

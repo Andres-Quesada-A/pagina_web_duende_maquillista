@@ -4,6 +4,6 @@
 -- Descripci�n: Tabla para pasar lista de tags posibles
 --------------------------------------------------------------------------
 
-CREATE TYPE Tags AS TABLE(
+CREATE TYPE TagsTVP AS TABLE(
 	tags VARCHAR(32) NOT NULL
 )
