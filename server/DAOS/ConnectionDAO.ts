@@ -81,3 +81,4 @@ class ConnectionDAO {
   }
 
 }
+export default ConnectionDAO;
