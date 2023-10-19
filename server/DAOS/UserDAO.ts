@@ -1,13 +1,13 @@
 import { GenerateToken } from "../Utils/GenerateToken";
-import DaoConnection from "./DaoConnection";
+import ConnectionDAO from "./ConnectionDAO";
 import sqlcon from "mssql"
 import bcrypt from "bcrypt"
 
 export class UserDAO {
-    private DaoConnection: DaoConnection
+    private ConnectionDAO: ConnectionDAO
 
     constructor() {
-        this.DaoConnection = DaoConnection.getInstance();
+        this.ConnectionDAO = ConnectionDAO.getInstance();
     }
     newPassword(password: string, confirmPassword: string): boolean {
         if (password === confirmPassword) {
@@ -24,7 +24,7 @@ export class UserDAO {
 
     registerUser(name: string, lastName: string, email: string, password: string): boolean {
 
-        const pool = this.DaoConnection.getPool()
+        const pool = this.ConnectionDAO.getPool()
         const request = pool.request()
 
         const token = GenerateToken(name, lastName, email, 0)
