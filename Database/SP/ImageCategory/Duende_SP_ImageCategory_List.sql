@@ -29,7 +29,7 @@ BEGIN
 		--validacion de Administradora(necesaria?)
 
         --consulta
-        SELECT C.id AS "id", C.name AS "categoria" 
+        SELECT C.name AS "category" 
         FROM @ImageCategory C
         WHERE C.erased = 0
 

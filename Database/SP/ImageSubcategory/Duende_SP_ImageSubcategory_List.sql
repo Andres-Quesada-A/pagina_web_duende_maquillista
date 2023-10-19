@@ -58,7 +58,7 @@ BEGIN
 
 		-- consulta
 
-        SELECT Sc.id AS "id", Sc.name AS "subcategoria" 
+        SELECT Sc.name AS "subcategoria" 
         FROM @ImageSubcategory Sc
         WHERE Sc.idCategory = @UseIdCategory
         AND Sc.erased = 0
