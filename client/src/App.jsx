@@ -13,6 +13,7 @@ import ProductShop from "./Pages/shop/Product";
 import Gallery from "./Pages/gallery";
 import ImageGallery from "./Pages/gallery/Image";
 import ShoppingCart from "./Pages/shoppingCart";
+import { ShoppingCartProvider } from "./context/ShoppingCartContext";
 
 const noRequirement = [
   "/login",
@@ -25,30 +26,30 @@ function App() {
   const { pathname } = useLocation();
 
   return (
-    <>
-      {!noRequirement.includes(pathname) && <NavBar />}
-      <ScrollToTop>
-        <Routes>
-          <Route exact path="/" element={<Home />} />
-          <Route exact path="/login" element={<Login />} />
-          <Route exact path="/register" element={<Register />} />
-          <Route exact path="/forgot-password" element={<ForgotPassword />} />
-          <Route exact path="/gallery" element={<Gallery />} />
-          <Route exact path="/gallery/:idImage" element={<ImageGallery />} />
-          <Route
-            exact
-            path="/change-password"
-            element={<ChangePasswordPage />}
-          />
-          <Route exact path="/shop" element={<Shop />} />
-          <Route exact path="/shop/:idProduct" element={<ProductShop />} />
-          <Route exact path="/shoppingCart" element={<ShoppingCart />} />
-          <Route path="*" element={<Error404 />} />
-        </Routes>
-      </ScrollToTop>
+      <ShoppingCartProvider>
+        {!noRequirement.includes(pathname) && <NavBar />}
+        <ScrollToTop>
+          <Routes>
+            <Route exact path="/" element={<Home />} />
+            <Route exact path="/login" element={<Login />} />
+            <Route exact path="/register" element={<Register />} />
+            <Route exact path="/forgot-password" element={<ForgotPassword />} />
+            <Route exact path="/gallery" element={<Gallery />} />
+            <Route exact path="/gallery/:idImage" element={<ImageGallery />} />
+            <Route
+              exact
+              path="/change-password"
+              element={<ChangePasswordPage />}
+            />
+            <Route exact path="/shop" element={<Shop />} />
+            <Route exact path="/shop/:idProduct" element={<ProductShop />} />
+            <Route exact path="/shoppingCart" element={<ShoppingCart />} />
+            <Route path="*" element={<Error404 />} />
+          </Routes>
+        </ScrollToTop>
 
-      <Footer />
-    </>
+        <Footer />
+      </ShoppingCartProvider>
   );
 }
 
