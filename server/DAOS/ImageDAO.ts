@@ -3,16 +3,20 @@ import { ImageCategory } from "../models/ImageCategory";
 import { ImageSubcategory } from "../models/ImageSubcategory";
 import DatabaseConnection from "./DaoConnection";
 
-export class DaoImage {
+export class ImageDAO {
     
 
     // Method to get a list of image categories
     async getImageCategoryList(): Promise<ImageCategory[]> {
         // Logic to retrieve a list of image categories
 
-        const SQL = DatabaseConnection.getInstance();
+        const SQL = DatabaseConnection.getInstance().getPool();
         
+
         try {
+            
+            SQL
+            
             const result = await SQL.query("Duende_SP_ImageCategory_List");
 
             // Check if the query was successful
