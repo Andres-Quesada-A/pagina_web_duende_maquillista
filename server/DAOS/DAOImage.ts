@@ -1,7 +1,7 @@
 import { Image } from "../models/Image";
 import { ImageCategory } from "../models/ImageCategory";
 import { ImageSubcategory } from "../models/ImageSubcategory";
-import DatabaseConnection from "./DaoConnetion";
+import DatabaseConnection from "./DaoConnection";
 
 export class DaoImage {
     
