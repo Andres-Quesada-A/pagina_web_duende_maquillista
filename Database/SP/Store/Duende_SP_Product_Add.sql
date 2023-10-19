@@ -23,6 +23,7 @@ BEGIN
 
     -- VARIABLE DECLARATION
     DECLARE @categoryId INT = NULL;
+    DECLARE @createdId INT = NULL;
 
     BEGIN TRY
 
@@ -91,11 +92,26 @@ BEGIN
                 0
             );
 
+            SET @createdId = SCOPE_IDENTITY();
+
         -- TRANSACTION COMMITTED
         IF @transactionBegun = 1
         BEGIN
             COMMIT TRANSACTION;
         END;
+
+        -- Return the newly created row
+        SELECT  P.[id],
+                PC.[description] AS 'category',
+                P.[name],
+                P.[description],
+                P.[imageUrl],
+                P.[price],
+                P.[available]
+        FROM    [dbo].[Products] P
+        JOIN    [dbo].[ProductCategories] PC
+            ON  P.[categoryId] = PC.[id]
+        WHERE   P.[id] = @createdId;
 
     END TRY
     BEGIN CATCH

@@ -9,6 +9,7 @@ import { ShoppingCart } from "../models/ShoppingCart";
 import { User } from "../models/User";
 import { UserController } from "./UserController";
 import { ImageController } from "./ImageController";
+import { ProductController } from "./ProductController";
 
 export class MasterController {
     private users: User[]; // Suppose you have a User class to represent users
@@ -18,6 +19,7 @@ export class MasterController {
     private orders: Order[]; // Suppose you have an Order class to represent orders
     private shoppingCart: ShoppingCart; // Suppose you have a ShoppingCart class to represent shopping carts
     private UserController: UserController;
+    private ProductController: ProductController;
 
     constructor() {
         this.users = [];
@@ -26,7 +28,8 @@ export class MasterController {
         this.images = [];
         this.orders = [];
         this.shoppingCart = new ShoppingCart();
-        this.UserController = new UserController()
+        this.UserController = new UserController();
+        this.ProductController = new ProductController();
     }
 
     // Method to send a confirmation code via email
@@ -58,12 +61,12 @@ export class MasterController {
 
     // Method to register a new user
     registerUser(req: Request, res: Response): Response {
-        const {name, lastName, email, password} = req.body;
-        const response = this.UserController.registerUser(name, lastName, email, password)
+        const {name, lastName1, lastName2, email, password} = req.body;
+        const response = this.UserController.registerUser(name, lastName1, lastName2, email, password)
         // name: string, lastName: string, email: string, password: string
         // Logic to register a new user in the database
         // Returns true if the registration is successful, otherwise returns false
-        return res.json({name, lastName, email, password}); // Change this with real logic
+        return res.json({name, lastName1, lastName2, email, password}); // Change this with real logic
     }
 
     // Method to log in
@@ -71,47 +74,88 @@ export class MasterController {
     login(req: Request, res: Response): boolean {
         // Logic to verify credentials and perform the login
         // Returns true if the login is successful, otherwise returns false
-        //res.json(req.panrams)
         return true; // Change this with real logic
     }
 
     // Method to get a list of products by category
-    getProductList(productCategory: string): Product[] {
+    getProductList(req: Request, res: Response): Response {
         // Logic to retrieve a list of products by category
-        return []; // Change this with real logic
+        const category = req.params.category;
+        const response = this.ProductController.getProductList(category);
+        return res.json(response);
     }
 
     // Method to get product details by ID
-    getProduct(id: number): Product {
+    getProduct(req: Request, res: Response): Response {
         // Logic to retrieve product details by ID
-        return new Product(1,
-            "",
-            "",
-            new ProductCategory(""),
-            32,
-            "",
-            32); // Change this with real logic
+        const id = Number(req.params.id);
+        const response = this.ProductController.getProduct(id);
+        return res.json(response);
     }
 
     // Method to create a new product
-    createProduct(name: string, description: string, imageUrl: string, price: number, weight: number): boolean {
+    createProduct(req: Request, res: Response): Response {
         // Logic to create a new product
         // Returns true if the creation is successful, otherwise returns false
-        return true; // Change this with real logic
+        const {
+            name,
+            description,
+            category,
+            imageUrl,
+            price,
+            weight,
+            available,
+        } = req.body;
+        const response = this.ProductController.createProduct(
+            name,
+            description,
+            category,
+            imageUrl,
+            price,
+            weight,
+            available
+        );
+        return res.json(response);
     }
 
     // Method to edit a product
-    editProduct(id: number, name: string, description: string, imageUrl: string, price: number, weight: number): boolean {
+    editProduct(req: Request, res: Response): Response {
         // Logic to edit a product
         // Returns true if the editing is successful, otherwise returns false
-        return true; // Change this with real logic
+        const {
+            id,
+            name,
+            description,
+            category,
+            imageUrl,
+            price,
+            weight,
+            available,
+        } = req.body;
+        const response = this.ProductController.editProduct(
+            id,
+            name,
+            description,
+            category,
+            imageUrl,
+            price,
+            weight,
+            available
+        );
+        return response
+            ? res.status(200).json({ status: "ok" })
+            : res.status(400).json({ status: "error" });
     }
 
     // Method to delete a product
-    deleteProduct(id: number): boolean {
+    deleteProduct(req: Request, res: Response): Response {
         // Logic to delete a product
         // Returns true if the deletion is successful, otherwise returns false
-        return true; // Change this with real logic
+        const id = Number(req.params.id);
+        const response = this.ProductController.deleteProduct(id);
+        return response
+            ? res.status(200).json({ status: "ok" })
+            : res.status(400).json({ status: "error" });
     }
 
     // Method to create a product category
@@ -190,14 +234,30 @@ export class MasterController {
     }
 
     // Method to edit an image
-    editImage(imageCategory: string, imageSubcategory: string, name: string, description: string, date: Date, tags: string, imageUrl: string): boolean {
+    editImage(
+        imageCategory: string,
+        imageSubcategory: string,
+        name: string,
+        description: string,
+        date: Date,
+        tags: string,
+        imageUrl: string
+    ): boolean {
         // Logic to edit an image
         // Returns true if the editing is successful, otherwise returns false
         return true; // Change this with real logic
     }
 
     // Method to create an image
-    createImage(imageCategory: string, imageSubcategory: string, name: string, description: string, date: Date, tags: string, imageUrl: string): boolean {
+    createImage(
+        imageCategory: string,
+        imageSubcategory: string,
+        name: string,
+        description: string,
+        date: Date,
+        tags: string,
+        imageUrl: string
+    ): boolean {
         // Logic to create an image
         // Returns true if the creation is successful, otherwise returns false
         return true; // Change this with real logic
@@ -206,15 +266,13 @@ export class MasterController {
     // Method to get a list of image categories
     getImageCategoryList(req: Request, res: Response): boolean {
         // Logic to retrieve a list of image categories
-        const ImageControllerObject = new ImageController
-        
+        const ImageControllerObject = new ImageController();
+
         try {
-            ImageControllerObject.getImageCategoryList()
-        } catch (error) {
-            
-        }
-        
-        return true
+            ImageControllerObject.getImageCategoryList();
+        } catch (error) {}
+
+        return true;
     }
 
     // Method to get a list of image subcategories
@@ -235,7 +293,14 @@ export class MasterController {
     }
 
     // Method to create an order
-    createOrder(province: string, canton: string, district: string, specificAddress: string, cart: ShoppingCart, imageUrl: string): boolean {
+    createOrder(
+        province: string,
+        canton: string,
+        district: string,
+        specificAddress: string,
+        cart: ShoppingCart,
+        imageUrl: string
+    ): boolean {
         // Logic to create an order
         // Returns true if the creation is successful, otherwise returns false
         return true; // Change this with real logic

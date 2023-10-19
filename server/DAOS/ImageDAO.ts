@@ -1,7 +1,7 @@
 import { Image } from "../models/Image";
 import { ImageCategory } from "../models/ImageCategory";
 import { ImageSubcategory } from "../models/ImageSubcategory";
-import DaoConnection from "./DaoConnection";
+import ConnectionDAO from "./ConnectionDAO";
 import sqlcon from 'mssql';
 
 export class ImageDAO {
@@ -11,7 +11,7 @@ export class ImageDAO {
     async getImageCategoryList(): Promise<ImageCategory[]> {
         // Logic to retrieve a list of image categories
 
-        const SQL = DaoConnection.getInstance();
+        const SQL = ConnectionDAO.getInstance();
         //const SQL = DaoConnection.getInstance().getPool();
 
         try {
@@ -39,7 +39,7 @@ export class ImageDAO {
     // Method to create an image category
     async createImageCategory(category: string): Promise<boolean> {
 
-        const SQL = DaoConnection.getInstance();
+        const SQL = ConnectionDAO.getInstance();
         
         try {
             const result = await SQL.query("Duende_SP_ImageCategory_Add", {"IN_imageCategory" : category});
@@ -58,7 +58,7 @@ export class ImageDAO {
     // Method to edit an image category
     async editImageCategory(category: string, newCategory: string): Promise<boolean> {
         
-        const SQL = DaoConnection.getInstance();
+        const SQL = ConnectionDAO.getInstance();
         
         try {
             const result = await SQL.query("Duende_SP_ImageCategory_Edit", {"IN_newImageCategory" : newCategory, "IN_imageCategory" : category});
@@ -77,7 +77,7 @@ export class ImageDAO {
     // Method to delete an image category
     async deleteImageCategory(category: string): Promise<boolean> {
         
-        const SQL = DaoConnection.getInstance();
+        const SQL = ConnectionDAO.getInstance();
         
         try {
             const result = await SQL.query("Duende_SP_ImageCategory_Delete", {"IN_imageCategory" : category});
@@ -99,7 +99,7 @@ export class ImageDAO {
     async getImageSubcategoryList(category: string): Promise<[]> {
         // Logic to retrieve a list of image categories
 
-        const SQL = DaoConnection.getInstance();
+        const SQL = ConnectionDAO.getInstance();
         
         try {
             const result = await SQL.query("Duende_SP_ImageSubcategory_List", {"IN_imageCategory" : category});
@@ -131,7 +131,7 @@ export class ImageDAO {
     // Method to create an image category
     async createImageSubcategory(category: string, subcategory: string): Promise<boolean> {
 
-        const SQL = DaoConnection.getInstance();
+        const SQL = ConnectionDAO.getInstance();
         
         try {
             const result = await SQL.query("Duende_SP_ImageSubcategory_Add", {"IN_imageCategory" : category, "IN_imageSubcategory" : subcategory});
@@ -150,7 +150,7 @@ export class ImageDAO {
     // Method to edit an image category
     async editImageSubcategory(category: string, subcategory: string, newSubcategory: string): Promise<boolean> {
         
-        const SQL = DaoConnection.getInstance();
+        const SQL = ConnectionDAO.getInstance();
         
         try {
             const result = await SQL.query("Duende_SP_ImageSubcategory_Edit", {"IN_imageCategory" : category, "IN_imageSubcategory" : subcategory, "IN_newImageSubcategory": newSubcategory});
@@ -169,7 +169,7 @@ export class ImageDAO {
     // Method to delete an image category
     async deleteImageSubcategory(category: string, subcategory: string): Promise<boolean> {
         
-        const SQL = DaoConnection.getInstance();
+        const SQL = ConnectionDAO.getInstance();
         
         try {
             const result = await SQL.query("Duende_SP_ImageSubcategory_Delete", {"IN_imageCategory" : category, "IN_imageSubcategory" : subcategory});
