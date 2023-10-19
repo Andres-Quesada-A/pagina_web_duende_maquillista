@@ -14,6 +14,7 @@ app.disable('x-powered-by'); // desactivar el encabezado "x-powered-by"
 
 app.use('/api', UserRouter); 
 
+
 // const PORT: number = parseInt(process.env.PORT) || 1234; // obtener el puerto del entorno o utilizar el puerto 1234 por defecto
 const PORT: number = 1234; // obtener el puerto del entorno o utilizar el puerto 1234 por defecto
 
