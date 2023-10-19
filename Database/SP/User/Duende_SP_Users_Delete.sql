@@ -5,7 +5,7 @@
 
 CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_Users_Delete]
     -- Parameters
-    @IN_userID INT NOT NULL
+    @IN_userID INT
 AS
 BEGIN
     SET NOCOUNT ON; -- No metadata returned

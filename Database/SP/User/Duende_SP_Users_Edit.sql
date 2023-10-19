@@ -5,13 +5,13 @@
 
 CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_Users_Edit]
     -- Parameters
-    @IN_userID INT NOT NULL,
-    @IN_name VARCHAR(32) NOT NULL,
-    @IN_lastName1 VARCHAR(32) NOT NULL,
-    @IN_lastName2 VARCHAR(32) NOT NULL,
-    @IN_email VARCHAR(128) NOT NULL,
-    @IN_password VARCHAR(300) NOT NULL,
-    @IN_token VARCHAR(300) NOT NULL
+    @IN_userID INT,
+    @IN_name VARCHAR(32),
+    @IN_lastName1 VARCHAR(32),
+    @IN_lastName2 VARCHAR(32),
+    @IN_email VARCHAR(128),
+    @IN_password VARCHAR(64),
+    @IN_token VARCHAR(300)
 AS
 BEGIN
     SET NOCOUNT ON; -- No metadata returned

@@ -5,17 +5,11 @@
 
 CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_Users_Get_By_Email]
     -- Parameters
-    @IN_email VARCHAR(128) NOT NULL,
-    @OUT_userID INT OUTPUT,
-    @OUT_name VARCHAR(32) OUTPUT,
-    @OUT_lastName1 VARCHAR(32) OUTPUT,
-    @OUT_lastName2 VARCHAR(32) OUTPUT,
-    @OUT_password VARCHAR(64) OUTPUT,
-    @OUT_token VARCHAR(128) OUTPUT,
-    @OUT_deleted BIT OUTPUT
+    @IN_email VARCHAR(128)
 AS
 BEGIN
-    SET NOCOUNT ON; -- No metadata returned
+    SET NOCOUNT ON;
+    -- No metadata returned
 
     -- ERROR HANDLING
     DECLARE @ErrorNumber INT, @ErrorSeverity INT, @ErrorState INT, @Message VARCHAR(200);
@@ -25,15 +19,9 @@ BEGIN
         
         -- OBTENER USUARIO POR EMAIL
         SELECT TOP 1
-            @OUT_userID = id,
-            @OUT_name = name,
-            @OUT_lastName1 = lastName1,
-            @OUT_lastName2 = lastName2,
-            @OUT_password = password,
-            @OUT_token = token,
-            @OUT_deleted = deleted
-        FROM [dbo].[Users]
-        WHERE email = LTRIM(RTRIM(@IN_email));
+        *
+    FROM [dbo].[Users]
+    WHERE email = LTRIM(RTRIM(@IN_email));
 
         -- COMMIT TRANSACTION (no es necesario para lectura)
     END TRY
@@ -45,9 +33,10 @@ BEGIN
 
         IF @ErrorNumber != 50000
         BEGIN
-            -- Non-custom errors son logged in the Errors table
-            INSERT INTO [dbo].[Errors]
-            VALUES (
+        -- Non-custom errors son logged in the Errors table
+        INSERT INTO [dbo].[Errors]
+        VALUES
+            (
                 SUSER_NAME(),
                 ERROR_NUMBER(),
                 ERROR_STATE(),
@@ -57,7 +46,7 @@ BEGIN
                 ERROR_MESSAGE(),
                 GETUTCDATE()
             );
-        END;
+    END;
 
         RAISERROR('%s - Error Number: %i', 
             @ErrorSeverity, @ErrorState, @Message, @ErrorNumber);
