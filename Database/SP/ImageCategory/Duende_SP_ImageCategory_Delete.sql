@@ -6,7 +6,7 @@
 
 CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_ImageCategory_Delete]
     -- Par�metros,
-    @IN_imageCategory VARCHAR(32) NOT NULL
+    @IN_imageCategory VARCHAR(32)
 AS
 BEGIN
     SET NOCOUNT ON;         -- No retorna metadatos
@@ -17,22 +17,6 @@ BEGIN
 
     -- DECLARACI�N DE VARIABLES
     DECLARE @UseIdImageCategory int = NULL;
-
-
-	DECLARE @ImageCategory TABLE(
-
-		id int IDENTITY NOT NULL,
-		name VARCHAR(32) NOT NULL,
-        erased BIT NOT NULL
-	)	
-
-	DECLARE @ImageSubcategory TABLE(
-
-		id int IDENTITY NOT NULL,
-        idCategory int NOT NULL,
-		name VARCHAR(32) NOT NULL,
-		erased BIT NOT NULL
-	)	
 
 
     BEGIN TRY
@@ -47,9 +31,9 @@ BEGIN
 	        END;
 
         SELECT @UseIdImageCategory = C.id 
-        FROM @ImageCategory C 
-        WHERE LTRIM(RTRIM(C.name)) = LTRIM(RTRIM(@IN_imageCategory))
-        AND C.erased = 0
+        FROM [dbo].ImageCategories C 
+        WHERE LTRIM(RTRIM(C.description)) = LTRIM(RTRIM(@IN_imageCategory))
+        AND C.deleted = 0
 
         --validacion de existencia previa
         IF (@UseIdImageCategory IS NULL)
@@ -62,9 +46,9 @@ BEGIN
 
         --validamos por la existencia de subcategorias
         IF EXISTS ( SELECT 1 
-                    FROM @ImageSubcategory Sc
-                    WHERE Sc.idCategory = @UseIdImageCategory
-                    AND Sc.erased = 0
+                    FROM [dbo].ImageSubcategories Sc
+                    WHERE Sc.categoryId = @UseIdImageCategory
+                    AND Sc.deleted = 0
                     )
             BEGIN
                 RAISERROR('la Categoria "%s" aun tiene subcategorias asociadas', 16, 1,@IN_imageCategory)
@@ -79,17 +63,17 @@ BEGIN
 
 		-- eliminamos la sociacion con subcategorias de la categoria
 		UPDATE Sc
-        SET erased = 1
-        FROM @ImageSubcategory Sc
-        WHERE Sc.idCategory = @UseIdImageCategory
-        AND Sc.erased = 0
+        SET deleted = 1
+        FROM [dbo].ImageSubcategories Sc
+        WHERE Sc.categoryId = @UseIdImageCategory
+        AND Sc.deleted = 0
 
         -- eliminamos la categoria
 		UPDATE C
-        SET erased = 1
-        FROM @ImageCategory C
+        SET deleted = 1
+        FROM [dbo].ImageCategories C
         WHERE C.id = @UseIdImageCategory
-        AND C.erased = 0
+        AND C.deleted = 0
 		
 
 		-- COMMIT DE LA TRANSACCI�N

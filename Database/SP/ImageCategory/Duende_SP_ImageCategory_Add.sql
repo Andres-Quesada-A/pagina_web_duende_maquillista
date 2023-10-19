@@ -6,7 +6,7 @@
 
 CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_ImageCategory_Add]
     -- Parameters,
-	@IN_imageCategory VARCHAR(32) NOT NULL
+	@IN_imageCategory VARCHAR(32)
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -16,14 +16,6 @@ BEGIN
     DECLARE @transactionBegun BIT = 0;
 
     -- Variables declaration
-
-	DECLARE @ImageCategory TABLE(
-
-		id int IDENTITY NOT NULL,
-		name VARCHAR(32) NOT NULL,
-        erased BIT NOT NULL
-	)	
-
 
     BEGIN TRY
         -- Validations
@@ -37,7 +29,7 @@ BEGIN
 
 
         --previous existence
-        IF EXISTS (SELECT 1 FROM @ImageCategory C WHERE LTRIM(RTRIM(C.name)) = LTRIM(RTRIM(@IN_imageCategory)) AND C.erased = 0)
+        IF EXISTS (SELECT 1 FROM [dbo].ImageCategories C WHERE LTRIM(RTRIM(C.description)) = LTRIM(RTRIM(@IN_imageCategory)) AND C.deleted = 0)
             BEGIN
                 RAISERROR('la Categoria "%s" ya existe', 16, 1,@IN_imageCategory)
             END;
@@ -50,9 +42,9 @@ BEGIN
 		    BEGIN TRANSACTION;
 		END;
 
-		INSERT INTO @ImageCategory (
-			name,
-			erased
+		INSERT INTO [dbo].ImageCategories (
+			description,
+			deleted
 		)
 		VALUES(
 			LTRIM(RTRIM(@IN_imageCategory)),

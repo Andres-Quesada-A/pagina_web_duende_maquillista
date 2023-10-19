@@ -16,22 +16,15 @@ BEGIN
 
     -- DECLARACI�N DE VARIABLES
 
-	DECLARE @ImageCategory TABLE(
-
-		id int IDENTITY NOT NULL,
-		name VARCHAR(32) NOT NULL,
-        erased BIT NOT NULL
-	)	
-
 
     BEGIN TRY
         -- VALIDACIONES
 		--validacion de Administradora(necesaria?)
 
         --consulta
-        SELECT C.name AS "category" 
-        FROM @ImageCategory C
-        WHERE C.erased = 0
+        SELECT C.description AS "category" 
+        FROM [dbo].ImageCategories C
+        WHERE C.deleted = 0
 
     END TRY
     BEGIN CATCH

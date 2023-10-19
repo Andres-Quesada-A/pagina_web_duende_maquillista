@@ -6,8 +6,8 @@
 
 CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_ImageSubcategory_Add]
     -- Par�metros,
-	@IN_imageCategory VARCHAR(32) NOT NULL,
-    @IN_imageSubcategory VARCHAR(32) NOT NULL
+	@IN_imageCategory VARCHAR(32),
+    @IN_imageSubcategory VARCHAR(32)
 AS
 BEGIN
     SET NOCOUNT ON;         -- No retorna metadatos
@@ -18,22 +18,7 @@ BEGIN
 
     -- DECLARACI�N DE VARIABLES
     DECLARE @UseIdSubcategoria INT = NULL;
-    DECLARE @UseIdCategory INT = NULL;
-
-	DECLARE @ImageCategory TABLE(
-
-		id int IDENTITY NOT NULL,
-		name VARCHAR(32) NOT NULL,
-        erased BIT NOT NULL
-	)	
-
-	DECLARE @ImageSubcategory TABLE(
-
-		id int IDENTITY NOT NULL,
-        idCategory int NOT NULL,
-		name VARCHAR(32) NOT NULL,
-		erased BIT NOT NULL
-	)	
+    DECLARE @UsecategoryId INT = NULL;
 
 
     BEGIN TRY
@@ -47,13 +32,13 @@ BEGIN
 	        	RAISERROR('No se ingreso texto de la Categoria', 16, 1)
 	        END;
 
-        SELECT @UseIdCategory = C.id 
-        FROM @ImageCategory C 
-        WHERE LTRIM(RTRIM(C.name)) = LTRIM(RTRIM(@IN_imageCategory))
-        AND C.erased = 0
+        SELECT @UsecategoryId = C.id 
+        FROM [dbo].ImageCategories C 
+        WHERE LTRIM(RTRIM(C.description)) = LTRIM(RTRIM(@IN_imageCategory))
+        AND C.deleted = 0
 
         --validacion de existencia previa
-        IF (@UseIdCategory IS NULL)
+        IF (@UsecategoryId IS NULL)
             BEGIN
                 RAISERROR('la Categoria "%s" no existe', 16, 1,@IN_imageCategory)
             END;
@@ -66,10 +51,10 @@ BEGIN
 
         --validacion de existencia previa de subcategoria
         IF EXISTS ( SELECT 1
-                    FROM @ImageSubcategory Sc
-                    WHERE Sc.idCategory = @UseIdCategory
-                    AND Sc.erased = 0
-                    AND LTRIM(RTRIM(Sc.name)) = LTRIM(RTRIM(@IN_imageSubcategory))
+                    FROM [dbo].ImageSubcategories Sc
+                    WHERE Sc.categoryId = @UsecategoryId
+                    AND Sc.deleted = 0
+                    AND LTRIM(RTRIM(Sc.description)) = LTRIM(RTRIM(@IN_imageSubcategory))
                     ) 
             BEGIN
                 RAISERROR('la Subcategoria "%s" ya existe', 16, 1,@IN_imageSubcategory)
@@ -84,13 +69,13 @@ BEGIN
 		END;
 
 		-- creamos la nueva subcategoria
-		INSERT INTO @ImageSubcategory (
-			idCategory,
-            name,
-			erased
+		INSERT INTO [dbo].ImageSubcategories (
+			categoryId,
+            description,
+			deleted
 		)
 		VALUES(
-			@UseIdCategory,
+			@UsecategoryId,
             LTRIM(RTRIM(@IN_imageSubcategory)),
 			0
 		);

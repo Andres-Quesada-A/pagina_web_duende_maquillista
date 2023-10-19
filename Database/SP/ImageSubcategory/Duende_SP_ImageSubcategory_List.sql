@@ -6,7 +6,7 @@
 
 CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_ImageSubcategory_List]
     -- Par�metros,
-	@IN_imageCategory VARCHAR(32) NOT NULL
+	@IN_imageCategory VARCHAR(32)
 AS
 BEGIN
     SET NOCOUNT ON;         -- No retorna metadatos
@@ -16,22 +16,7 @@ BEGIN
     DECLARE @transactionBegun BIT = 0;
 
     -- DECLARACI�N DE VARIABLES
-    DECLARE @UseIdCategory INT = NULL;
-
-	DECLARE @ImageCategory TABLE(
-
-		id int IDENTITY NOT NULL,
-		name VARCHAR(32) NOT NULL,
-        erased BIT NOT NULL
-	)	
-
-	DECLARE @ImageSubcategory TABLE(
-
-		id int IDENTITY NOT NULL,
-        idCategory int NOT NULL,
-		name VARCHAR(32) NOT NULL,
-		erased BIT NOT NULL
-	)	
+    DECLARE @UsecategoryId INT = NULL;
 
 
     BEGIN TRY
@@ -45,23 +30,23 @@ BEGIN
 	        	RAISERROR('No se ingreso texto de la Categoria', 16, 1)
 	        END;
 
-        SELECT @UseIdCategory = C.id 
-        FROM @ImageCategory C 
-        WHERE LTRIM(RTRIM(C.name)) = LTRIM(RTRIM(@IN_imageCategory))
-        AND C.erased = 0
+        SELECT @UsecategoryId = C.id 
+        FROM [dbo].ImageCategories C 
+        WHERE LTRIM(RTRIM(C.description)) = LTRIM(RTRIM(@IN_imageCategory))
+        AND C.deleted = 0
 
         --validacion de existencia previa
-        IF (@UseIdCategory IS NULL)
+        IF (@UsecategoryId IS NULL)
             BEGIN
-                RAISERROR('la Categoria no existe', 16, 1)
+                RAISERROR('la Categoria "%s" no existe', 16, 1, @IN_imageCategory)
             END;
 
 		-- consulta
 
-        SELECT Sc.name AS "subcategoria" 
-        FROM @ImageSubcategory Sc
-        WHERE Sc.idCategory = @UseIdCategory
-        AND Sc.erased = 0
+        SELECT Sc.description AS "subcategoria" 
+        FROM [dbo].ImageSubcategories Sc
+        WHERE Sc.categoryId = @UsecategoryId
+        AND Sc.deleted = 0
 
     END TRY
     BEGIN CATCH

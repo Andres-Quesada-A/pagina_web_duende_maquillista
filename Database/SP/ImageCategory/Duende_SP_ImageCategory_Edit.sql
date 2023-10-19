@@ -6,8 +6,8 @@
 
 CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_ImageCategory_Edit]
     -- Parameters,
-	@IN_newImageCategory VARCHAR(32) NOT NULL,
-    @IN_imageCategory VARCHAR(32) NOT NULL
+	@IN_newImageCategory VARCHAR(32),
+    @IN_imageCategory VARCHAR(32)
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -19,13 +19,6 @@ BEGIN
     -- Variable declaration
     DECLARE @UseIdImageCategory int = NULL;
 
-
-	DECLARE @Imagecategory TABLE(
-
-		id int IDENTITY NOT NULL,
-		name VARCHAR(32) NOT NULL,
-        erased BIT NOT NULL
-	)	
 
     BEGIN TRY
         -- VALIDATIONS
@@ -39,7 +32,7 @@ BEGIN
 	        END;
 
         --previous existence
-        IF EXISTS (SELECT 1 FROM @Imagecategory C WHERE LTRIM(RTRIM(C.name)) = LTRIM(RTRIM(@IN_newImageCategory)) AND C.erased = 0)
+        IF EXISTS (SELECT 1 FROM [dbo].ImageCategories C WHERE LTRIM(RTRIM(C.description)) = LTRIM(RTRIM(@IN_newImageCategory)) AND C.deleted = 0)
             BEGIN
                 RAISERROR('la Categoria "%s" ya existe', 16, 1,@IN_imageCategory)
             END;
@@ -51,9 +44,9 @@ BEGIN
 	        END;
 
         SELECT @UseIdImageCategory = C.id 
-        FROM @Imagecategory C 
-        WHERE LTRIM(RTRIM(C.name)) = LTRIM(RTRIM(@IN_imageCategory))
-        AND C.erased = 0
+        FROM [dbo].ImageCategories C 
+        WHERE LTRIM(RTRIM(C.description)) = LTRIM(RTRIM(@IN_imageCategory))
+        AND C.deleted = 0
 
         --previous existence
         IF (@UseIdImageCategory IS NULL)
@@ -71,8 +64,8 @@ BEGIN
 
 		-- edit of the Imagecategory
 		UPDATE C
-        SET name = LTRIM(RTRIM(@IN_newImageCategory))
-        FROM @Imagecategory C
+        SET description = LTRIM(RTRIM(@IN_newImageCategory))
+        FROM [dbo].ImageCategories C
         WHERE C.id = @UseIdImageCategory
 		
 

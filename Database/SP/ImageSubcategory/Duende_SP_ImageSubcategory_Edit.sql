@@ -6,9 +6,9 @@
 
 CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_ImageSubcategory_Edit]
     -- Par�metros,
-	@IN_imageCategory VARCHAR(32) NOT NULL,
-    @IN_imageSubcategory VARCHAR(32) NOT NULL,
-    @IN_newImageSubcategory VARCHAR(32) NOT NULL
+	@IN_imageCategory VARCHAR(32),
+    @IN_imageSubcategory VARCHAR(32),
+    @IN_newImageSubcategory VARCHAR(32)
 AS
 BEGIN
     SET NOCOUNT ON;         -- No retorna metadatos
@@ -18,23 +18,8 @@ BEGIN
     DECLARE @transactionBegun BIT = 0;
 
     -- DECLARACI�N DE VARIABLES
-    DECLARE @UseIdCategory INT = NULL;
+    DECLARE @UsecategoryId INT = NULL;
     DECLARE @UseIdSubcategory INT = NULL;
-
-	DECLARE @ImageCategory TABLE(
-
-		id int IDENTITY NOT NULL,
-		name VARCHAR(32) NOT NULL,
-        erased BIT NOT NULL
-	)	
-
-	DECLARE @ImageSubcategory TABLE(
-
-		id int IDENTITY NOT NULL,
-        idCategory int NOT NULL,
-		name VARCHAR(32) NOT NULL,
-		erased BIT NOT NULL
-	)	
 
 
     BEGIN TRY
@@ -48,13 +33,13 @@ BEGIN
 	        	RAISERROR('No se ingreso texto de la Categoria', 16, 1)
 	        END;
 
-        SELECT @UseIdCategory = C.id 
-        FROM @ImageCategory C 
-        WHERE LTRIM(RTRIM(C.name)) = LTRIM(RTRIM(@IN_imageCategory))
-        AND C.erased = 0
+        SELECT @UsecategoryId = C.id 
+        FROM [dbo].ImageCategories C 
+        WHERE LTRIM(RTRIM(C.description)) = LTRIM(RTRIM(@IN_imageCategory))
+        AND C.deleted = 0
 
         --validacion de existencia previa
-        IF (@UseIdCategory IS NULL)
+        IF (@UsecategoryId IS NULL)
             BEGIN
                 RAISERROR('la Categoria no existe', 16, 1)
             END;
@@ -66,10 +51,10 @@ BEGIN
 	        END;
 
         SELECT @UseIdSubcategory = Sc.id
-        FROM @ImageSubcategory Sc
-        WHERE Sc.idCategory = @UseIdCategory
-        AND Sc.erased = 0
-        AND LTRIM(RTRIM(Sc.name)) = LTRIM(RTRIM(@IN_imageSubcategory))
+        FROM [dbo].ImageSubcategories Sc
+        WHERE Sc.categoryId = @UsecategoryId
+        AND Sc.deleted = 0
+        AND LTRIM(RTRIM(Sc.description)) = LTRIM(RTRIM(@IN_imageSubcategory))
 
         --validacion de existencia previa de subcategoria
         IF (@UseIdSubcategory IS NULL) 
@@ -86,10 +71,10 @@ BEGIN
 
         --validacion de existencia previa de subcategoria
         IF EXISTS ( SELECT 1
-                    FROM @ImageSubcategory Sc
-                    WHERE Sc.idCategory = @UseIdCategory
-                    AND Sc.erased = 0
-                    AND LTRIM(RTRIM(Sc.name)) = LTRIM(RTRIM(@IN_newImageSubcategory))
+                    FROM [dbo].ImageSubcategories Sc
+                    WHERE Sc.categoryId = @UsecategoryId
+                    AND Sc.deleted = 0
+                    AND LTRIM(RTRIM(Sc.description)) = LTRIM(RTRIM(@IN_newImageSubcategory))
                     ) 
             BEGIN
                 RAISERROR('la Subcategoria "%s" ya existe', 16, 1,@IN_imageSubcategory)
@@ -105,10 +90,10 @@ BEGIN
 
 		-- actualizamos la subcategoria
 		UPDATE Sc
-        SET Sc.name = @IN_newImageSubcategory
-        FROM @ImageSubcategory Sc
+        SET Sc.description = @IN_newImageSubcategory
+        FROM [dbo].ImageSubcategories Sc
         WHERE Sc.id = @UseIdSubcategory
-        AND Sc.erased = 0
+        AND Sc.deleted = 0
 
 		-- COMMIT DE LA TRANSACCI�N
 		IF @transactionBegun = 1
