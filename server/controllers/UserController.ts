@@ -1,7 +1,10 @@
-export class UserController {
+import { UserDAO } from "../DAOS/UserDAO";
 
+export class UserController {
+    private UserDAO: UserDAO
     constructor() {
         // this.users = [];
+        this.UserDAO = new UserDAO();
     }
 
     // Method to send a confirmation code via email
@@ -25,9 +28,8 @@ export class UserController {
 
     // Method to register a new user
     registerUser(name: string, lastName: string, email: string, password: string): boolean {
-        // Logic to register a new user in the database
-        // Returns true if the registration is successful, otherwise returns false
-        return true; // Change this with real logic
+        const response = this.UserDAO.registerUser(name, lastName, email, password)
+        return response; 
     }
 
     // Method to edit user information

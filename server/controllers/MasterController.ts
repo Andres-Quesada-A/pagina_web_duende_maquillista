@@ -6,6 +6,7 @@ import { Product } from "../models/Product";
 import { ProductCategory } from "../models/ProductCategory";
 import { ShoppingCart } from "../models/ShoppingCart";
 import { User } from "../models/User";
+import { UserController } from "./UserController";
 
 export class MasterController {
     private users: User[]; // Suppose you have a User class to represent users
@@ -14,6 +15,7 @@ export class MasterController {
     private images: Image[]; // Suppose you have an Image class to represent images
     private orders: Order[]; // Suppose you have an Order class to represent orders
     private shoppingCart: ShoppingCart; // Suppose you have a ShoppingCart class to represent shopping carts
+    private UserController: UserController;
 
     constructor() {
         this.users = [];
@@ -22,6 +24,7 @@ export class MasterController {
         this.images = [];
         this.orders = [];
         this.shoppingCart = new ShoppingCart();
+        this.UserController = new UserController()
     }
 
     // Method to send a confirmation code via email
@@ -52,13 +55,13 @@ export class MasterController {
     }
 
     // Method to register a new user
-    registerUser(req: Request, res: Response): boolean {
+    registerUser(req: Request, res: Response): Response {
         const {name, lastName, email, password} = req.body;
-        res.json({name, lastName, email, password})
+        const response = this.UserController.registerUser(name, lastName, email, password)
         // name: string, lastName: string, email: string, password: string
         // Logic to register a new user in the database
         // Returns true if the registration is successful, otherwise returns false
-        return true; // Change this with real logic
+        return res.json({name, lastName, email, password}); // Change this with real logic
     }
 
     // Method to log in

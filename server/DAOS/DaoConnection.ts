@@ -40,6 +40,10 @@ class DaoConnection {
     return DaoConnection.instance;
   }
 
+  public getPool(): sqlcon.ConnectionPool {
+    return this.pool;
+  }
+
 }
 
 export default DaoConnection;
