@@ -84,6 +84,7 @@ BEGIN
                 @categoryId,
                 @IN_name,
                 @IN_description,
+				@IN_imageUrl,
                 @IN_price,
                 @IN_weight,
                 @IN_available,

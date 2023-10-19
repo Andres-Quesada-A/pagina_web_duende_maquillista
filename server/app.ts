@@ -5,6 +5,8 @@ import cors from 'cors'
 
 // ROUTES
 import UserRouter from './routes/User.routes'
+import ImageCategoryRouter from './routes/ImageCategory.routes'
+import ImageSubcategoryRouter from './routes/ImageSubcategory.routes'
 
 const app = express(); // crear una instancia de la aplicación Express
 app.use(json()); // usar middleware para manejar datos JSON
@@ -12,7 +14,9 @@ app.use(cors());
 // app.use(corsMiddleware()); // usar middleware de CORS
 app.disable('x-powered-by'); // desactivar el encabezado "x-powered-by"
 
-app.use('/api', UserRouter); 
+app.use('/api', UserRouter);
+app.use('/api', ImageCategoryRouter); 
+app.use('/api', ImageSubcategoryRouter); 
 
 
 // const PORT: number = parseInt(process.env.PORT) || 1234; // obtener el puerto del entorno o utilizar el puerto 1234 por defecto

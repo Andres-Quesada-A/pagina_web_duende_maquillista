@@ -45,7 +45,7 @@ BEGIN
         END;
 
         -- INSERT USER
-        INSERT INTO [dbo].[Users] (name, lastName1, lastName2, email, password, token, deleted)
+        INSERT INTO [dbo].[Users] (name, lastName1, lastName2, email, password, token, administrator, deleted)
         VALUES (
             LTRIM(RTRIM(@IN_name)),
             LTRIM(RTRIM(@IN_lastName1)),
@@ -53,7 +53,8 @@ BEGIN
             LTRIM(RTRIM(@IN_email)),
             LTRIM(RTRIM(@IN_password)),
             LTRIM(RTRIM(@IN_token)),
-            0 -- Assuming a new user is not deleted
+            0, 
+            0-- Assuming a new user is not deleted
         );
 
         -- COMMIT TRANSACTION
