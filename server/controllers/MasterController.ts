@@ -61,17 +61,12 @@ export class MasterController {
 
     // Method to register a new user
     registerUser(req: Request, res: Response): Response {
-        const { name, lastName, email, password } = req.body;
-        const response = this.UserController.registerUser(
-            name,
-            lastName,
-            email,
-            password
-        );
+        const {name, lastName1, lastName2, email, password} = req.body;
+        const response = this.UserController.registerUser(name, lastName1, lastName2, email, password)
         // name: string, lastName: string, email: string, password: string
         // Logic to register a new user in the database
         // Returns true if the registration is successful, otherwise returns false
-        return res.json({ name, lastName, email, password }); // Change this with real logic
+        return res.json({name, lastName1, lastName2, email, password}); // Change this with real logic
     }
 
     // Method to log in
@@ -79,7 +74,6 @@ export class MasterController {
     login(req: Request, res: Response): boolean {
         // Logic to verify credentials and perform the login
         // Returns true if the login is successful, otherwise returns false
-        //res.json(req.panrams)
         return true; // Change this with real logic
     }
 

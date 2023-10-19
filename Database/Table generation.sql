@@ -36,7 +36,7 @@ CREATE TABLE [dbo].[Users]
     [email] VARCHAR(128) NOT NULL,
     [password] VARCHAR(64) NOT NULL,
     [token] VARCHAR(300) NOT NULL,
-    [adminsitrator] BIT NOT NULL,
+    [administrator] BIT NOT NULL,
     [deleted] BIT NOT NULL
 );
 

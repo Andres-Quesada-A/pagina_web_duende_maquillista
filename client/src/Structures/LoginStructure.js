@@ -23,10 +23,17 @@ export const Register = [
     required: true,
   },
   {
-    label: "Apellidos",
+    label: "Primer apellido",
     type: "text",
-    id: "lastname",
-    placeholder: "Apellidos",
+    id: "lastname1",
+    placeholder: "Apellido",
+    required: true,
+  },
+  {
+    label: "Segundo apellido",
+    type: "text",
+    id: "lastname2",
+    placeholder: "Apellido",
     required: true,
   },
   {
