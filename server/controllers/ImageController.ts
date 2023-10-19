@@ -1,5 +1,7 @@
+import { ImageDAO } from "../DAOS/ImageDAO";
 import { Image } from "../models/Image";
 import { ImageCategory } from "../models/ImageCategory";
+import { ImageSubcategory } from "../models/ImageSubcategory";
 
 export class ImageController {
     constructor() {
@@ -15,6 +17,17 @@ export class ImageController {
     // Method to get a list of ImageCategory
     getImageCategoryList(): ImageCategory[] {
         // Logic to get the list of ImageCategory
+        return []
+    }
+
+    getImageSubcategoryList(category: string): ImageSubcategory[] {
+        // Logic to get the list of ImageSubcategory
+
+        const dao = new ImageDAO
+
+        const subcategories = dao.getImageSubcategoryList(category)
+
+
         return []
     }
 
