@@ -71,7 +71,7 @@ export class MasterController {
     login(req: Request, res: Response): boolean {
         // Logic to verify credentials and perform the login
         // Returns true if the login is successful, otherwise returns false
-        res.json(req.panrams)
+        //res.json(req.panrams)
         return true; // Change this with real logic
     }
 
@@ -148,42 +148,42 @@ export class MasterController {
     }
 
     // Method to delete an image subcategory
-    deleteImageSubcategory(category: string, subcategory: string): boolean {
+    deleteImageSubcategory(req: Request, res: Response): boolean {
         // Logic to delete an image subcategory
         // Returns true if the deletion is successful, otherwise returns false
         return true; // Change this with real logic
     }
 
     // Method to delete an image category
-    deleteImageCategory(category: string): boolean {
+    deleteImageCategory(req: Request, res: Response): boolean {
         // Logic to delete an image category
         // Returns true if the deletion is successful, otherwise returns false
         return true; // Change this with real logic
     }
 
     // Method to create an image subcategory
-    createImageSubcategory(category: string, subcategory: string): boolean {
+    createImageSubcategory(req: Request, res: Response): boolean {
         // Logic to create an image subcategory
         // Returns true if the creation is successful, otherwise returns false
         return true; // Change this with real logic
     }
 
     // Method to edit an image subcategory
-    editImageSubcategory(category: string, subcategory: string, newSubcategory: string): boolean {
+    editImageSubcategory(req: Request, res: Response): boolean {
         // Logic to edit an image subcategory
         // Returns true if the editing is successful, otherwise returns false
         return true; // Change this with real logic
     }
 
     // Method to create an image category
-    createImageCategory(category: string): boolean {
+    createImageCategory(req: Request, res: Response): boolean {
         // Logic to create an image category
         // Returns true if the creation is successful, otherwise returns false
         return true; // Change this with real logic
     }
 
     // Method to edit an image category
-    editImageCategory(category: string, newCategory: string): boolean {
+    editImageCategory(req: Request, res: Response): boolean {
         // Logic to edit an image category
         // Returns true if the editing is successful, otherwise returns false
         return true; // Change this with real logic
@@ -204,20 +204,33 @@ export class MasterController {
     }
 
     // Method to get a list of image categories
-    getImageCategoryList(req: Request, res: Response): ImageCategory[] {
+    getImageCategoryList(req: Request, res: Response): boolean {
         // Logic to retrieve a list of image categories
         const ImageControllerObject = new ImageController
-
-        return ImageControllerObject.getImageCategoryList()
+        
+        try {
+            ImageControllerObject.getImageCategoryList()
+        } catch (error) {
+            
+        }
+        
+        return true
     }
 
     // Method to get a list of image subcategories
-    getImageSubcategoryList(req: Request, res: Response): ImageSubcategory[] {
+    getImageSubcategoryList(req: Request, res: Response): boolean {
         // Logic to retrieve a list of image categories
 
         const ImageControllerObject = new ImageController
-
-        return ImageControllerObject.getImageSubcategoryList()
+        
+        try {
+            const category = req.query.category
+            ImageControllerObject.getImageSubcategoryList(category)
+        } catch (error) {
+            
+        }
+        
+        return true
     }
 
     // Method to create an order
