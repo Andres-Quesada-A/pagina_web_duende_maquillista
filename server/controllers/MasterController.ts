@@ -71,7 +71,6 @@ export class MasterController {
     login(req: Request, res: Response): boolean {
         // Logic to verify credentials and perform the login
         // Returns true if the login is successful, otherwise returns false
-        res.json(req.panrams)
         return true; // Change this with real logic
     }
 
