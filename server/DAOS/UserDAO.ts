@@ -22,17 +22,18 @@ export class UserDAO {
         return true
     }
 
-    registerUser(name: string, lastName: string, email: string, password: string): boolean {
+    registerUser(name: string, lastName1: string, lastName2:string, email: string, password: string): boolean {
 
         const pool = this.ConnectionDAO.getPool()
         const request = pool.request()
 
-        const token = GenerateToken(name, lastName, email, 0)
+        const token = GenerateToken(name, lastName1 + lastName2,  email, 0)
         const encryptedPassword = bcrypt.hash(password, 10)
 
         try {
             request.input("@IN_name", sqlcon.VarChar, name)
-            request.input("@IN_lastName", sqlcon.VarChar, lastName)
+            request.input("@IN_lastName1", sqlcon.VarChar, lastName1)
+            request.input("@IN_lastName2", sqlcon.VarChar, lastName2)
             request.input("@IN_email", sqlcon.VarChar, email)
             request.input("@IN_password", sqlcon.VarChar, encryptedPassword)
             request.input("@IN_token", sqlcon.VarChar, token)

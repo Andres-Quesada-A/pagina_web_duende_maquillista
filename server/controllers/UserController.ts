@@ -27,8 +27,8 @@ export class UserController {
     }
 
     // Method to register a new user
-    registerUser(name: string, lastName: string, email: string, password: string): boolean {
-        const response = this.UserDAO.registerUser(name, lastName, email, password)
+    registerUser(name: string, lastName1: string, lastName2: string, email: string, password: string): boolean {
+        const response = this.UserDAO.registerUser(name, lastName1, lastName2, email, password)
         return response; 
     }
 
