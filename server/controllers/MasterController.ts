@@ -1,12 +1,14 @@
 import { Request, Response } from "express";
 import { Image } from "../models/Image";
 import { ImageCategory } from "../models/ImageCategory";
+import { ImageSubcategory } from "../models/ImageSubcategory";
 import { Order } from "../models/Order";
 import { Product } from "../models/Product";
 import { ProductCategory } from "../models/ProductCategory";
 import { ShoppingCart } from "../models/ShoppingCart";
 import { User } from "../models/User";
 import { UserController } from "./UserController";
+import { ImageController } from "./ImageController";
 
 export class MasterController {
     private users: User[]; // Suppose you have a User class to represent users
@@ -69,7 +71,7 @@ export class MasterController {
     login(req: Request, res: Response): boolean {
         // Logic to verify credentials and perform the login
         // Returns true if the login is successful, otherwise returns false
-        res.json(req.params)
+        res.json(req.panrams)
         return true; // Change this with real logic
     }
 
@@ -202,9 +204,20 @@ export class MasterController {
     }
 
     // Method to get a list of image categories
-    getImageCategoryList(): ImageCategory[] {
+    getImageCategoryList(req: Request, res: Response): ImageCategory[] {
         // Logic to retrieve a list of image categories
-        return []; // Change this with real logic
+        const ImageControllerObject = new ImageController
+
+        return ImageControllerObject.getImageCategoryList()
+    }
+
+    // Method to get a list of image subcategories
+    getImageSubcategoryList(req: Request, res: Response): ImageSubcategory[] {
+        // Logic to retrieve a list of image categories
+
+        const ImageControllerObject = new ImageController
+
+        return ImageControllerObject.getImageSubcategoryList()
     }
 
     // Method to create an order
