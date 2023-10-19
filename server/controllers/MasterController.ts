@@ -223,8 +223,9 @@ export class MasterController {
 
         const ImageControllerObject = new ImageController
         
+ 
         try {
-            const category = req.query.category
+            const category : string = String(req.params.category)
             ImageControllerObject.getImageSubcategoryList(category)
         } catch (error) {
             
