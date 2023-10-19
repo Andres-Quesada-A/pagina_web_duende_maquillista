@@ -1,9 +1,12 @@
+import { GenerateToken } from "../Utils/GenerateToken";
 import DaoConnection from "./DaoConnection";
+import sqlcon from "mssql"
+import bcrypt from "bcrypt"
 
 export class UserDAO {
     private DaoConnection: DaoConnection
 
-    constructor () {
+    constructor() {
         this.DaoConnection = DaoConnection.getInstance();
     }
     newPassword(password: string, confirmPassword: string): boolean {
@@ -20,9 +23,32 @@ export class UserDAO {
     }
 
     registerUser(name: string, lastName: string, email: string, password: string): boolean {
-        
+
         const pool = this.DaoConnection.getPool()
-        
+        const request = pool.request()
+
+        const token = GenerateToken(name, lastName, email, 0)
+        const encryptedPassword = bcrypt.hash(password, 10)
+
+        try {
+            request.input("@IN_name", sqlcon.VarChar, name)
+            request.input("@IN_lastName", sqlcon.VarChar, lastName)
+            request.input("@IN_email", sqlcon.VarChar, email)
+            request.input("@IN_password", sqlcon.VarChar, encryptedPassword)
+            request.input("@IN_token", sqlcon.VarChar, token)
+        } catch (error) {
+            console.log(error)
+            return false
+        }
+
+        request.execute("Duende_SP_Users_Add", (error, result) => {
+            if (error) {
+                console.log('Error en la consulta')
+                return false
+            }
+            return true
+        })
+
         return true
     }
 
