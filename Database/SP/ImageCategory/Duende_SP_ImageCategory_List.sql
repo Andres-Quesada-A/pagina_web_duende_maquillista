@@ -15,16 +15,28 @@ BEGIN
     DECLARE @transactionBegun BIT = 0;
 
     -- DECLARACI�N DE VARIABLES
-
+    DECLARE @usarSeparador VARCHAR(1) = ','
 
     BEGIN TRY
         -- VALIDACIONES
 		--validacion de Administradora(necesaria?)
 
         --consulta
-        SELECT C.description AS "category" 
+        SELECT C.description AS 'category' ,
+                CASE WHEN Every.subcategories IS NULL THEN ''
+                ELSE Every.subcategories END AS 'subcategories'
         FROM [dbo].ImageCategories C
-        WHERE C.deleted = 0
+        LEFT JOIN ( SELECT C.id AS 'id' ,
+                    STRING_AGG( S.description, ',') AS 'subcategories' 
+		            FROM [dbo].ImageCategories C
+		            INNER JOIN [dbo].ImageSubcategories S
+		            	ON S.categoryId = C.id
+                    WHERE C.[deleted] = 0
+		            AND S.[deleted] = 0
+		            GROUP BY C.[id]) AS Every
+            ON Every.id = C.id
+        WHERE C.deleted = 0 
+                      
 
     END TRY
     BEGIN CATCH
