@@ -17,6 +17,10 @@ export class ImageController {
     // Method to get a list of ImageCategory
     getImageCategoryList(): ImageCategory[] {
         // Logic to get the list of ImageCategory
+        
+        const dao = new ImageDAO
+
+        const categories = dao.getImageCategoryList()
         return []
     }
 

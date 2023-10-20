@@ -21,14 +21,33 @@ export class ImageDAO {
             // Check if the query was successful
             if (result && result.recordset) {
                 // Extract the records from the result and convert to an array of objects
-                const records = result.recordset as ImageCategory[];
-                return records;
+                const categories: ImageCategory[] = result.recordset.map((row: any) => {
+                    // Split the subcategories string by the comma and create an array
+
+                    var value
+
+                    if(row.subcategories === ""){
+                        value = null
+                    } 
+                    else {
+                        value = row.subcategories.split(',').map((subcategory: string) => subcategory.trim());
+                    }
+                    return {
+                        category: row.category,
+                        subcategories: value
+                    };
+                    
+                });
+                console.log(categories)
+                return categories;
             } else {
+                console.log("no llegaron datos");
                 // Handle the case when the query did not return any data
                 //res.status(404).json({ error: "No records found" });
                 return [];
             }
         } catch (error) {
+            console.log("error encontrado");
             // Handle any errors that occur during the query
             //console.error("Error while fetching image categories:", error);
             //res.status(500).json({ error: "Internal Server Error" });
