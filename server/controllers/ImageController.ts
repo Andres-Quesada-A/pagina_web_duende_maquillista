@@ -14,27 +14,6 @@ export class ImageController {
         return []
     }
 
-    // Method to get a list of ImageCategory
-    getImageCategoryList(): ImageCategory[] {
-        // Logic to get the list of ImageCategory
-        
-        const dao = new ImageDAO
-
-        const categories = dao.getImageCategoryList()
-        return []
-    }
-
-    getImageSubcategoryList(category: string): ImageSubcategory[] {
-        // Logic to get the list of ImageSubcategory
-
-        const dao = new ImageDAO
-
-        const subcategories = dao.getImageSubcategoryList(category)
-
-
-        return []
-    }
-
     // Method to create a image, needs the info and subcategory
     createImage(imageCategory: string, imageSubcategory: string, name: string, description: string, date: Date, tags: string, imageUrl: string): boolean {
         // Logic to create the image
@@ -56,46 +35,46 @@ export class ImageController {
         return true
     }
 
+    // Method to get a list of ImageCategory and ImageSubcategory
+    getImageCategoryList(): Promise<any> {
+        const dao = new ImageDAO
+        return dao.getImageCategoryList()
+    }
+
      // Method to create a ImageCategory
-     createImageCategory(category: string, newCategory: string): boolean {
-        // Logic to create the ImageCategory
-        // Returns true if the ImageCategory is created, false if something was not provided
-        return true;
+    createImageCategory(category: string): Promise<any> {
+        const dao = new ImageDAO
+        return dao.createImageCategory(category)
     }
 
     // Method to edit a ImageCategory
-    editImageCategory(category: string, newCategory: string): boolean {
-        // Logic to edit the ImageCategory
-        // Returns true if the ImageCategory is edited, false if something was not provided
-        return true;
+    editImageCategory(category: string, newCategory: string): Promise<any> {
+        const dao = new ImageDAO
+        return dao.editImageCategory(category, newCategory)
     }
 
     // Method to delete a ImageCategory
-    deleteImageCategory(category: string): boolean {
-        // Logic to create the ImageCategory
-        // Returns true if the ImageCategory is deleted, false if failed
-        return true;
+    deleteImageCategory(category: string): Promise<any> {
+        const dao = new ImageDAO
+        return dao.deleteImageCategory(category)
     }
 
     // Method to create a ImageSubcategory
-    createImageSubcategory(category: string, subcategory: string): boolean {
-        // Logic to create the ImageSubcategory
-        // Returns true if the ImageSubcategory is created, false if something was not provided
-        return true;
+    createImageSubcategory(category: string, subcategory: string): Promise<any> {
+        const dao = new ImageDAO
+        return dao.createImageSubcategory(category,subcategory)
     }
 
     // Method to edit a ImageSubcategory
-    editImageSubcategory(category: string, subcategory: string, newSubcategory: string): boolean {
-        // Logic to create the ImageSubcategory
-        // Returns true if the ImageSubcategory is edited, false if something was not provided
-        return true;
+    editImageSubcategory(category: string, subcategory: string, newSubcategory: string): Promise<any> {
+        const dao = new ImageDAO
+        return dao.editImageSubcategory(category, subcategory, newSubcategory)
     }
 
      // Method to delete a ImageSubcategory
-     deleteImageSubcategory(category: string, subcategory: string): boolean {
-        // Logic to create the ImageSubcategory
-        // Returns true if the ImageSubcategory is deleted, false if failed
-        return true
+    deleteImageSubcategory(category: string, subcategory: string): Promise<any> {
+        const dao = new ImageDAO
+        return dao.deleteImageSubcategory(category, subcategory)
     }
 
 }

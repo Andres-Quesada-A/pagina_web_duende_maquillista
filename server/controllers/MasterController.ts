@@ -192,45 +192,105 @@ export class MasterController {
     }
 
     // Method to delete an image subcategory
-    deleteImageSubcategory(req: Request, res: Response): boolean {
+    deleteImageSubcategory(req: Request, res: Response) {
         // Logic to delete an image subcategory
-        // Returns true if the deletion is successful, otherwise returns false
-        return true; // Change this with real logic
-    }
+        const ImageControllerObject = new ImageController();
 
+        try {
+            ImageControllerObject.deleteImageSubcategory(String(req.params.category), String(req.params.subcategory)).then((result) => {
+                res.setHeader("Content-Type", "application/json").json(result)
+            }).catch((error)=>{
+                res.setHeader("Content-Type", "application/json").status(400).json(error)
+            });
+        } catch (error) {
+            const damage: { error: boolean }[] = [{error: true}];
+            res.setHeader("Content-Type", "application/json").status(400).json(damage)
+        }
+    }
+    
     // Method to delete an image category
-    deleteImageCategory(req: Request, res: Response): boolean {
+    deleteImageCategory(req: Request, res: Response) {
         // Logic to delete an image category
-        // Returns true if the deletion is successful, otherwise returns false
-        return true; // Change this with real logic
+        const ImageControllerObject = new ImageController();
+
+        try {
+            ImageControllerObject.deleteImageCategory(String(req.params.category)).then((result) => {
+                res.setHeader("Content-Type", "application/json").json(result)
+            }).catch((error)=>{
+                res.setHeader("Content-Type", "application/json").status(400).json(error)
+            });
+        } catch (error) {
+            const damage: { error: boolean }[] = [{error: true}];
+            res.setHeader("Content-Type", "application/json").status(400).json(damage)
+        }
     }
 
     // Method to create an image subcategory
-    createImageSubcategory(req: Request, res: Response): boolean {
+    createImageSubcategory(req: Request, res: Response) {
         // Logic to create an image subcategory
-        // Returns true if the creation is successful, otherwise returns false
-        return true; // Change this with real logic
+        const ImageControllerObject = new ImageController();
+
+        try {
+            ImageControllerObject.createImageSubcategory(String(req.params.category), String(req.params.subcategory)).then((result) => {
+                res.setHeader("Content-Type", "application/json").json(result)
+            }).catch((error)=>{
+                res.setHeader("Content-Type", "application/json").status(400).json(error)
+            });
+        } catch (error) {
+            const damage: { error: boolean }[] = [{error: true}];
+            res.setHeader("Content-Type", "application/json").status(400).json(damage)
+        }
     }
 
     // Method to edit an image subcategory
-    editImageSubcategory(req: Request, res: Response): boolean {
+    editImageSubcategory(req: Request, res: Response) {
         // Logic to edit an image subcategory
-        // Returns true if the editing is successful, otherwise returns false
-        return true; // Change this with real logic
+        const ImageControllerObject = new ImageController();
+
+        try {
+            ImageControllerObject.editImageSubcategory(String(req.params.category), String(req.params.subcategory), String(req.params.new_subcategory)).then((result) => {
+                res.setHeader("Content-Type", "application/json").json(result)
+            }).catch((error)=>{
+                res.setHeader("Content-Type", "application/json").status(400).json(error)
+            });
+        } catch (error) {
+            const damage: { error: boolean }[] = [{error: true}];
+            res.setHeader("Content-Type", "application/json").status(400).json(damage)
+        }
     }
 
     // Method to create an image category
-    createImageCategory(req: Request, res: Response): boolean {
+    createImageCategory(req: Request, res: Response) {
         // Logic to create an image category
-        // Returns true if the creation is successful, otherwise returns false
-        return true; // Change this with real logic
+        const ImageControllerObject = new ImageController();
+
+        try {
+            ImageControllerObject.createImageCategory(String(req.params.category)).then((result) => {
+                res.setHeader("Content-Type", "application/json").json(result)
+            }).catch((error)=>{
+                res.setHeader("Content-Type", "application/json").status(400).json(error)
+            });
+        } catch (error) {
+            const damage: { error: boolean }[] = [{error: true}];
+            res.setHeader("Content-Type", "application/json").status(400).json(damage)
+        }
     }
 
     // Method to edit an image category
-    editImageCategory(req: Request, res: Response): boolean {
+    editImageCategory(req: Request, res: Response) {
         // Logic to edit an image category
-        // Returns true if the editing is successful, otherwise returns false
-        return true; // Change this with real logic
+        const ImageControllerObject = new ImageController();
+
+        try {
+            ImageControllerObject.editImageCategory(String(req.params.category), String(req.params.new_category)).then((result) => {
+                res.setHeader("Content-Type", "application/json").json(result)
+            }).catch((error)=>{
+                res.setHeader("Content-Type", "application/json").status(400).json(error)
+            });
+        } catch (error) {
+            const damage: { error: boolean }[] = [{error: true}];
+            res.setHeader("Content-Type", "application/json").status(400).json(damage)
+        }
     }
 
     // Method to edit an image
@@ -264,32 +324,21 @@ export class MasterController {
     }
 
     // Method to get a list of image categories
-    getImageCategoryList(req: Request, res: Response): boolean {
+    getImageCategoryList(req: Request, res: Response) {
         // Logic to retrieve a list of image categories
         const ImageControllerObject = new ImageController();
 
         try {
-            ImageControllerObject.getImageCategoryList();
-        } catch (error) {}
-
-        return true;
-    }
-
-    // Method to get a list of image subcategories
-    getImageSubcategoryList(req: Request, res: Response): boolean {
-        // Logic to retrieve a list of image categories
-
-        const ImageControllerObject = new ImageController
-        
- 
-        try {
-            const category : string = String(req.params.category)
-            ImageControllerObject.getImageSubcategoryList(category)
+            ImageControllerObject.getImageCategoryList().then((result) => {
+                res.setHeader("Content-Type", "application/json").json(result)
+            }).catch((error)=>{
+                res.setHeader("Content-Type", "application/json").status(400).json(error)
+            });
         } catch (error) {
-            
+            const damage: { error: boolean }[] = [{error: true}];
+            res.setHeader("Content-Type", "application/json").status(400).json(damage)
         }
         
-        return true
     }
 
     // Method to create an order

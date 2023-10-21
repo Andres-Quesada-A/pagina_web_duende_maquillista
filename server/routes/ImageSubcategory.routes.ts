@@ -9,9 +9,8 @@ const ImageCategoryRouter = Router()
 //post -> body
 //put -> body
 //delete ->query
-ImageCategoryRouter.get(`/get_subcategory/:category`, MasterControllerObject.getImageSubcategoryList)
-ImageCategoryRouter.post(`/create_subcategory`, MasterControllerObject.createImageSubcategory)
-ImageCategoryRouter.put(`/edit_subcategory`, MasterControllerObject.editImageSubcategory)
-ImageCategoryRouter.delete(`/delete/:category/:subcategory`, MasterControllerObject.deleteImageSubcategory)
+ImageCategoryRouter.post(`/create_subcategory/:category/:subcategory`, MasterControllerObject.createImageSubcategory)
+ImageCategoryRouter.put(`/edit_subcategory/:category/:subcategory/:new_subcategory`, MasterControllerObject.editImageSubcategory)
+ImageCategoryRouter.delete(`/delete_subcategory/:category/:subcategory`, MasterControllerObject.deleteImageSubcategory)
 
 export default ImageCategoryRouter
