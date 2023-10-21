@@ -7,55 +7,6 @@ import sqlcon from 'mssql';
 export class ImageDAO {
     
     // Method to get a list of image categories
-    async getwImageCategoryList(): Promise<any> {
-        // Logic to retrieve a list of image categories and subcategories
-
-        const SQL = ConnectionDAO.getInstance();
-        const damage: { error: boolean, message: string}[] = [];
-        //const SQL = DaoConnection.getInstance().getPool();
-
-
-        try {
-            
-            const result = await SQL.query("Duende_SP_ImageCategory_List");
-            
-
-            // Check if the query has some values
-            if (result && result.recordset) {
-                // Extract the records from the result and convert to an array of objects
-                const categories: [] = result.recordset.map((row: any) => {
-                    // Split the subcategories string by the comma and create an array
-
-                    var value;
-
-                    if(row.subcategories === ""){
-                        value = null;
-                    } 
-                    else {
-                        value = row.subcategories.split(',').map((subcategory: string) => subcategory.trim());
-                    }
-                    return {
-                        category: row.category,
-                        subcategory: value
-                    };
-                    
-                });
-                return categories;
-            } else {
-                //console.log("no llegaron datos");
-                // case when the query did not return any data
-                const damage: { error: boolean, message: string}[] = [{error: true, message: String(result.message)}];
-                return damage;
-            }
-        } catch (error) {
-            //console.log("error encontrado");
-            // any errors that occur during the query
-            
-            return damage;
-        }
-    }
-
-    // Method to get a list of image categories
     async getImageCategoryList(): Promise<any> {
         // Logic to retrieve a list of image categories and subcategories
 
@@ -92,7 +43,7 @@ export class ImageDAO {
 
                 }).catch((error) => {
                     //fail in the execution of the query
-                    damage.push({error: true, message: String(error.message)});
+                    damage.push({error: true, message: String(error.message).replace( /\"/g ,"'")});
                     reject(damage);
                 });
             } catch (error) {
@@ -119,7 +70,7 @@ export class ImageDAO {
 
                 }).catch((error) => {
                     //fail in the execution of the query
-                    damage.push({error: true, message: String(error.message)});
+                    damage.push({error: true, message: String(error.message).replace( /\"/g ,"'")});
                     reject(damage);
                 });
             } catch (error) {
@@ -147,7 +98,7 @@ export class ImageDAO {
 
                 }).catch((error) => {
                     //fail in the execution of the query
-                    damage.push({error: true, message: String(error.message)});
+                    damage.push({error: true, message: String(error.message).replace( /\"/g ,"'")});
                     reject(damage);
                 });
             } catch (error) {
@@ -165,26 +116,26 @@ export class ImageDAO {
         const damage: { error: boolean, message: string}[] = [];
         const ccate = category;
         
-        try {
-            const result = await SQL.query("Duende_SP_ImageCategory_Delete", {"IN_imageCategory" : category});
+        return new Promise((resolve, reject) => {
+            try {
+                SQL.query("Duende_SP_ImageCategory_Delete", {"IN_imageCategory" : category}).then((result) => {
+                    //query was successful
+                    const good: { category: string, delete: boolean }[] = [{category: ccate, delete: true}];
+                    resolve(good);
 
-            if (result.message) {
-                //error in the query
-                const damage: { error: boolean, message: string}[] = [{error: true, message: String(result.message)}];
-                return damage;
+                }).catch((error) => {
+                    //fail in the execution of the query
+                    damage.push({error: true, message: String(error.message).replace( /\"/g ,"'")});
+                    reject(damage);
+                });
+            } catch (error) {
+                // any errors that occur during the process
+                damage.push({error: true, message: "surgio un problema"})
+                reject(damage)
             }
+        }); 
+    } 
 
-            //query was successful
-            const good: { category: string, delete: boolean }[] = [{category: ccate, delete: true}];
-            return good;
-
-        } catch (error) {
-            // any errors that occur during the query
-            
-            return damage;
-        }
-    }
-    
     /////////////////////////////////////////////////////////////////////////////
 
     
@@ -196,25 +147,24 @@ export class ImageDAO {
         const ccate = category;
         const subccate = subcategory;
         
-        try {
-            const result = await SQL.query("Duende_SP_ImageSubcategory_Add", {"IN_imageCategory" : category, "IN_imageSubcategory" : subcategory});
+        return new Promise((resolve, reject) => {
+            try {
+                SQL.query("Duende_SP_ImageSubcategory_Add", {"IN_imageCategory" : category, "IN_imageSubcategory" : subcategory}).then((result) => {
+                    //query was successful
+                    const good: { category: string, subcategory: string  }[] = [{category: ccate, subcategory: subccate}];
+                    resolve(good);
 
-            if (result.message) {
-                //error in the query
-                const damage: { error: boolean, message: string}[] = [{error: true, message: String(result.message)}];
-                return damage;
+                }).catch((error) => {
+                    //fail in the execution of the query
+                    damage.push({error: true, message: String(error.message).replace( /\"/g ,"'")});
+                    reject(damage);
+                });
+            } catch (error) {
+                // any errors that occur during the process
+                damage.push({error: true, message: "surgio un problema"})
+                reject(damage)
             }
-
-            //query was successful
-            const good: { category: string, subcategory: string  }[] = [{category: ccate, subcategory: subccate}];
-            return good;
-
-        } catch (error) {
-            console.log("error encontrado");
-            // any errors that occur during the query
-            
-            return damage;
-        }
+        });
     }
 
     // Method to edit an image category
@@ -226,25 +176,24 @@ export class ImageDAO {
         const subccate = subcategory;
         const newsubccate = newSubcategory;
         
-        try {
-            const result = await SQL.query("Duende_SP_ImageSubcategory_Edit", {"IN_imageCategory" : category, "IN_imageSubcategory" : subcategory, "IN_newImageSubcategory": newSubcategory});
+        return new Promise((resolve, reject) => {
+            try {
+                SQL.query("Duende_SP_ImageSubcategory_Edit", {"IN_imageCategory" : category, "IN_imageSubcategory" : subcategory, "IN_newImageSubcategory": newSubcategory}).then((result) => {
+                    //query was successful
+                    const good: { category: string, subcategory: string, newsubcategory: string}[] = [{category: ccate, subcategory: subccate, newsubcategory: newsubccate}];
+                    resolve(good);
 
-            if (result.message) {
-                //error in the query
-                const damage: { error: boolean, message: string}[] = [{error: true, message: String(result.message)}];
-                return damage;
+                }).catch((error) => {
+                    //fail in the execution of the query
+                    damage.push({error: true, message: String(error.message).replace( /\"/g ,"'")});
+                    reject(damage);
+                });
+            } catch (error) {
+                // any errors that occur during the process
+                damage.push({error: true, message: "surgio un problema"})
+                reject(damage)
             }
-
-            //query was successful
-            const good: { category: string, subcategory: string, newsubcategory: string}[] = [{category: ccate, subcategory: subccate, newsubcategory: newsubccate}];
-            return good;
-
-        } catch (error) {
-            console.log("error encontrado");
-            // any errors that occur during the query
-            
-            return damage;
-        }
+        });
     }
 
     // Method to delete an image category
@@ -255,24 +204,24 @@ export class ImageDAO {
         const ccate = category;
         const subccate = subcategory;
         
-        try {
-            const result = await SQL.query("Duende_SP_ImageSubcategory_Delete", {"IN_imageCategory" : category, "IN_imageSubcategory" : subcategory});
+        return new Promise((resolve, reject) => {
+            try {
+                SQL.query("Duende_SP_ImageSubcategory_Delete", {"IN_imageCategory" : category, "IN_imageSubcategory" : subcategory}).then((result) => {
+                    //query was successful
+                    const good: { category: string, subcategory: string, delete: boolean }[] = [{category: ccate, subcategory: subccate, delete: true}];
+                    resolve(good);
 
-            if (result.message) {
-                //error in the query
-                const damage: { error: boolean, message: string}[] = [{error: true, message: String(result.message)}];
-                return damage;
+                }).catch((error) => {
+                    //fail in the execution of the query
+                    damage.push({error: true, message: String(error.message).replace( /\"/g ,"'")});
+                    reject(damage);
+                });
+            } catch (error) {
+                // any errors that occur during the process
+                damage.push({error: true, message: "surgio un problema"})
+                reject(damage)
             }
-
-            //query was successful
-            const good: { category: string, subcategory: string, delete: boolean }[] = [{category: ccate, subcategory: ccate, delete: true}];
-            return good;
-
-        } catch (error) {
-            // any errors that occur during the query
-            
-            return damage;
-        }
+        });
     }
     
 }

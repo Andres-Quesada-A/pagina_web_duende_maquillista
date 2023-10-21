@@ -203,7 +203,7 @@ export class MasterController {
                 res.setHeader("Content-Type", "application/json").status(400).json(error)
             });
         } catch (error) {
-            const damage: { error: boolean }[] = [{error: true}];
+            const damage: { error: boolean, message: string }[] = [{error: true, message: "ocurrio un error imprevisto"}];
             res.setHeader("Content-Type", "application/json").status(400).json(damage)
         }
     }
@@ -220,7 +220,7 @@ export class MasterController {
                 res.setHeader("Content-Type", "application/json").status(400).json(error)
             });
         } catch (error) {
-            const damage: { error: boolean }[] = [{error: true}];
+            const damage: { error: boolean, message: string }[] = [{error: true, message: "ocurrio un error imprevisto"}];
             res.setHeader("Content-Type", "application/json").status(400).json(damage)
         }
     }
@@ -237,7 +237,7 @@ export class MasterController {
                 res.setHeader("Content-Type", "application/json").status(400).json(error)
             });
         } catch (error) {
-            const damage: { error: boolean }[] = [{error: true}];
+            const damage: { error: boolean, message: string }[] = [{error: true, message: "ocurrio un error imprevisto"}];
             res.setHeader("Content-Type", "application/json").status(400).json(damage)
         }
     }
@@ -254,7 +254,7 @@ export class MasterController {
                 res.setHeader("Content-Type", "application/json").status(400).json(error)
             });
         } catch (error) {
-            const damage: { error: boolean }[] = [{error: true}];
+            const damage: { error: boolean, message: string }[] = [{error: true, message: "ocurrio un error imprevisto"}];
             res.setHeader("Content-Type", "application/json").status(400).json(damage)
         }
     }
@@ -271,7 +271,7 @@ export class MasterController {
                 res.setHeader("Content-Type", "application/json").status(400).json(error)
             });
         } catch (error) {
-            const damage: { error: boolean }[] = [{error: true}];
+            const damage: { error: boolean, message: string }[] = [{error: true, message: "ocurrio un error imprevisto"}];
             res.setHeader("Content-Type", "application/json").status(400).json(damage)
         }
     }
@@ -288,7 +288,7 @@ export class MasterController {
                 res.setHeader("Content-Type", "application/json").status(400).json(error)
             });
         } catch (error) {
-            const damage: { error: boolean }[] = [{error: true}];
+            const damage: { error: boolean, message: string }[] = [{error: true, message: "ocurrio un error imprevisto"}];
             res.setHeader("Content-Type", "application/json").status(400).json(damage)
         }
     }
@@ -335,7 +335,7 @@ export class MasterController {
                 res.setHeader("Content-Type", "application/json").status(400).json(error)
             });
         } catch (error) {
-            const damage: { error: boolean }[] = [{error: true}];
+            const damage: { error: boolean, message: string }[] = [{error: true, message: "ocurrio un error imprevisto"}];
             res.setHeader("Content-Type", "application/json").status(400).json(damage)
         }
         
