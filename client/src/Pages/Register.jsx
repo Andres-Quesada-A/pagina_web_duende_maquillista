@@ -4,6 +4,8 @@ import Image from "../images/imageLogin.png";
 import { Register } from "../Structures/LoginStructure";
 import { Helmet } from "react-helmet-async";
 import axios from "axios"
+import { toast } from "react-toastify";
+import { messageSettings } from "../utils/messageSettings";
 
 function RegisterPage() {
   const [data, setData] = useState({});
@@ -14,11 +16,15 @@ function RegisterPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (data.password != data.confirm_password){
+      toast.error("Las contraseñas no son iguales", messageSettings)
+      return
+    }
     try {
       const response = await axios.post(`http://localhost:1234/api/register_user`, data)
-      console.log(response)
+      toast.success("Datos registrados", messageSettings)
     } catch (error) {
-      console.log(error.message)
+      toast.error("Ha ocurrido un error", messageSettings)
     }
   };
   return (
@@ -31,7 +37,7 @@ function RegisterPage() {
         />
         <link rel="canonical" href="/register" />
       </Helmet>
-      <section className="h-screen bg-indigo-50 md:bg-white relative overflow-hidden py-5 px-5 flex justify-center items-center">
+      <section className="min-h-screen bg-indigo-50 md:bg-white relative overflow-hidden py-5 px-5 flex justify-center items-center">
         <div className="bg-indigo-400 w-[120%] h-full rounded-[50%] hidden md:flex absolute top-1/2 left-1/2 -translate-x-1/2">
           <div className="bg-indigo-500 w-[120%] h-full rounded-[50%] hidden md:flex mt-10"></div>
         </div>

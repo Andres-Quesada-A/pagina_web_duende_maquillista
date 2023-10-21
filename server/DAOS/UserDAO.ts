@@ -4,11 +4,7 @@ import sqlcon from "mssql"
 import bcrypt from "bcrypt"
 
 export class UserDAO {
-    private ConnectionDAO: ConnectionDAO
 
-    constructor() {
-        this.ConnectionDAO = ConnectionDAO.getInstance();
-    }
     newPassword(password: string, confirmPassword: string): boolean {
         if (password === confirmPassword) {
             // Aquí puedes implementar la lógica para actualizar la contraseña en la base de datos u otro almacenamiento.
@@ -22,35 +18,36 @@ export class UserDAO {
         return true
     }
 
-    registerUser(name: string, lastName1: string, lastName2:string, email: string, password: string): boolean {
+    async registerUser(name: string, lastName1: string, lastName2: string, email: string, password: string): Promise<any> {
 
-        const pool = this.ConnectionDAO.getPool()
-        const request = pool.request()
 
-        const token = GenerateToken(name, lastName1 + lastName2,  email, 0)
-        const encryptedPassword = bcrypt.hash(password, 10)
+        const SQL = ConnectionDAO.getInstance();
+        const damage: { error: boolean, message: string }[] = [];
+        //const SQL = DaoConnection.getInstance().getPool();
 
-        try {
-            request.input("@IN_name", sqlcon.VarChar, name)
-            request.input("@IN_lastName1", sqlcon.VarChar, lastName1)
-            request.input("@IN_lastName2", sqlcon.VarChar, lastName2)
-            request.input("@IN_email", sqlcon.VarChar, email)
-            request.input("@IN_password", sqlcon.VarChar, encryptedPassword)
-            request.input("@IN_token", sqlcon.VarChar, token)
-        } catch (error) {
-            console.log(error)
-            return false
-        }
+        const token = GenerateToken(name, lastName1 + lastName2, email, 0)
+        const encryptedPassword = await bcrypt.hash(password, 10)
 
-        request.execute("Duende_SP_Users_Add", (error, result) => {
-            if (error) {
-                console.log('Error en la consulta')
-                return false
+
+        return new Promise((resolve, reject) => {
+            try {
+                SQL.query("Duende_SP_Users_Add", { "IN_name": name, "IN_lastName1": lastName1, "IN_lastName2": lastName2, "IN_email": email, "IN_password": encryptedPassword, "IN_token": token }).then((result) => {
+                    //query was successful
+                    const good = [{ name, lastName1, lastName2, email, password: encryptedPassword, token }];
+                    resolve(good);
+
+                }).catch((error) => {
+                    //fail in the execution of the query
+                    damage.push({ error: true, message: String(error.message).replace(/\"/g, "'") });
+                    reject(damage);
+                });
+            } catch (error) {
+                // any errors that occur during the process
+                damage.push({ error: true, message: "surgio un problema" })
+                reject(damage)
             }
-            return true
-        })
+        });
 
-        return true
     }
 
     login(email: string, password: string): boolean {

@@ -18,7 +18,6 @@ export class MasterController {
     private images: Image[]; // Suppose you have an Image class to represent images
     private orders: Order[]; // Suppose you have an Order class to represent orders
     private shoppingCart: ShoppingCart; // Suppose you have a ShoppingCart class to represent shopping carts
-    private UserController: UserController;
     private ProductController: ProductController;
 
     constructor() {
@@ -28,7 +27,6 @@ export class MasterController {
         this.images = [];
         this.orders = [];
         this.shoppingCart = new ShoppingCart();
-        this.UserController = new UserController();
         this.ProductController = new ProductController();
     }
 
@@ -60,13 +58,12 @@ export class MasterController {
     }
 
     // Method to register a new user
-    registerUser(req: Request, res: Response): Response {
+    async registerUser(req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
         const {name, lastName1, lastName2, email, password} = req.body;
-        const response = this.UserController.registerUser(name, lastName1, lastName2, email, password)
-        // name: string, lastName: string, email: string, password: string
-        // Logic to register a new user in the database
-        // Returns true if the registration is successful, otherwise returns false
-        return res.json({name, lastName1, lastName2, email, password}); // Change this with real logic
+        const UserControllerObject = new UserController()
+        const response = await UserControllerObject.registerUser(name, lastName1, lastName2, email, password)
+        console.log(response, "response")
+        return response ? res.status(200).json({response: true}) : res.status(400).json({response: false}); // Change this with real logic
     }
 
     // Method to log in

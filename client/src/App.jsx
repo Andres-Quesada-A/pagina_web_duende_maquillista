@@ -14,6 +14,8 @@ import Gallery from "./Pages/gallery";
 import ImageGallery from "./Pages/gallery/Image";
 import ShoppingCart from "./Pages/shoppingCart";
 import { ShoppingCartProvider } from "./context/ShoppingCartContext";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const noRequirement = [
   "/login",
@@ -49,6 +51,18 @@ function App() {
         </ScrollToTop>
 
         <Footer />
+        <ToastContainer
+            position="bottom-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
       </ShoppingCartProvider>
   );
 }

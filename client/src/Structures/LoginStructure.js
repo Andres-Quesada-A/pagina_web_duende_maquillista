@@ -25,14 +25,14 @@ export const Register = [
   {
     label: "Primer apellido",
     type: "text",
-    id: "lastname1",
+    id: "lastName1",
     placeholder: "Apellido",
     required: true,
   },
   {
     label: "Segundo apellido",
     type: "text",
-    id: "lastname2",
+    id: "lastName2",
     placeholder: "Apellido",
     required: true,
   },
@@ -53,7 +53,7 @@ export const Register = [
   {
     label: "Confirmar contraseña",
     type: "password",
-    id: "confirm-password",
+    id: "confirm_password",
     placeholder: "Ingrese la contraseña",
     required: true,
   },
