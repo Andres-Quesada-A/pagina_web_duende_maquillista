@@ -10,9 +10,11 @@ import { User } from "../models/User";
 import { UserController } from "./UserController";
 import { ImageController } from "./ImageController";
 import { ProductController } from "./ProductController";
+import ConnectionDAO from "../DAOS/ConnectionDAO";
 
 export class MasterController {
     constructor() {
+        ConnectionDAO.getInstance()
     }
 
     // Method to send a confirmation code via email

@@ -2,7 +2,7 @@ import { Image } from "../models/Image";
 import { ImageCategory } from "../models/ImageCategory";
 import { ImageSubcategory } from "../models/ImageSubcategory";
 import ConnectionDAO from "./ConnectionDAO";
-import sqlcon from 'mssql';
+import sqlcon, { Date } from 'mssql';
 export class ImageDAO {
 
     // Method to get a list of image categories
@@ -226,6 +226,7 @@ export class ImageDAO {
     // Method to create an image
     async createImage(imageCategory: string, imageSubcategory: string, name: string, description: string, tags: string, imageUrl: string): Promise<Image | undefined> {
         const SQL = ConnectionDAO.getInstance();
+        
         const damage: { message: string | undefined }[] = [];
 
         // Define the schema of the TVP
@@ -248,13 +249,14 @@ export class ImageDAO {
                 })
                 .then((result) => {
                     //query was successful
+                    ;
                     const image: any = result?.recordset[0];
                     const imageObj = new Image(
-                        image.id, 
-                        image.imageCategory, 
+                        image.id,
+                        image.name,
+                        image.imageCategory, // is wrong
+                        image.description,
                         image.imageSubcategory, 
-                        image.name, 
-                        image.description, 
                         image.tags, 
                         image.imageUrl
                         );
@@ -356,11 +358,11 @@ export class ImageDAO {
                     //query was successful
                     const image: any = result?.recordset[0];
                     const imageObj = new Image(
-                        image.ImageID, 
-                        image.Category, 
-                        image.Subcategory, 
-                        image.Name, 
+                        image.ImageID,
+                        image.Name,
+                        image.Category, // is wrong
                         image.Description, 
+                        image.Subcategory, 
                         image.Tags, 
                         image.URL
                         );
@@ -389,11 +391,11 @@ export class ImageDAO {
                     //query was successful
                     const images: Image[] = result?.recordset.map((row: any) => {
                         return new Image(
-                            row.ImageID, 
-                            row.Category, 
-                            row.Subcategory, 
-                            row.Name, 
+                            row.ImageID,
+                            row.Name,
+                            row.Category, // is wrong
                             row.Description, 
+                            row.Subcategory, 
                             row.Tags, 
                             row.URL
                             );
