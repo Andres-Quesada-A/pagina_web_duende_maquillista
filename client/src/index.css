@@ -8,3 +8,7 @@
     padding: 0px;
     box-sizing: border-box;
 }
+
+:root {
+    --toastify-font-family: initial;
+}

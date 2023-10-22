@@ -2,6 +2,9 @@ import { Helmet } from "react-helmet-async";
 import { Search } from "../../components/Icons";
 import { useEffect, useState } from "react";
 import { productos } from "../../mockups/products";
+import { toast } from "react-toastify";
+import axios from "axios"
+import { messageSettings } from "../../utils/messageSettings";
 import Product from "../../components/cards/product";
 import SelectCustom from "../../components/form/SelectCustom";
 import {
@@ -16,8 +19,14 @@ function Shop() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    //codigo para solicitar los datos
-    setData(productos);
+    // Request to get products
+    try {
+      axios.get(`http://localhost:1234/api/get_product_list`).then((res) => {
+        setData(res.data)
+     })
+    } catch (error) {
+        toast.error("Algo salió sal", messageSettings)
+    }
   }, []);
 
   const handleChange = (e) => {
@@ -85,15 +94,15 @@ function Shop() {
             {data && data.length === 0 ? (
               <h2>No hay productos</h2>
             ) : (
-              data.map(({ id, description, title, state, price, urlImage }) => {
+              data.map(({ id, description, name, available, price, imageUrl }) => {
                 return (
                   <Product
                     id={id}
                     description={description}
-                    image={urlImage}
+                    imageUrl={imageUrl}
                     price={price}
-                    state={state}
-                    title={title}
+                    available={available}
+                    name={name}
                     key={id}
                   />
                 );
