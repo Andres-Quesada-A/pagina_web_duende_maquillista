@@ -226,7 +226,7 @@ export class ImageDAO {
     // Method to create an image
     async createImage(imageCategory: string, imageSubcategory: string, name: string, description: string, tags: string, imageUrl: string): Promise<any> {
         const SQL = ConnectionDAO.getInstance();
-        const damage: { error: boolean, message: string }[] = [];
+        const damage: { error: boolean, message: string | undefined }[] = [];
 
         // Define the schema of the TVP
         const tvpSchema = new sqlcon.Table('TagsTVP');
@@ -244,12 +244,12 @@ export class ImageDAO {
 
                 }).catch((error) => {
                     //fail in the execution of the query
-                    damage.push({ error: true, message: String(error.message).replace(/\"/g, "'") });
+                    damage.push({error: true, message: String(error.message)});
                     reject(damage);
                 });
             } catch (error) {
                 // any errors that occur during the process
-                damage.push({ error: true, message: "surgio un problema" })
+                damage.push({error: true, message: undefined})
                 reject(damage)
             }
         });
