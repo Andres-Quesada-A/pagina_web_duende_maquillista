@@ -7,15 +7,17 @@ export class ProductController {
         this.ProductDAO = new ProductDAO();
     }
 
-    getProductList(category: string): Product[] {
-        return this.ProductDAO.getProductList(category);
+    async getProductList(): Promise<Product[]> {
+        const response = await this.ProductDAO.getProductList();
+        return response;
     }
 
-    getProduct(id: number): Product | undefined {
-        return this.ProductDAO.getProduct(id);
+    async getProduct(id: number): Promise<Product | undefined> {
+        const response = await this.ProductDAO.getProduct(id);
+        return response;
     }
 
-    createProduct(
+    async createProduct(
         name: string,
         description: string,
         category: string,
@@ -23,8 +25,8 @@ export class ProductController {
         price: number,
         weight: number,
         available: boolean
-    ): Product | undefined {
-        return this.ProductDAO.createProduct(
+    ): Promise<Product | undefined> {
+        const response = await this.ProductDAO.createProduct(
             name,
             description,
             category,
@@ -33,9 +35,10 @@ export class ProductController {
             weight,
             available
         );
+        return response;
     }
 
-    editProduct(
+    async editProduct(
         id: number,
         name: string,
         description: string,
@@ -44,8 +47,8 @@ export class ProductController {
         price: number,
         weight: number,
         available: boolean
-    ): boolean {
-        return this.ProductDAO.editProduct(
+    ): Promise<boolean> {
+        const response = await this.ProductDAO.editProduct(
             id,
             name,
             description,
@@ -55,9 +58,11 @@ export class ProductController {
             weight,
             available
         );
+        return response;
     }
 
-    deleteProduct(id: number): boolean {
-        return this.ProductDAO.deleteProduct(id);
+    async deleteProduct(id: number): Promise<boolean> {
+        const response = await this.ProductDAO.deleteProduct(id);
+        return response;
     }
 }

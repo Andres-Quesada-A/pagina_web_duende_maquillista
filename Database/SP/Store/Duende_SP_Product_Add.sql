@@ -36,12 +36,12 @@ BEGIN
         -- Category
         SELECT  @categoryId = PC.[id]
         FROM    [dbo].[ProductCategories] PC
-        WHERE   PC.[description] = @IN_description
+        WHERE   PC.[description] = @IN_category
             AND PC.[deleted] = 0;
 
         IF @categoryId IS NULL
         BEGIN
-            RAISERROR('No existe la categoría "%s"', 16, 1, @IN_description);
+            RAISERROR('No existe la categoría "%s"', 16, 1, @IN_category);
         END;
 
         -- Name
