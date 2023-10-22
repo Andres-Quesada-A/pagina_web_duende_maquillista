@@ -38,6 +38,7 @@ BEGIN
             I.imageUrl as URL,
             C.Description AS Category,
             S.Description AS Subcategory,
+            I.Date as Date,
             (
                 SELECT STRING_AGG(description, '\n')
                 FROM Tags
