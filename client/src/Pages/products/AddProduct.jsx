@@ -63,7 +63,7 @@ function AddProduct() {
     }
   }
   return (
-    <div className="w-full h-screen flex flex-col items-center mt-16 py-14">
+    <div className="w-full min-h-screen flex flex-col items-center mt-16 py-14">
       <header className="w-full max-w-4xl">
         <h1 className="font-medium text-3xl text-indigo-500">
           Añadir producto

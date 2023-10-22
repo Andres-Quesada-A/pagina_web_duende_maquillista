@@ -18,6 +18,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import UploadImage from "./Pages/uploadImage";
 import AddProduct from "./Pages/products/AddProduct";
+import ConfigureCategory from "./Pages/Category/ConfigureCategory";
 
 const noRequirement = [
   "/login",
@@ -50,6 +51,7 @@ function App() {
             <Route exact path="/shoppingCart" element={<ShoppingCart />} />
             <Route exact path="/uploadImage" element={<UploadImage />} />
             <Route exact path="/add_product" element={<AddProduct />} />
+            <Route exact path="/configure_category" element={<ConfigureCategory />} />
             <Route path="*" element={<Error404 />} />
           </Routes>
         </ScrollToTop>
