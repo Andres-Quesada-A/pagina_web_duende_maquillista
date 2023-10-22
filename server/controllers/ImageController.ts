@@ -41,14 +41,16 @@ export class ImageController {
         imageCategory: string, 
         imageSubcategory: string, 
         name: string, 
-        description: string, 
+        description: string,
+        tags: string, 
         imageUrl: string) : Promise<boolean>{
         const response = await this.ImageDAO.editImage(
             id,
             imageCategory, 
             imageSubcategory, 
             name, 
-            description, 
+            description,
+            tags, 
             imageUrl)
         return response
     }

@@ -93,8 +93,8 @@ BEGIN
         -- Insert tags from TVP into Tags table
         INSERT INTO Tags
         (imageId, description, deleted)
-    SELECT @ImageID, tags, 0
-    FROM @IN_Tags;
+        SELECT @ImageID, tags, 0
+        FROM @IN_Tags;
 
         -- TRANSACTION COMMITTED
         IF @transactionBegun = 1

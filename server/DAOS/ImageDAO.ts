@@ -224,7 +224,14 @@ export class ImageDAO {
     }
 
     // Method to create an image
-    async createImage(imageCategory: string, imageSubcategory: string, name: string, description: string, tags: string, imageUrl: string): Promise<Image | undefined> {
+    async createImage(
+        imageCategory: string, 
+        imageSubcategory: string, 
+        name: string, 
+        description: string, 
+        tags: string, 
+        imageUrl: string): Promise<Image | undefined>
+    {
         const SQL = ConnectionDAO.getInstance();
         
         const damage: { message: string | undefined }[] = [];
@@ -282,11 +289,19 @@ export class ImageDAO {
         imageCategory: string, 
         imageSubcategory: string, 
         name: string, 
-        description: string, 
+        description: string,
+        tags: string, 
         imageUrl: string): Promise<boolean> 
     {
         const SQL = ConnectionDAO.getInstance();
         const damage: { message: string | undefined }[] = [];
+
+        // Define the schema of the TVP
+        const tvpSchema = new sqlcon.Table('TagsTVP');
+        tvpSchema.columns.add('tags', sqlcon.VarChar(32));
+
+        // Convert the string to an array of objects
+        tags.split(' ').forEach(item => tvpSchema.rows.add(item));
 
         return new Promise((resolve, reject) => {
             try {
@@ -296,7 +311,8 @@ export class ImageDAO {
                     "IN_ImageCategory": imageCategory, 
                     "IN_ImageSubcategory": imageSubcategory, 
                     "IN_Name": name, 
-                    "IN_Description": description,  
+                    "IN_Description": description,
+                    "IN_Tags": tvpSchema,  
                     "IN_ImageUrl": imageUrl 
                 })
                 .then((result) => {

@@ -335,13 +335,14 @@ export class MasterController {
         try
         {
             const ImageControllerObject = new ImageController();
-            const {id,imageCategory, imageSubcategory, name, description, imageUrl} = req.body;
+            const {id,imageCategory, imageSubcategory, name, description, tags, imageUrl} = req.body;
             const response = await ImageControllerObject.editImage(
                 id,
                 imageCategory, 
                 imageSubcategory, 
                 name, 
                 description, 
+                tags,
                 imageUrl);
             return response 
             ? res.status(200).json({response: "Ok"}) 

@@ -40,9 +40,10 @@ BEGIN
             S.Description AS Subcategory,
             I.Date as Date,
             (
-                SELECT STRING_AGG(description, '\n')
+                SELECT STRING_AGG(description, ' ')
                 FROM Tags
                 WHERE ImageId = I.id
+                AND Deleted = 0
             ) AS Tags
         FROM Images I
         INNER JOIN ImageSubcategories S ON S.ID = I.SubcategoryID
