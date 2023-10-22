@@ -1,38 +1,68 @@
 --------------------------------------------------------------------------
 -- Author:      Fabián Vargas
--- Date:        23-10-11
--- Description: Retrieves a list of images.
+-- Date:        23-10-22
+-- Description: Returns the details of an image.
 --------------------------------------------------------------------------
 
-CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_Image_List]
-    
+CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_Image_Details]
+    @IN_ImageID INT
 AS
 BEGIN
     SET NOCOUNT ON;         -- No metadata returned
 
-    -- VARIABLE DECLARATION
+    -- ERROR HANDLING
     DECLARE @ErrorNumber INT, @ErrorSeverity INT, @ErrorState INT, @Message VARCHAR(200);
+    DECLARE @transactionBegun BIT = 0;
+
+    -- VARIABLE DECLARATION
+    -- 
 
     BEGIN TRY
-        -- Retrieve the list of images
+
+        -- VALIDATIONS
+        IF NOT EXISTS
+        (
+            SELECT 1
+            FROM Images I
+            WHERE I.ID = @IN_ImageID
+                AND I.Deleted = 0
+        )
+        BEGIN
+            RAISERROR('The indicated image does not exist %d.', 16, 1, @IN_ImageID)
+        END
+
         SELECT 
-            I.ID AS 'ImageID',
-            C.Description AS 'Category',
-            S.Description AS 'Subcategory',
-            I.Name AS Name,
+            I.ID as ImageID,
+            I.Name as Name,
             I.Description AS Description,
+            I.imageUrl as URL,
+            C.Description AS Category,
+            S.Description AS Subcategory,
             (
                 SELECT STRING_AGG(description, '\n')
                 FROM Tags
                 WHERE ImageId = I.id
-            ) AS Tags,
-            I.ImageURL AS URL
-        FROM 
-            Images I
-            JOIN ImageSubcategories S ON I.subcategoryId = S.ID
-            JOIN ImageCategories C ON S.categoryid = C.ID
-        WHERE
-            I.Deleted = 0
+            ) AS Tags
+        FROM Images I
+        INNER JOIN ImageSubcategories S ON S.ID = I.SubcategoryID
+        INNER JOIN ImageCategories C ON C.ID = S.CategoryID
+        WHERE I.ID = @IN_ImageID
+        AND I.Deleted = 0
+
+        -- TRANSACTION BEGUN
+        IF @@TRANCOUNT = 0
+        BEGIN
+            SET @transactionBegun = 1;
+            BEGIN TRANSACTION;
+        END;
+
+        --
+
+        -- TRANSACTION COMMITTED
+        IF @transactionBegun = 1
+        BEGIN
+            COMMIT TRANSACTION;
+        END;
 
     END TRY
     BEGIN CATCH
@@ -42,7 +72,7 @@ BEGIN
         SET @ErrorState = ERROR_STATE();
         SET @Message = ERROR_MESSAGE();
 
-        IF @@TRANCOUNT > 0
+        IF @transactionBegun = 1
         BEGIN
             ROLLBACK;
         END;

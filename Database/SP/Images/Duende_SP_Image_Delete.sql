@@ -40,7 +40,7 @@ BEGIN
         BEGIN TRANSACTION;
     END;
 
-        UPDATE Image
+        UPDATE Images
         SET Deleted = 1
         WHERE ID = @IN_ImageID
 

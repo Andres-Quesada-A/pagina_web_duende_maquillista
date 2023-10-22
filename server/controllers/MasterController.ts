@@ -215,10 +215,14 @@ export class MasterController {
         }
     }
 
-    // Method to get a list of images by category and subcategory
-    getImageList(req:Request, res: Response): Image[] {
-        // Logic to retrieve a list of images by category and subcategory
-        return []; // Change this with real logic
+    async getImageList(req:Request, res: Response): Promise<Response> {
+        try{
+            const ImageControllerObject = new ImageController();
+            const response = await ImageControllerObject.getImageList();
+            return res.json(response);
+        } catch (error: any) {
+            return res.status(400).json({ message: error[0] ? error[0].message : undefined });
+        }
     }
 
     // Method to delete an image subcategory
@@ -324,28 +328,76 @@ export class MasterController {
     }
 
     // Method to edit an image
-    editImage(req: Request, res: Response): boolean {
+    async editImage(req: Request, res: Response):Promise<Response> {
         // Logic to edit an image
-        // Returns true if the editing is successful, otherwise returns false
-        return true; // Change this with real logic
+        try
+        {
+            const ImageControllerObject = new ImageController();
+            const {id,imageCategory, imageSubcategory, name, description, imageUrl} = req.body;
+            const response = await ImageControllerObject.editImage(
+                id,
+                imageCategory, 
+                imageSubcategory, 
+                name, 
+                description, 
+                imageUrl);
+            return response 
+            ? res.status(200).json({response: "Ok"}) 
+            : res.status(400).json({response:  undefined});
+        } catch (error: any) {
+            return res.status(400).json({ message: error[0] ? error[0].message : undefined } );
+        }
+        
     }
 
     // Method to create an image
-    async createImage(req:Request, res: Response) {
+    async createImage(req:Request, res: Response): Promise<Response> {
         // Logic to create an image
-        
-        const {imageCategory, imageSubcategory, name, description, tags, imageUrl} = req.body;
-        const ImageControllerObject = new ImageController();
-
-        const response = await ImageControllerObject.createImage(imageCategory, imageSubcategory, name, description, tags, imageUrl)
-        return response ? res.status(200).json({response: true}) : res.status(400).json({response: false}); // Change this with real logic 
+        try{
+            const {imageCategory, imageSubcategory, name, description, tags, imageUrl} = req.body;
+            const ImageControllerObject = new ImageController();
+            const response = await ImageControllerObject.createImage(
+                imageCategory, 
+                imageSubcategory, 
+                name, 
+                description, 
+                tags, 
+                imageUrl
+                );
+                return response 
+                ? res.status(200).json({response: "Ok"}) 
+                : res.status(400).json({response:  undefined});
+            } catch (error: any) {
+                return res.status(400).json({ message: error[0] ? error[0].message : undefined } );
+            } 
     }
 
      // Method to delete an image
-     deleteImage(req:Request, res: Response): boolean {
+     async deleteImage(req:Request, res: Response): Promise<Response> {
         // Logic to delete an image
-        // Returns true if the creation is successful, otherwise returns false
-        return true; // Change this with real logic
+        try{
+            const id = Number(req.params.id);
+            const ImageControllerObject = new ImageController();
+            const response = await ImageControllerObject.deleteImage(id);
+            return response 
+            ? res.status(200).json({response: "Ok"}) 
+            : res.status(400).json({response:  undefined});
+        } catch (error: any) {
+            return res.status(400).json({ message: error[0] ? error[0].message : undefined } );
+        }
+    }
+
+    // Method to get an image
+    async getImage(req:Request, res: Response): Promise<Response> {
+        // Logic to get an image
+        try{
+            const id = Number(req.params.id);
+            const ImageControllerObject = new ImageController();
+            const response = await ImageControllerObject.getImage(id);
+            return res.status(200).json(response);
+        } catch (error: any) {
+            return res.status(400).json({ message: error[0] ? error[0].message : undefined });
+        }
     }
 
     // Method to get a list of image categories

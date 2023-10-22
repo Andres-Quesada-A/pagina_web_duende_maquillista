@@ -6,11 +6,11 @@
 
 CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_Image_Edit]
     @IN_ImageID INT,
-    @IN_Subcategory VARCHAR(32),
-    @IN_Category VARCHAR(32),
+    @IN_ImageCategory VARCHAR(32),
+    @IN_ImageSubcategory VARCHAR(32),
     @IN_Name VARCHAR(128),
     @IN_Description VARCHAR(1024),
-    @IN_URL VARCHAR(256)
+    @IN_ImageUrl VARCHAR(256)
     
 AS
 BEGIN
@@ -41,28 +41,28 @@ BEGIN
 
         -- Category 
         SET @Category = (SELECT C.ID 
-            FROM Category C
-            WHERE C.Description = @IN_Category
+            FROM ImageCategories C
+            WHERE C.Description = @IN_ImageCategory
             AND C.Deleted = 0
         )
 
         IF @Category IS NULL
         BEGIN
-            RAISERROR('No Category was provided', 16, 1);
+            RAISERROR('No valid category was provided', 16, 1);
         END;
 
         -- Subcategory 
 
         SET @Subcategory = (SELECT S.ID 
-            FROM Subcategory S
-            WHERE S.Description = @IN_Subcategory
+            FROM ImageSubcategories S
+            WHERE S.Description = @IN_ImageSubcategory
             AND S.categoryid = @Category
-            AND C.Deleted = 0
+            AND S.Deleted = 0
         )
 
         IF @Subcategory IS NULL
         BEGIN
-            RAISERROR('No subcategory was provided', 16, 1);
+            RAISERROR('No valid subcategory was provided', 16, 1);
         END;
 
         -- Name
@@ -78,7 +78,7 @@ BEGIN
         END;
 
         -- URL
-        IF LTRIM(RTRIM(@IN_URL)) = ''
+        IF LTRIM(RTRIM(@IN_ImageUrl)) = ''
         BEGIN
             RAISERROR('No URL was provided', 16, 1);
         END;
@@ -90,11 +90,11 @@ BEGIN
             BEGIN TRANSACTION;
         END;
 
-        UPDATE Image
+        UPDATE Images
         SET subcategoryId = @Subcategory,
             name = @IN_Name,
             description = @IN_Description,
-            imageURL = @IN_URL
+            imageURL = @IN_ImageUrl
         WHERE ID = @IN_ImageID
         AND Deleted = 0
 

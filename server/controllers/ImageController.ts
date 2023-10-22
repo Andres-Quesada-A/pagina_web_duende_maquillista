@@ -10,35 +10,59 @@ export class ImageController {
     }
 
     // Method to get a lis of images with an specific subcategory
-    getImageList(category: string, subcategory: string): Image[] {
-        // Logic to get the list of images
-        return []
+    async getImageList(): Promise<Image[]> {
+        const response = await this.ImageDAO.getImageList();
+        return response;
     }
 
     // Method to create a image, needs the info and subcategory
-    async createImage(imageCategory: string, imageSubcategory: string, name: string, description: string, tags: string, imageUrl: string): Promise<any> {
-        try{
-            const response = await this.ImageDAO.createImage(imageCategory, imageSubcategory, name, description, tags, imageUrl)
-            console.log(response)
-            return true;
-        }catch(error){
-            console.log(error)
-            return false
-        }
+    async createImage(
+        imageCategory: string, 
+        imageSubcategory: string, 
+        name: string, 
+        description: string, 
+        tags: string, 
+        imageUrl: string): Promise<Image | undefined> {
+
+        const response = await this.ImageDAO.createImage(
+            imageCategory, 
+            imageSubcategory, 
+            name, 
+            description, 
+            tags, 
+            imageUrl);
+        return response;
+
     }
 
     // Method to edit an Image
-    editImage(imageCategory: string, imageSubcategory: string, name: string, description: string, tags: string, imageUrl: string): boolean{
-        // Logic to edit the image
-        // Returns true if the image is edited, false if something was not provided
-        return true
+    async editImage(
+        id: number,
+        imageCategory: string, 
+        imageSubcategory: string, 
+        name: string, 
+        description: string, 
+        imageUrl: string) : Promise<boolean>{
+        const response = await this.ImageDAO.editImage(
+            id,
+            imageCategory, 
+            imageSubcategory, 
+            name, 
+            description, 
+            imageUrl)
+        return response
     }
 
     // Method to delete a Image
-    deleteImage(id: number): boolean{
-        // Logic to delete the image
-        // Returns true if the image is deleted, false if the image can't be deleted
-        return true
+    async deleteImage(id: number): Promise<boolean>{
+        const response = await this.ImageDAO.deleteImage(id)
+        return response
+    }
+
+    // Method to get a Image
+    async getImage(id: number): Promise<Image | undefined> {
+        const response = await this.ImageDAO.getImage(id);
+        return response;
     }
 
     // Method to get a list of ImageCategory and ImageSubcategory

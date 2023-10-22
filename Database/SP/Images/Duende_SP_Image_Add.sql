@@ -30,19 +30,27 @@ BEGIN
 
         -- VALIDATIONS
 
-        SET @CategoryID = (SELECT id
-    FROM ImageCategories
-    WHERE description = @IN_ImageCategory);
+        SET @CategoryID = 
+        (
+            SELECT id
+            FROM ImageCategories
+            WHERE description = @IN_ImageCategory
+            AND deleted = 0
+        );
 
         IF @CategoryID IS NULL
         BEGIN
         RAISERROR('Invalid Category', 16, 1);
     END;
 
-        SET @SubcategoryID = (
+        SET @SubcategoryID = 
+        (
             SELECT id
-    FROM ImageSubcategories
-    WHERE description = @IN_ImageSubcategory AND categoryId = @CategoryID);
+            FROM ImageSubcategories
+            WHERE description = @IN_ImageSubcategory 
+            AND categoryId = @CategoryID
+            AND deleted = 0
+        );
         -- Verify if Subcategory exists
         IF @SubcategoryID IS NULL
     BEGIN
