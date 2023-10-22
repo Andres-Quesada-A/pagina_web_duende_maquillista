@@ -23,62 +23,78 @@ class ConnectionDAO {
         this.pool = new sqlcon.ConnectionPool(config);
         this.conexion();
 
-    //Declaracion de mapeos de tipos de usuario
+        //Declaracion de mapeos de tipos de usuario
 
-    // platilla: sql.map.register(MyClass, sql.Text)
+        // platilla: sql.map.register(MyClass, sql.Text)
 
-    //mapeo estandar
-    //
-    //String -> sql.NVarChar
-    //Number -> sql.Int
-    //Boolean -> sql.Bit
-    //Date -> sql.DateTime
-    //Buffer -> sql.VarBinary
-    //sql.Table -> sql.TVP
-    //Default data type for unknown object is sql.NVarChar.
+        //mapeo estandar
+        //
+        //String -> sql.NVarChar
+        //Number -> sql.Int
+        //Boolean -> sql.Bit
+        //Date -> sql.DateTime
+        //Buffer -> sql.VarBinary
+        //sql.Table -> sql.TVP
+        //Default data type for unknown object is sql.NVarChar.
 
-    sqlcon.map.register(String, sqlcon.VarChar)
-  }
-
-  private async conexion() {
-    try {
-      await this.pool.connect();
-        console.log("Conexión exitosa a la base de datos de Somee");
-    } catch (error) {
-      console.error("Conexión fallida a la base de datos de Somee", error);
+        sqlcon.map.register(String, sqlcon.VarChar);
     }
-  }
 
-  public static getInstance(): ConnectionDAO {
-    if (!ConnectionDAO.instance) {
-      ConnectionDAO.instance = new ConnectionDAO();
-    }
-    return ConnectionDAO.instance;
-  }
-
-  public getPool(): sqlcon.ConnectionPool {
-    return this.pool;
-  }
-
-  public async query(sqlQuery: string, params: any = {}): Promise<any> {
-    return new Promise((resolve, reject) => {
-        const request = this.pool.request();
-        
-        for (const key in params) {
-            request.input(key, params[key]);
+    private async conexion() {
+        try {
+            await this.pool.connect();
+            console.log("Conexión exitosa a la base de datos de Somee");
+        } catch (error) {
+            console.error(
+                "Conexión fallida a la base de datos de Somee",
+                error
+            );
         }
-        
-        request.execute(sqlQuery, (error, result) => {
-            if (error) {
-              reject(error); // Reject the promise if there is an error
-            } else {
-                //for checking what it returns
-                //console.log(result?.recordsets[0]);
-                resolve(result); // Resolve the promise with the result
-            }
-        });
-    });
-  }
+    }
 
+    public static getInstance(): ConnectionDAO {
+        if (!ConnectionDAO.instance) {
+            ConnectionDAO.instance = new ConnectionDAO();
+        }
+        return ConnectionDAO.instance;
+    }
+
+    public getPool(): sqlcon.ConnectionPool {
+        return this.pool;
+    }
+
+    public async query(sqlQuery: string, params: any = {}): Promise<any> {
+        return new Promise((resolve, reject) => {
+            const request = this.pool.request();
+
+            for (const key in params) {
+                request.input(key, params[key]);
+            }
+
+            console.log(params);
+
+            request.execute(sqlQuery, (error, result) => {
+                if (error) {
+                    const message = error.message.split(" - Error Number: ");
+
+                    // If RAISERROR was used to throw a custom error message,
+                    // that error message will be returned
+
+                    if (error.number == 50000 && message.at(-1) == "50000") {
+                        reject({ message: message[0] });
+                    } else {
+                        // Not a custom error
+                        reject({ message: undefined });
+                        console.log(error);
+                    }
+                    reject(error); // Reject the promise if there is an error
+                } else {
+                    //for checking what it returns
+                    //console.log(result?.recordsets[0]);
+                    resolve(result); // Resolve the promise with the result
+                }
+            });
+        });
+    }
 }
 export default ConnectionDAO;

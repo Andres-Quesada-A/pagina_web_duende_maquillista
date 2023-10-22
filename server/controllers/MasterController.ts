@@ -12,22 +12,7 @@ import { ImageController } from "./ImageController";
 import { ProductController } from "./ProductController";
 
 export class MasterController {
-    private users: User[]; // Suppose you have a User class to represent users
-    private products: Product[]; // Suppose you have a Product class to represent products
-    private productCategories: ProductCategory[]; // Suppose you have a ProductCategory class to represent product categories
-    private images: Image[]; // Suppose you have an Image class to represent images
-    private orders: Order[]; // Suppose you have an Order class to represent orders
-    private shoppingCart: ShoppingCart; // Suppose you have a ShoppingCart class to represent shopping carts
-    private ProductController: ProductController;
-
     constructor() {
-        this.users = [];
-        this.products = [];
-        this.productCategories = [];
-        this.images = [];
-        this.orders = [];
-        this.shoppingCart = new ShoppingCart();
-        this.ProductController = new ProductController();
     }
 
     // Method to send a confirmation code via email
@@ -74,85 +59,106 @@ export class MasterController {
         return true; // Change this with real logic
     }
 
-    // Method to get a list of products by category
-    getProductList(req: Request, res: Response): Response {
-        // Logic to retrieve a list of products by category
-        const category = req.params.category;
-        const response = this.ProductController.getProductList(category);
-        return res.json(response);
+    // Method to get a list of products
+    async getProductList(req: Request, res: Response): Promise<Response> {
+        try {
+            const ProductControllerObject = new ProductController();
+            const response = await ProductControllerObject.getProductList();
+            return res.json(response);
+        } catch (error: any) {
+            return res.status(400).json({ message: error.message });
+        }
     }
 
     // Method to get product details by ID
-    getProduct(req: Request, res: Response): Response {
-        // Logic to retrieve product details by ID
-        const id = Number(req.params.id);
-        const response = this.ProductController.getProduct(id);
-        return res.json(response);
+    async getProduct(req: Request, res: Response): Promise<Response> {
+        try {
+            const id = Number(req.params.id);
+            const ProductControllerObject = new ProductController();
+            const response = await ProductControllerObject.getProduct(id);
+            return res.status(200).json(response);
+        } catch (error: any) {
+            return res.status(400).json({ message: error.message });
+        }
     }
 
     // Method to create a new product
-    createProduct(req: Request, res: Response): Response {
-        // Logic to create a new product
-        // Returns true if the creation is successful, otherwise returns false
-        const {
-            name,
-            description,
-            category,
-            imageUrl,
-            price,
-            weight,
-            available,
-        } = req.body;
-        const response = this.ProductController.createProduct(
-            name,
-            description,
-            category,
-            imageUrl,
-            price,
-            weight,
-            available
-        );
-        return res.json(response);
+    async createProduct(req: Request, res: Response): Promise<Response> {
+        try {
+            // Returns true if the creation is successful, otherwise returns false
+            const {
+                name,
+                description,
+                category,
+                imageUrl,
+                price,
+                weight,
+                available,
+            } = req.body;
+            const ProductControllerObject = new ProductController();
+            const response = await ProductControllerObject.createProduct(
+                name,
+                description,
+                category,
+                imageUrl,
+                price,
+                weight,
+                available
+            );
+            return response
+                ? res.status(200).json({ message: "Ok" })
+                : res.status(400).json({ message: undefined });
+        } catch (error: any) {
+            return res.status(400).json({ message: error.message });
+        }
     }
 
     // Method to edit a product
-    editProduct(req: Request, res: Response): Response {
-        // Logic to edit a product
-        // Returns true if the editing is successful, otherwise returns false
-        const {
-            id,
-            name,
-            description,
-            category,
-            imageUrl,
-            price,
-            weight,
-            available,
-        } = req.body;
-        const response = this.ProductController.editProduct(
-            id,
-            name,
-            description,
-            category,
-            imageUrl,
-            price,
-            weight,
-            available
-        );
-        return response
-            ? res.status(200).json({ status: "ok" })
-            : res.status(400).json({ status: "error" });
+    async editProduct(req: Request, res: Response): Promise<Response> {
+        try {
+            // Returns true if the editing is successful, otherwise returns false
+            const {
+                id,
+                name,
+                description,
+                category,
+                imageUrl,
+                price,
+                weight,
+                available,
+            } = req.body;
+            const ProductControllerObject = new ProductController();
+            const response = await ProductControllerObject.editProduct(
+                id,
+                name,
+                description,
+                category,
+                imageUrl,
+                price,
+                weight,
+                available
+            );
+            return response
+                ? res.status(200).json({ message: "Ok" })
+                : res.status(400).json({ message: undefined });
+        } catch (error: any) {
+            return res.status(400).json({ message: error.message });
+        }
     }
 
     // Method to delete a product
-    deleteProduct(req: Request, res: Response): Response {
-        // Logic to delete a product
-        // Returns true if the deletion is successful, otherwise returns false
-        const id = Number(req.params.id);
-        const response = this.ProductController.deleteProduct(id);
-        return response
-            ? res.status(200).json({ status: "ok" })
-            : res.status(400).json({ status: "error" });
+    async deleteProduct(req: Request, res: Response): Promise<Response> {
+        try {
+            // Returns true if the deletion is successful, otherwise returns false
+            const id = Number(req.params.id);
+            const ProductControllerObject = new ProductController();
+            const response = await ProductControllerObject.deleteProduct(id);
+            return response
+                ? res.status(200).json({ message: "Ok" })
+                : res.status(400).json({ message: undefined });
+        } catch (error: any) {
+            return res.status(400).json({ message: error.message });
+        }
     }
 
     // Method to create a product category
