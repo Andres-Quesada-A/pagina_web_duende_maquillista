@@ -4,8 +4,9 @@ import { ImageCategory } from "../models/ImageCategory";
 import { ImageSubcategory } from "../models/ImageSubcategory";
 
 export class ImageController {
+    private ImageDAO: ImageDAO
     constructor() {
-
+        this.ImageDAO = new ImageDAO();
     }
 
     // Method to get a lis of images with an specific subcategory
@@ -15,14 +16,19 @@ export class ImageController {
     }
 
     // Method to create a image, needs the info and subcategory
-    createImage(imageCategory: string, imageSubcategory: string, name: string, description: string, date: Date, tags: string, imageUrl: string): boolean {
-        // Logic to create the image
-        // Returns true if the image is created, false if something was not provided
-        return true;
+    async createImage(imageCategory: string, imageSubcategory: string, name: string, description: string, tags: string, imageUrl: string): Promise<any> {
+        try{
+            const response = await this.ImageDAO.createImage(imageCategory, imageSubcategory, name, description, tags, imageUrl)
+            console.log(response)
+            return true;
+        }catch(error){
+            console.log(error)
+            return false
+        }
     }
 
     // Method to edit an Image
-    editImage(imageCategory: string, imageSubcategory: string, name: string, description: string, date: string, tags: string, imageUrl: string): boolean{
+    editImage(imageCategory: string, imageSubcategory: string, name: string, description: string, tags: string, imageUrl: string): boolean{
         // Logic to edit the image
         // Returns true if the image is edited, false if something was not provided
         return true

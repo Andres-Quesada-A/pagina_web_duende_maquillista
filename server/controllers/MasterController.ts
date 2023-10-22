@@ -216,7 +216,7 @@ export class MasterController {
     }
 
     // Method to get a list of images by category and subcategory
-    getImageList(category: string, subcategory: string): Image[] {
+    getImageList(req:Request, res: Response): Image[] {
         // Logic to retrieve a list of images by category and subcategory
         return []; // Change this with real logic
     }
@@ -324,31 +324,26 @@ export class MasterController {
     }
 
     // Method to edit an image
-    editImage(
-        imageCategory: string,
-        imageSubcategory: string,
-        name: string,
-        description: string,
-        date: Date,
-        tags: string,
-        imageUrl: string
-    ): boolean {
+    editImage(req: Request, res: Response): boolean {
         // Logic to edit an image
         // Returns true if the editing is successful, otherwise returns false
         return true; // Change this with real logic
     }
 
     // Method to create an image
-    createImage(
-        imageCategory: string,
-        imageSubcategory: string,
-        name: string,
-        description: string,
-        date: Date,
-        tags: string,
-        imageUrl: string
-    ): boolean {
+    async createImage(req:Request, res: Response) {
         // Logic to create an image
+        
+        const {imageCategory, imageSubcategory, name, description, tags, imageUrl} = req.body;
+        const ImageControllerObject = new ImageController();
+
+        const response = await ImageControllerObject.createImage(imageCategory, imageSubcategory, name, description, tags, imageUrl)
+        return response ? res.status(200).json({response: true}) : res.status(400).json({response: false}); // Change this with real logic 
+    }
+
+     // Method to delete an image
+     deleteImage(req:Request, res: Response): boolean {
+        // Logic to delete an image
         // Returns true if the creation is successful, otherwise returns false
         return true; // Change this with real logic
     }
