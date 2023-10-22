@@ -16,7 +16,7 @@ function ImageCard({ item }) {
           <Plane className="text-gray-600 w-10 h-10" />
         </div>
       </div>
-      <img src={item.image_url} className="aspect-square object-cover" />
+      <img src={item.imageUrl} className="aspect-square object-cover" />
     </picture>
   );
 }
