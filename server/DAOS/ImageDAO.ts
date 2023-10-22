@@ -43,7 +43,7 @@ export class ImageDAO {
 
                 }).catch((error) => {
                     //fail in the execution of the query
-                    damage.push({error: true, message: String(error.message).replace( /\"/g ,"'")});
+                    damage.push({error: true, message: String(error.message)});
                     reject(damage);
                 });
             } catch (error) {
@@ -70,7 +70,7 @@ export class ImageDAO {
 
                 }).catch((error) => {
                     //fail in the execution of the query
-                    damage.push({error: true, message: String(error.message).replace( /\"/g ,"'")});
+                    damage.push({error: true, message: String(error.message)});
                     reject(damage);
                 });
             } catch (error) {
@@ -98,7 +98,7 @@ export class ImageDAO {
 
                 }).catch((error) => {
                     //fail in the execution of the query
-                    damage.push({error: true, message: String(error.message).replace( /\"/g ,"'")});
+                    damage.push({error: true, message: String(error.message)});
                     reject(damage);
                 });
             } catch (error) {
@@ -125,7 +125,7 @@ export class ImageDAO {
 
                 }).catch((error) => {
                     //fail in the execution of the query
-                    damage.push({error: true, message: String(error.message).replace( /\"/g ,"'")});
+                    damage.push({error: true, message: String(error.message)});
                     reject(damage);
                 });
             } catch (error) {
@@ -156,7 +156,7 @@ export class ImageDAO {
 
                 }).catch((error) => {
                     //fail in the execution of the query
-                    damage.push({error: true, message: String(error.message).replace( /\"/g ,"'")});
+                    damage.push({error: true, message: String(error.message)});
                     reject(damage);
                 });
             } catch (error) {
@@ -185,7 +185,7 @@ export class ImageDAO {
 
                 }).catch((error) => {
                     //fail in the execution of the query
-                    damage.push({error: true, message: String(error.message).replace( /\"/g ,"'")});
+                    damage.push({error: true, message: String(error.message)});
                     reject(damage);
                 });
             } catch (error) {
@@ -213,7 +213,7 @@ export class ImageDAO {
 
                 }).catch((error) => {
                     //fail in the execution of the query
-                    damage.push({error: true, message: String(error.message).replace( /\"/g ,"'")});
+                    damage.push({error: true, message: String(error.message)});
                     reject(damage);
                 });
             } catch (error) {
