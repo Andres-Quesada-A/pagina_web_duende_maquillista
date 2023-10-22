@@ -4,9 +4,13 @@ import Image from "../images/imageLogin.png";
 import { Login } from "../Structures/LoginStructure";
 import { Helmet } from "react-helmet-async";
 import axios from "axios"
+import { toast } from "react-toastify";
+import { messageSettings } from "../utils/messageSettings";
+import {useNavigate} from 'react-router-dom'
 
 function LoginPage() {
   const [data, setData] = useState({email: "Andres@gmail.com", password: "1234Hello"});
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.id]: e.target.value });
@@ -15,10 +19,10 @@ function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.get(`http://localhost:1234/api/login/${data.email}/${data.password}`)
-      console.log(response)
+      await axios.get(`http://localhost:1234/api/login/${data.email}/${data.password}`)
+      navigate('/')
     } catch (error) {
-      console.log(error.message)
+      toast.error("Algo ha salido mal", messageSettings)
     }
   };
   return (

@@ -5,12 +5,12 @@ import { getStorage } from "firebase/storage";
 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDjuyZS-kO-BCDn-tvgK11kx4QiNzoYKQA",
-  authDomain: "avayx-b6fcf.firebaseapp.com",
-  projectId: "avayx-b6fcf",
-  storageBucket: "avayx-b6fcf.appspot.com",
-  messagingSenderId: "72174254780",
-  appId: "1:72174254780:web:6cb72fd031e0b8cd60aeb9"
+  apiKey: "AIzaSyCp2rh13-vvxWRb33EwG58hrUn0zBx_uKU",
+  authDomain: "pagina-web-d0fa0.firebaseapp.com",
+  projectId: "pagina-web-d0fa0",
+  storageBucket: "pagina-web-d0fa0.appspot.com",
+  messagingSenderId: "641848731556",
+  appId: "1:641848731556:web:f0445a76fec8444aa84331"
 };
 
 // Initialize Firebase

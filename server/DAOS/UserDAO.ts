@@ -1,6 +1,5 @@
 import { GenerateToken } from "../Utils/GenerateToken";
 import ConnectionDAO from "./ConnectionDAO";
-import sqlcon from "mssql"
 import bcrypt from "bcrypt"
 
 export class UserDAO {
@@ -50,9 +49,21 @@ export class UserDAO {
 
     }
 
-    login(email: string, password: string): boolean {
-        // Aquí puedes implementar la lógica para autenticar al usuario y realizar el inicio de sesión.
-        return true
+    async login(email: string, password: string): Promise<boolean> {
+        try {
+            const SQL = ConnectionDAO.getInstance();
+            const result = await SQL.query("Duende_SP_Users_Get_By_Email", { "IN_email": email });
+            if (result.length === 0) {
+                return false; // No user found with the given email
+            }
+            const user = result.recordset[0];
+            const passwordMatch = await bcrypt.compare(password, user.password);
+            return passwordMatch;
+        } catch (error) {
+            // Handle any errors that occur during the process
+            // throw new Error("Se produjo un error: ");
+            return false
+        }
     }
 
     confirmCode(code: string): boolean {

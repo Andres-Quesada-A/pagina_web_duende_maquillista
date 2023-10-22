@@ -68,10 +68,11 @@ export class MasterController {
 
     // Method to log in
     // login(email: string, password: string): boolean {
-    login(req: Request, res: Response): boolean {
-        // Logic to verify credentials and perform the login
-        // Returns true if the login is successful, otherwise returns false
-        return true; // Change this with real logic
+    async login(req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
+        const {email, password} = req.params
+        const UserControllerObject = new UserController()
+        const response = await UserControllerObject.login(email, password)
+        return response ? res.status(200).json({response: true}) : res.status(400).json({response: false});
     }
 
     // Method to get a list of products by category

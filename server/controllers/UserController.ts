@@ -20,10 +20,13 @@ export class UserController {
     }
 
     // Method to log in
-    login(email: string, password: string): boolean {
-        // Logic to verify credentials and perform the login
-        // Returns true if the login is successful, otherwise returns false
-        return true; // Change this with real logic
+    async login(email: string, password: string): Promise<boolean> {
+        try {
+            const response = await this.UserDAO.login(email, password)
+            return response
+        } catch (error) {
+            return false   
+        }
     }
 
     // Method to register a new user
