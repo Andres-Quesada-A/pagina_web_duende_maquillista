@@ -1,7 +1,7 @@
 import { Order } from "../models/Order";
 import { Product } from "../models/Product";
 
-export class OrdenDAO {
+export class OrderDAO {
 
     createOrder(
         province: string,

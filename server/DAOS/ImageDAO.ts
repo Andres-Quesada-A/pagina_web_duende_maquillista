@@ -11,7 +11,7 @@ export class ImageDAO {
         // Logic to retrieve a list of image categories and subcategories
 
         const SQL = ConnectionDAO.getInstance();
-        const damage: { error: boolean, message: string}[] = [];
+        const damage: { error: boolean, message: string | undefined }[] = [];
         //const SQL = DaoConnection.getInstance().getPool();
 
         return new Promise((resolve, reject) => {
@@ -37,7 +37,7 @@ export class ImageDAO {
                         resolve(categories);
                     } else {
                         // case when the query did not return any data
-                        const damage: { error: boolean, message: string}[] = [{error: true, message: String(result.message)}];
+                        const damage: { error: boolean, message: string | undefined }[] = [{error: true, message: String(result.message)}];
                         reject(damage);
                     }
 
@@ -48,7 +48,7 @@ export class ImageDAO {
                 });
             } catch (error) {
                 // any errors that occur during the process
-                damage.push({error: true, message: "surgio un problema"})
+                damage.push({error: true, message: undefined})
                 reject(damage)
             }
         }); 
@@ -58,7 +58,7 @@ export class ImageDAO {
     async createImageCategory(category: string): Promise<any> {
 
         const SQL = ConnectionDAO.getInstance();
-        const damage: { error: boolean, message: string}[] = [];
+        const damage: { error: boolean, message: string | undefined }[] = [];
         const ccate = category;
         
         return new Promise((resolve, reject) => {
@@ -75,7 +75,7 @@ export class ImageDAO {
                 });
             } catch (error) {
                 // any errors that occur during the process
-                damage.push({error: true, message: "surgio un problema"})
+                damage.push({error: true, message: undefined})
                 reject(damage)
             }
         }); 
@@ -85,7 +85,7 @@ export class ImageDAO {
     async editImageCategory(category: string, newCategory: string): Promise<any> {
         
         const SQL = ConnectionDAO.getInstance();
-        const damage: { error: boolean, message: string}[] = [];
+        const damage: { error: boolean, message: string | undefined }[] = [];
         const ccate = category;
         const newccate = newCategory;
         
@@ -103,7 +103,7 @@ export class ImageDAO {
                 });
             } catch (error) {
                 // any errors that occur during the process
-                damage.push({error: true, message: "surgio un problema"})
+                damage.push({error: true, message: undefined})
                 reject(damage)
             }
         }); 
@@ -113,7 +113,7 @@ export class ImageDAO {
     async deleteImageCategory(category: string): Promise<any> {
         
         const SQL = ConnectionDAO.getInstance();
-        const damage: { error: boolean, message: string}[] = [];
+        const damage: { error: boolean, message: string | undefined }[] = [];
         const ccate = category;
         
         return new Promise((resolve, reject) => {
@@ -130,7 +130,7 @@ export class ImageDAO {
                 });
             } catch (error) {
                 // any errors that occur during the process
-                damage.push({error: true, message: "surgio un problema"})
+                damage.push({error: true, message: undefined})
                 reject(damage)
             }
         }); 
@@ -143,7 +143,7 @@ export class ImageDAO {
     async createImageSubcategory(category: string, subcategory: string): Promise<any> {
 
         const SQL = ConnectionDAO.getInstance();
-        const damage: { error: boolean, message: string}[] = [];
+        const damage: { error: boolean, message: string | undefined }[] = [];
         const ccate = category;
         const subccate = subcategory;
         
@@ -161,7 +161,7 @@ export class ImageDAO {
                 });
             } catch (error) {
                 // any errors that occur during the process
-                damage.push({error: true, message: "surgio un problema"})
+                damage.push({error: true, message: undefined})
                 reject(damage)
             }
         });
@@ -171,7 +171,7 @@ export class ImageDAO {
     async editImageSubcategory(category: string, subcategory: string, newSubcategory: string): Promise<any> {
         
         const SQL = ConnectionDAO.getInstance();
-        const damage: { error: boolean, message: string}[] = [];
+        const damage: { error: boolean, message: string | undefined }[] = [];
         const ccate = category;
         const subccate = subcategory;
         const newsubccate = newSubcategory;
@@ -190,7 +190,7 @@ export class ImageDAO {
                 });
             } catch (error) {
                 // any errors that occur during the process
-                damage.push({error: true, message: "surgio un problema"})
+                damage.push({error: true, message: undefined})
                 reject(damage)
             }
         });
@@ -200,7 +200,7 @@ export class ImageDAO {
     async deleteImageSubcategory(category: string, subcategory: string): Promise<any> {
         
         const SQL = ConnectionDAO.getInstance();
-        const damage: { error: boolean, message: string}[] = [];
+        const damage: { error: boolean, message: string | undefined }[] = [];
         const ccate = category;
         const subccate = subcategory;
         
@@ -218,7 +218,7 @@ export class ImageDAO {
                 });
             } catch (error) {
                 // any errors that occur during the process
-                damage.push({error: true, message: "surgio un problema"})
+                damage.push({error: true, message: undefined})
                 reject(damage)
             }
         });

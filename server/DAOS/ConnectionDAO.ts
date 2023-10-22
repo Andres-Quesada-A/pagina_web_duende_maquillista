@@ -21,7 +21,7 @@ class ConnectionDAO {
             },
         };
         this.pool = new sqlcon.ConnectionPool(config);
-        this.conexion();
+        this.connection();
 
         //Declaracion de mapeos de tipos de usuario
 
@@ -40,7 +40,7 @@ class ConnectionDAO {
         sqlcon.map.register(String, sqlcon.VarChar);
     }
 
-    private async conexion() {
+    private async connection() {
         try {
             await this.pool.connect();
             console.log("Conexión exitosa a la base de datos de Somee");

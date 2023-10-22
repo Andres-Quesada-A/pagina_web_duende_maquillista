@@ -21,7 +21,7 @@ export class UserDAO {
 
 
         const SQL = ConnectionDAO.getInstance();
-        const damage: { error: boolean, message: string }[] = [];
+        const damage: { error: boolean, message: string | undefined }[] = [];
         //const SQL = DaoConnection.getInstance().getPool();
 
         const token = GenerateToken(name, lastName1 + lastName2, email, 0)
@@ -42,7 +42,7 @@ export class UserDAO {
                 });
             } catch (error) {
                 // any errors that occur during the process
-                damage.push({ error: true, message: "surgio un problema" })
+                damage.push({ error: true, message: undefined })
                 reject(damage)
             }
         });
