@@ -254,8 +254,9 @@ export class ImageDAO {
                     const imageObj = new Image(
                         image.id,
                         image.name,
-                        image.imageCategory, // is wrong
+                        image.date,
                         image.description,
+                        image.imageCategory,
                         image.imageSubcategory, 
                         image.tags, 
                         image.imageUrl
@@ -360,8 +361,9 @@ export class ImageDAO {
                     const imageObj = new Image(
                         image.ImageID,
                         image.Name,
-                        image.Category, // is wrong
+                        image.Date,
                         image.Description, 
+                        image.Category, // is wrong
                         image.Subcategory, 
                         image.Tags, 
                         image.URL
@@ -393,8 +395,9 @@ export class ImageDAO {
                         return new Image(
                             row.ImageID,
                             row.Name,
-                            row.Category, // is wrong
+                            row.Date,
                             row.Description, 
+                            row.Category, // is wrong
                             row.Subcategory, 
                             row.Tags, 
                             row.URL

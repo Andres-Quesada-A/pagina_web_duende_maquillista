@@ -1,10 +1,12 @@
 import { ImageSubcategory } from "./ImageSubcategory";
+import { ImageCategory } from "./ImageCategory";
 
 export class Image {
     private id: number;
     private name: string;
     private date: Date;
     private description: string;
+    private category: ImageCategory;
     private subcategory: ImageSubcategory;
     private tags: string[];
     private imageUrl: string;
@@ -14,6 +16,7 @@ export class Image {
         name: string,
         date: Date,
         description: string,
+        category: ImageCategory,
         subcategory: ImageSubcategory,
         tags: string[],
         imageUrl: string
@@ -22,6 +25,7 @@ export class Image {
         this.name = name;
         this.date = date;
         this.description = description;
+        this.category = category;
         this.subcategory = subcategory;
         this.tags = tags;
         this.imageUrl = imageUrl;

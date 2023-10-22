@@ -21,6 +21,7 @@ BEGIN
             S.Description AS 'Subcategory',
             I.Name AS Name,
             I.Description AS Description,
+            I.Date AS Date,
             (
                 SELECT STRING_AGG(description, '\n')
                 FROM Tags
