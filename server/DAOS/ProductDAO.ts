@@ -5,7 +5,7 @@ import { ProductCategory } from "../models/ProductCategory";
 export class ProductDAO {
     async getProductList(): Promise<Product[]> {
         const SQL = ConnectionDAO.getInstance();
-        const damage: { message: string }[] = [];
+        const damage: { message: string | undefined }[] = [];
 
         return new Promise((resolve, reject) => {
             try {
@@ -28,12 +28,12 @@ export class ProductDAO {
                     })
                     .catch((error) => {
                         damage.push({
-                            message: String(error.message).replace(/\"/g, '"'),
+                            message: String(error.message),
                         });
                         reject(damage);
                     });
             } catch (error) {
-                damage.push({ message: "" });
+                damage.push({ message: undefined });
                 reject(damage);
             }
         });
@@ -41,7 +41,7 @@ export class ProductDAO {
 
     async getProduct(productId: number): Promise<Product | undefined> {
         const SQL = ConnectionDAO.getInstance();
-        const damage: { message: string }[] = [];
+        const damage: { message: string | undefined }[] = [];
 
         return new Promise((resolve, reject) => {
             try {
@@ -62,12 +62,12 @@ export class ProductDAO {
                     })
                     .catch((error) => {
                         damage.push({
-                            message: String(error.message).replace(/\"/g, '"'),
+                            message: String(error.message),
                         });
                         reject(damage);
                     });
             } catch (error) {
-                damage.push({ message: "" });
+                damage.push({ message: undefined });
                 reject(damage);
             }
         });
@@ -83,7 +83,7 @@ export class ProductDAO {
         available: boolean
     ): Promise<Product | undefined> {
         const SQL = ConnectionDAO.getInstance();
-        const damage: { message: string }[] = [];
+        const damage: { message: string | undefined }[] = [];
 
         return new Promise((resolve, reject) => {
             try {
@@ -113,12 +113,12 @@ export class ProductDAO {
                     })
                     .catch((error) => {
                         damage.push({
-                            message: String(error.message).replace(/\"/g, '"'),
+                            message: String(error.message),
                         });
                         reject(damage);
                     });
             } catch (error) {
-                damage.push({ message: "" });
+                damage.push({ message: undefined });
                 reject(damage);
             }
         });
@@ -135,7 +135,7 @@ export class ProductDAO {
         available: boolean
     ): Promise<boolean> {
         const SQL = ConnectionDAO.getInstance();
-        const damage: { message: string }[] = [];
+        const damage: { message: string | undefined }[] = [];
 
         return new Promise((resolve, reject) => {
             try {
@@ -155,12 +155,12 @@ export class ProductDAO {
                     })
                     .catch((error) => {
                         damage.push({
-                            message: String(error.message).replace(/\"/g, '"'),
+                            message: String(error.message),
                         });
                         reject(damage);
                     });
             } catch (error) {
-                damage.push({ message: "" });
+                damage.push({ message: undefined });
                 reject(damage);
             }
         });
@@ -168,7 +168,7 @@ export class ProductDAO {
 
     async deleteProduct(productId: number): Promise<boolean> {
         const SQL = ConnectionDAO.getInstance();
-        const damage: { message: string }[] = [];
+        const damage: { message: string | undefined }[] = [];
 
         return new Promise((resolve, reject) => {
             try {
@@ -178,12 +178,12 @@ export class ProductDAO {
                     })
                     .catch((error) => {
                         damage.push({
-                            message: String(error.message).replace(/\"/g, '"'),
+                            message: String(error.message),
                         });
                         reject(damage);
                     });
             } catch (error) {
-                damage.push({ message: "" });
+                damage.push({ message: undefined });
                 reject(damage);
             }
         });

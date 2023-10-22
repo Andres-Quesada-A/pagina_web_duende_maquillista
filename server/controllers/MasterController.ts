@@ -66,7 +66,7 @@ export class MasterController {
             const response = await ProductControllerObject.getProductList();
             return res.json(response);
         } catch (error: any) {
-            return res.status(400).json({ message: error.message });
+            return res.status(400).json({ message: error[0] ? error[0].message : undefined } );
         }
     }
 
@@ -78,7 +78,7 @@ export class MasterController {
             const response = await ProductControllerObject.getProduct(id);
             return res.status(200).json(response);
         } catch (error: any) {
-            return res.status(400).json({ message: error.message });
+            return res.status(400).json({ message: error[0] ? error[0].message : undefined } );
         }
     }
 
@@ -109,7 +109,7 @@ export class MasterController {
                 ? res.status(200).json({ message: "Ok" })
                 : res.status(400).json({ message: undefined });
         } catch (error: any) {
-            return res.status(400).json({ message: error.message });
+            return res.status(400).json({ message: error[0] ? error[0].message : undefined } );
         }
     }
 
@@ -142,7 +142,7 @@ export class MasterController {
                 ? res.status(200).json({ message: "Ok" })
                 : res.status(400).json({ message: undefined });
         } catch (error: any) {
-            return res.status(400).json({ message: error.message });
+            return res.status(400).json({ message: error[0] ? error[0].message : undefined } );
         }
     }
 
@@ -157,7 +157,7 @@ export class MasterController {
                 ? res.status(200).json({ message: "Ok" })
                 : res.status(400).json({ message: undefined });
         } catch (error: any) {
-            return res.status(400).json({ message: error.message });
+            return res.status(400).json({ message: error[0] ? error[0].message : undefined } );
         }
     }
 

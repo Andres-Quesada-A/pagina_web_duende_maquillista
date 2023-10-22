@@ -87,7 +87,6 @@ class ConnectionDAO {
                         reject({ message: undefined });
                         console.log(error);
                     }
-                    reject(error); // Reject the promise if there is an error
                 } else {
                     //for checking what it returns
                     //console.log(result?.recordsets[0]);
