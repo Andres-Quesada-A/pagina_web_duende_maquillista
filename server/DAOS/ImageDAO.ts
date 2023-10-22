@@ -2,7 +2,7 @@ import { Image } from "../models/Image";
 import { ImageCategory } from "../models/ImageCategory";
 import { ImageSubcategory } from "../models/ImageSubcategory";
 import ConnectionDAO from "./ConnectionDAO";
-import sqlcon, { Date } from 'mssql';
+import sqlcon from 'mssql';
 export class ImageDAO {
 
     // Method to get a list of image categories
