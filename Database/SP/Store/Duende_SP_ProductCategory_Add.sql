@@ -15,6 +15,9 @@ BEGIN
     DECLARE @ErrorNumber INT, @ErrorSeverity INT, @ErrorState INT, @Message VARCHAR(200);
     DECLARE @transactionBegun BIT = 0;
 
+    -- VARIABLE DECLARATIONS
+    DECLARE @createdId INT = NULL;
+
     BEGIN TRY
 
         -- VALIDATIONS
@@ -51,11 +54,18 @@ BEGIN
                 0
             );
 
+            SELECT @createdId = SCOPE_IDENTITY();
+
         -- TRANSACTION COMMITTED
         IF @transactionBegun = 1
         BEGIN
             COMMIT TRANSACTION;
         END;
+
+        SELECT  PC.[description]
+        FROM    [dbo].[ProductCategories] PC
+        WHERE   PC.[deleted] = 0
+            AND PC.[id] = @createdId;
 
     END TRY
     BEGIN CATCH

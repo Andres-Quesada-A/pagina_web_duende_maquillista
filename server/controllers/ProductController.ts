@@ -1,5 +1,6 @@
 import { ProductDAO } from "../DAOS/ProductDAO";
 import { Product } from "../models/Product";
+import { ProductCategory } from "../models/ProductCategory";
 
 export class ProductController {
     private ProductDAO: ProductDAO;
@@ -63,6 +64,38 @@ export class ProductController {
 
     async deleteProduct(id: number): Promise<boolean> {
         const response = await this.ProductDAO.deleteProduct(id);
+        return response;
+    }
+
+    async getProductCategoryList(): Promise<ProductCategory[]> {
+        const response = await this.ProductDAO.getProductCategoryList();
+        return response;
+    }
+
+    async createProductCategory(
+        description: string
+    ): Promise<ProductCategory | undefined> {
+        const response = await this.ProductDAO.createProductCategory(
+            description
+        );
+        return response;
+    }
+
+    async editProductCategory(
+        description: string,
+        newDescription: string
+    ): Promise<boolean> {
+        const response = await this.ProductDAO.editProductCategory(
+            description,
+            newDescription
+        );
+        return response;
+    }
+
+    async deleteProductCategory(description: string): Promise<boolean> {
+        const response = await this.ProductDAO.deleteProductCategory(
+            description
+        );
         return response;
     }
 }

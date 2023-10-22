@@ -33,6 +33,14 @@ BEGIN
             RAISERROR('No existe la categoría "%s"', 16, 1, @IN_description);
         END;
 
+        IF EXISTS(SELECT 1
+                  FROM    [dbo].[Products] P
+                  WHERE   P.[categoryId] = @categoryId
+                      AND P.[deleted] = 0)
+        BEGIN
+            RAISERROR('No se puede eliminar la categoría "%s" porque tiene productos asociados', 16, 1, @IN_description);
+        END;
+
         -- TRANSACTION BEGUN
         IF @@TRANCOUNT = 0
         BEGIN

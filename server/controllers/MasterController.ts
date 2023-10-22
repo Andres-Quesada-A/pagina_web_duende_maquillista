@@ -86,7 +86,6 @@ export class MasterController {
     // Method to create a new product
     async createProduct(req: Request, res: Response): Promise<Response> {
         try {
-            // Returns true if the creation is successful, otherwise returns false
             const {
                 name,
                 description,
@@ -117,7 +116,6 @@ export class MasterController {
     // Method to edit a product
     async editProduct(req: Request, res: Response): Promise<Response> {
         try {
-            // Returns true if the editing is successful, otherwise returns false
             const {
                 id,
                 name,
@@ -150,7 +148,6 @@ export class MasterController {
     // Method to delete a product
     async deleteProduct(req: Request, res: Response): Promise<Response> {
         try {
-            // Returns true if the deletion is successful, otherwise returns false
             const id = Number(req.params.id);
             const ProductControllerObject = new ProductController();
             const response = await ProductControllerObject.deleteProduct(id);
@@ -163,30 +160,59 @@ export class MasterController {
     }
 
     // Method to create a product category
-    createProductCategory(category: string): boolean {
-        // Logic to create a product category
-        // Returns true if the creation is successful, otherwise returns false
-        return true; // Change this with real logic
+    async createProductCategory(req: Request, res: Response): Promise<Response> {
+        try {
+            const { description } = req.body;
+            const ProductControllerObject = new ProductController();
+            const response = await ProductControllerObject.createProductCategory(description);
+            return response
+                ? res.status(200).json({ message: "Ok" })
+                : res.status(400).json({ message: undefined });
+        } catch (error: any) {
+            return res.status(400).json({ message: error[0] ? error[0].message : undefined } );
+        }
     }
 
     // Method to get a list of product categories
-    getProductCategoryList(): ProductCategory[] {
-        // Logic to retrieve a list of product categories
-        return []; // Change this with real logic
+    async getProductCategoryList(req: Request, res: Response): Promise<Response> {
+        try {
+            const ProductControllerObject = new ProductController();
+            const response = await ProductControllerObject.getProductCategoryList();
+            return res.json(response);
+        } catch (error: any) {
+            return res.status(400).json({ message: error[0] ? error[0].message : undefined } );
+        }
     }
 
     // Method to delete a product category
-    deleteProductCategory(category: string): boolean {
-        // Logic to delete a product category
-        // Returns true if the deletion is successful, otherwise returns false
-        return true; // Change this with real logic
+    async deleteProductCategory(req: Request, res: Response): Promise<Response> {
+        try {
+            const description = req.params.description;
+            const ProductControllerObject = new ProductController();
+            const response = await ProductControllerObject.deleteProductCategory(description);
+            return response
+                ? res.status(200).json({ message: "Ok" })
+                : res.status(400).json({ message: undefined });
+        } catch (error: any) {
+            return res.status(400).json({ message: error[0] ? error[0].message : undefined } );
+        }
     }
 
     // Method to edit a product category
-    editProductCategory(category: string, newCategory: string): boolean {
-        // Logic to edit a product category
-        // Returns true if the editing is successful, otherwise returns false
-        return true; // Change this with real logic
+    async editProductCategory(req: Request, res: Response): Promise<Response> {
+        try {
+            const { description, newDescription } = req.body;
+            const ProductControllerObject = new ProductController();
+            const response = await ProductControllerObject.editProductCategory(
+                description,
+                newDescription
+            );
+            return response
+                ? res.status(200).json({ message: "Ok" })
+                : res.status(400).json({ message: undefined });
+        } catch (error: any) {
+            return res.status(400).json({ message: error[0] ? error[0].message : undefined } );
+        }
     }
 
     // Method to get a list of images by category and subcategory

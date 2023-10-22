@@ -45,7 +45,7 @@ export class ProductDAO {
 
         return new Promise((resolve, reject) => {
             try {
-                SQL.query("Duende_SP_Product_Details", { "IN_id": productId })
+                SQL.query("Duende_SP_Product_Details", { IN_id: productId })
                     .then((result) => {
                         const product: any = result?.recordset[0];
                         const productObj = new Product(
@@ -88,13 +88,13 @@ export class ProductDAO {
         return new Promise((resolve, reject) => {
             try {
                 const params = {
-                    "IN_name": name,
-                    "IN_description": description,
-                    "IN_category": category,
-                    "IN_imageUrl": imageUrl,
-                    "IN_price": price,
-                    "IN_weight": weight,
-                    "IN_available": available,
+                    IN_name: name,
+                    IN_description: description,
+                    IN_category: category,
+                    IN_imageUrl: imageUrl,
+                    IN_price: price,
+                    IN_weight: weight,
+                    IN_available: available,
                 };
                 SQL.query("Duende_SP_Product_Add", params)
                     .then((result) => {
@@ -140,14 +140,14 @@ export class ProductDAO {
         return new Promise((resolve, reject) => {
             try {
                 const params = {
-                    "IN_id": id,
-                    "IN_category": category,
-                    "IN_name": name,
-                    "IN_description": description,
-                    "IN_imageUrl": imageUrl,
-                    "IN_price": price,
-                    "IN_weight": weight,
-                    "IN_available": available,
+                    IN_id: id,
+                    IN_category: category,
+                    IN_name: name,
+                    IN_description: description,
+                    IN_imageUrl: imageUrl,
+                    IN_price: price,
+                    IN_weight: weight,
+                    IN_available: available,
                 };
                 SQL.query("Duende_SP_Product_Edit", params)
                     .then((result) => {
@@ -172,7 +172,119 @@ export class ProductDAO {
 
         return new Promise((resolve, reject) => {
             try {
-                SQL.query("Duende_SP_Product_Delete", { "IN_id": productId })
+                SQL.query("Duende_SP_Product_Delete", { IN_id: productId })
+                    .then((result) => {
+                        resolve(true);
+                    })
+                    .catch((error) => {
+                        damage.push({
+                            message: String(error.message),
+                        });
+                        reject(damage);
+                    });
+            } catch (error) {
+                damage.push({ message: undefined });
+                reject(damage);
+            }
+        });
+    }
+
+    async getProductCategoryList(): Promise<ProductCategory[]> {
+        const SQL = ConnectionDAO.getInstance();
+        const damage: { message: string | undefined }[] = [];
+
+        return new Promise((resolve, reject) => {
+            try {
+                SQL.query("Duende_SP_ProductCategory_List", {})
+                    .then((result) => {
+                        const productCategoryList = result?.recordset.map(
+                            (productCategory: any) =>
+                                new ProductCategory(productCategory.description)
+                        );
+                        resolve(productCategoryList);
+                    })
+                    .catch((error) => {
+                        damage.push({
+                            message: String(error.message),
+                        });
+                        reject(damage);
+                    });
+            } catch (error) {
+                damage.push({ message: undefined });
+                reject(damage);
+            }
+        });
+    }
+
+    async createProductCategory(
+        description: string
+    ): Promise<ProductCategory | undefined> {
+        const SQL = ConnectionDAO.getInstance();
+        const damage: { message: string | undefined }[] = [];
+
+        return new Promise((resolve, reject) => {
+            try {
+                SQL.query("Duende_SP_ProductCategory_Add", {
+                    IN_description: description,
+                })
+                    .then((result) => {
+                        const productCategory: any = result?.recordset[0];
+                        const productCategoryObj = new ProductCategory(
+                            productCategory.description
+                        );
+                        resolve(productCategoryObj);
+                    })
+                    .catch((error) => {
+                        damage.push({
+                            message: String(error.message),
+                        });
+                        reject(damage);
+                    });
+            } catch (error) {
+                damage.push({ message: undefined });
+                reject(damage);
+            }
+        });
+    }
+
+    async editProductCategory(
+        description: string,
+        newDescription: string
+    ): Promise<boolean> {
+        const SQL = ConnectionDAO.getInstance();
+        const damage: { message: string | undefined }[] = [];
+
+        return new Promise((resolve, reject) => {
+            try {
+                SQL.query("Duende_SP_ProductCategory_Edit", {
+                    IN_description: description,
+                    IN_newDescription: newDescription,
+                })
+                    .then((result) => {
+                        resolve(true);
+                    })
+                    .catch((error) => {
+                        damage.push({
+                            message: String(error.message),
+                        });
+                        reject(damage);
+                    });
+            } catch (error) {
+                damage.push({ message: undefined });
+                reject(damage);
+            }
+        });
+    }
+
+    async deleteProductCategory(description: string): Promise<boolean> {
+        const SQL = ConnectionDAO.getInstance();
+        const damage: { message: string | undefined }[] = [];
+
+        return new Promise((resolve, reject) => {
+            try {
+                SQL.query("Duende_SP_ProductCategory_Delete", {
+                    IN_description: description,
+                })
                     .then((result) => {
                         resolve(true);
                     })

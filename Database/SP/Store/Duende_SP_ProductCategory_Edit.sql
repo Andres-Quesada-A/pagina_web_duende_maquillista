@@ -57,7 +57,7 @@ BEGIN
         END;
 
             UPDATE  PC
-            SET     PC.[description] = @IN_description
+            SET     PC.[description] = @IN_newDescription
             FROM    [dbo].[ProductCategories] PC
             WHERE   PC.[id] = @categoryId
                 AND PC.[deleted] = 0;
