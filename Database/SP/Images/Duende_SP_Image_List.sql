@@ -23,7 +23,7 @@ BEGIN
             I.Description AS Description,
             I.Date AS Date,
             (
-                SELECT STRING_AGG(description, '\n')
+                SELECT STRING_AGG(description, ' ')
                 FROM Tags
                 WHERE ImageId = I.id
             ) AS Tags,

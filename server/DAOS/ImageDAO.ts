@@ -234,7 +234,7 @@ export class ImageDAO {
         tvpSchema.columns.add('tags', sqlcon.VarChar(32));
 
         // Convert the string to an array of objects
-        tags.split('\n').forEach(item => tvpSchema.rows.add(item));
+        tags.split(' ').forEach(item => tvpSchema.rows.add(item));
 
         return new Promise((resolve, reject) => {
             try {
