@@ -146,7 +146,7 @@ function Shop() {
               id="search"
               className="h-10 bg-gray-50 border border-indigo-300 text-gray-900 text-base rounded-xl focus:outline-none focus:ring-4 focus:border-indigo-400 focus:ring-indigo-100 block w-full px-2.5"
             />
-            <button className="mt-3 bg-indigo-500 hover:bg-indigo-400 transition-colors py-1 font-medium text-white w-full text-lg rounded-md">
+            <button className="mt-3 bg-indigo-500 hover:bg-indigo-400 transition-colors py-1 font-medium text-white w-full text-base rounded-md">
               Buscar
             </button>
           </form>

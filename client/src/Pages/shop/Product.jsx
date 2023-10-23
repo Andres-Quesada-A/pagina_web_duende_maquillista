@@ -6,15 +6,21 @@ import { toast } from "react-toastify";
 import { messageSettings } from "../../utils/messageSettings";
 import SelectCustom from "../../components/form/SelectCustom";
 import { AmountOptions } from "../../Structures/shopFilters";
+import { useShoppingCart } from "../../context/ShoppingCartContext";
 
 function ProductShop() {
   const { idProduct } = useParams();
   const [product, setProduct] = useState({});
+  const [quantity, setQuantity] = useState(0);
+  const { getItemQuantity, AddProductCar, removeFromCart } = useShoppingCart();
 
   const HandleChange = (e) => {
-    //vacio por el momento
+    setQuantity(Number(e.target.value));
   };
 
+  const addProductToCart = () => {
+    AddProductCar({ ...product, amount: quantity });
+  };
   useEffect(() => {
     axios
       .get(`http://localhost:1234/api/get_product/` + parseInt(idProduct))
@@ -22,13 +28,14 @@ function ProductShop() {
         setProduct(res.data);
       })
       .catch((error) => {
-          const errorMessage =
-              error?.response?.data?.message ||
-              "Algo salió mal al cargar el detalle del producto";
-          toast.error(errorMessage, messageSettings);
+        const errorMessage =
+          error?.response?.data?.message ||
+          "Algo salió mal al cargar el detalle del producto";
+        toast.error(errorMessage, messageSettings);
       });
   }, [idProduct]);
 
+  const amount = getItemQuantity(idProduct);
   return (
     <>
       <Helmet>
@@ -52,23 +59,38 @@ function ProductShop() {
               <h1 className="text-2xl font-medium text-gray-600">
                 {product.name}
               </h1>
-              <p><span className="font-bold">Estado:</span> {product.available ? "Disponible" : "No disponible"}</p>
+              <p>
+                <span className="font-bold">Estado:</span>{" "}
+                {product.available ? "Disponible" : "No disponible"}
+              </p>
               <p>{product.description}</p>
               <p className="text-4xl text-gray-600 font-semibold flex justify-start gap-1">
                 <span className="text-xl">₡</span>
                 {product.price}
               </p>
               <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-5 items-end mt-5">
-                  <SelectCustom
-                    label="Cantidad de productos"
-                    id="amount"
-                    HandleChange={HandleChange}
-                    required={true}
-                    options={AmountOptions}
-                  />
-                <button className="h-11 w-full sm:w-auto rounded-lg px-5 text-white font-medium text-lg bg-indigo-500 hover:bg-indigo-400 transition-colors">
+                <SelectCustom
+                  label="Cantidad de productos"
+                  id="amount"
+                  HandleChange={HandleChange}
+                  required={true}
+                  options={AmountOptions}
+                  value={{ amount: amount }}
+                />
+                <button
+                  onClick={addProductToCart}
+                  className="h-11 w-full sm:w-auto rounded-lg px-5 text-white font-medium text-base bg-indigo-500 hover:bg-indigo-400 transition-colors"
+                >
                   Agregar al carrito
                 </button>
+                {amount != 0 && (
+                  <button
+                    onClick={() => removeFromCart(idProduct)}
+                    className="h-11 w-full sm:w-auto rounded-lg px-5 text-white font-medium text-base bg-red-500 hover:bg-red-400 transition-colors"
+                  >
+                    Quitar del carrito
+                  </button>
+                )}
               </div>
             </div>
           </div>
