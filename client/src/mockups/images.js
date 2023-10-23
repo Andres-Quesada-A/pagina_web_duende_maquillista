@@ -6,7 +6,7 @@ export const ImagesMockup = [
     category: "Naturaleza",
     subcategory: "Playas",
     etiquetas: "#playa #tropical #naturaleza",
-    image_url: "https://images.pexels.com/photos/1049298/pexels-photo-1049298.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    imageUrl: "https://images.pexels.com/photos/1049298/pexels-photo-1049298.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   },
   {
     id: 2,
@@ -16,7 +16,7 @@ export const ImagesMockup = [
     category: "Naturaleza",
     subcategory: "Montañas",
     etiquetas: "#montañas #nieve #paisaje",
-    image_url: "https://images.pexels.com/photos/18353689/pexels-photo-18353689/free-photo-of-montanas-punto-de-referencia-arboles-estados-unidos.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    imageUrl: "https://images.pexels.com/photos/18353689/pexels-photo-18353689/free-photo-of-montanas-punto-de-referencia-arboles-estados-unidos.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   },
   {
     id: 3,
@@ -25,7 +25,7 @@ export const ImagesMockup = [
     category: "Ciudades",
     subcategory: "Nocturnas",
     etiquetas: "#ciudad #noche #luces",
-    image_url: "https://images.pexels.com/photos/115553/pexels-photo-115553.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    imageUrl: "https://images.pexels.com/photos/115553/pexels-photo-115553.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   },
   {
     id: 4,
@@ -35,7 +35,7 @@ export const ImagesMockup = [
     category: "Naturaleza",
     subcategory: "Cascadas",
     etiquetas: "#cascada #selva #naturaleza",
-    image_url: "https://images.pexels.com/photos/464327/pexels-photo-464327.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    imageUrl: "https://images.pexels.com/photos/464327/pexels-photo-464327.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   },
   {
     id: 5,
@@ -45,7 +45,7 @@ export const ImagesMockup = [
     category: "Arquitectura",
     subcategory: "Moderna",
     etiquetas: "#arquitectura #ciudad #moderna",
-    image_url: "https://images.pexels.com/photos/12494795/pexels-photo-12494795.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    imageUrl: "https://images.pexels.com/photos/12494795/pexels-photo-12494795.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   },
   {
     id: 6,
@@ -55,7 +55,7 @@ export const ImagesMockup = [
     category: "Naturaleza",
     subcategory: "Playas",
     etiquetas: "#atardecer #playa #naturaleza",
-    image_url: "https://images.pexels.com/photos/1136571/pexels-photo-1136571.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    imageUrl: "https://images.pexels.com/photos/1136571/pexels-photo-1136571.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   },
   {
     id: 7,
@@ -64,7 +64,7 @@ export const ImagesMockup = [
     category: "Naturaleza",
     subcategory: "Montañas",
     etiquetas: "#amanecer #montañas #naturaleza",
-    image_url: "https://images.pexels.com/photos/18353689/pexels-photo-18353689/free-photo-of-montanas-punto-de-referencia-arboles-estados-unidos.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    imageUrl: "https://images.pexels.com/photos/18353689/pexels-photo-18353689/free-photo-of-montanas-punto-de-referencia-arboles-estados-unidos.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   },
   {
     id: 8,
@@ -73,7 +73,7 @@ export const ImagesMockup = [
     category: "Ciudades",
     subcategory: "Moderna",
     etiquetas: "#ciudad #moderna #rascacielos",
-    image_url: "https://images.pexels.com/photos/5031139/pexels-photo-5031139.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    imageUrl: "https://images.pexels.com/photos/5031139/pexels-photo-5031139.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   },
   {
     id: 9,
@@ -82,7 +82,7 @@ export const ImagesMockup = [
     category: "Naturaleza",
     subcategory: "Bosques",
     etiquetas: "#lago #bosque #naturaleza",
-    image_url: "https://images.pexels.com/photos/2649403/pexels-photo-2649403.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    imageUrl: "https://images.pexels.com/photos/2649403/pexels-photo-2649403.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   },
   {
     id: 10,
@@ -92,7 +92,7 @@ export const ImagesMockup = [
     category: "Naturaleza",
     subcategory: "Nocturnas",
     etiquetas: "#cielo #estrellas #noche",
-    image_url: "https://images.pexels.com/photos/2646380/pexels-photo-2646380.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    imageUrl: "https://images.pexels.com/photos/2646380/pexels-photo-2646380.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   },
   {
     id: 11,
@@ -102,7 +102,7 @@ export const ImagesMockup = [
     category: "Naturaleza",
     subcategory: "Playas",
     etiquetas: "#playa #atardecer #naturaleza",
-    image_url: "https://images.pexels.com/photos/1136571/pexels-photo-1136571.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    imageUrl: "https://images.pexels.com/photos/1136571/pexels-photo-1136571.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   },
   {
     id: 12,
@@ -111,7 +111,7 @@ export const ImagesMockup = [
     category: "Naturaleza",
     subcategory: "Montañas",
     etiquetas: "#montañas #niebla #naturaleza",
-    image_url: "https://images.pexels.com/photos/18353689/pexels-photo-18353689/free-photo-of-montanas-punto-de-referencia-arboles-estados-unidos.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    imageUrl: "https://images.pexels.com/photos/18353689/pexels-photo-18353689/free-photo-of-montanas-punto-de-referencia-arboles-estados-unidos.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   },
   {
     id: 13,
@@ -120,7 +120,7 @@ export const ImagesMockup = [
     category: "Ciudades",
     subcategory: "Urbanas",
     etiquetas: "#avenida #ciudad #urbanismo",
-    image_url: "https://images.pexels.com/photos/5031139/pexels-photo-5031139.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    imageUrl: "https://images.pexels.com/photos/5031139/pexels-photo-5031139.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   },
   {
     id: 14,
@@ -129,7 +129,7 @@ export const ImagesMockup = [
     category: "Naturaleza",
     subcategory: "Cascadas",
     etiquetas: "#cascada #bosque #naturaleza",
-    image_url: "https://images.pexels.com/photos/464327/pexels-photo-464327.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    imageUrl: "https://images.pexels.com/photos/464327/pexels-photo-464327.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   },
   {
     id: 15,
@@ -138,7 +138,7 @@ export const ImagesMockup = [
     category: "Ciudades",
     subcategory: "Panorámicas",
     etiquetas: "#ciudad #vista #panorámica",
-    image_url:
+    imageUrl:
       "https://images.pexels.com/photos/1563256/pexels-photo-1563256.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   },
 ];
