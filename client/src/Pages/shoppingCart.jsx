@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { location } from "../Structures/location";
 import PlaceholderImage from "../images/placeholderImage.jpeg";
+import { useShoppingCart } from "../context/ShoppingCartContext";
+import { formatCurrency } from "../utils/formatCurrency";
 
 function ShoppingCart() {
+  const { cartItems, removeFromCart, increaseProductCart } = useShoppingCart();
   const [file, setFile] = useState("");
   const [previewURL, setPreviewURL] = useState("");
   const [exactLocation, setExactLocation] = useState({
@@ -48,14 +51,74 @@ function ShoppingCart() {
     }
   };
 
+  console.log(cartItems);
   return (
     <div className="flex flex-col items-center pb-16">
       <header className="w-full max-w-5xl border-b-2 border-indigo-400 mt-16 pt-8 pb-5 px-5">
         <h1 className="text-indigo-500 text-4xl font-medium">Carrito</h1>
       </header>
+      <section className=" w-full max-w-5xl px-5 overflow-x-auto mt-10">
+        <table className="w-full text-sm text-left text-gray-500 ">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-100 ">
+            <tr>
+              <th className="px-6 py-3">Producto</th>
+              <th className="px-6 py-3">Precio</th>
+              <th className="px-6 py-3">Cantidad</th>
+              <th className="px-6 py-3">Opciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {cartItems.map((item) => {
+              return (
+                <tr className="bg-white border-b" key={item.id}>
+                  <th className="px-6 py-4 font-medium text-gray-800 flex flex-row gap-3 ">
+                    <img
+                      src={item.imageUrl}
+                      alt={item.name}
+                      className="max-w-[40px] min-w-[40px] max-h-[40px] min-h-[40px] rounded-full object-cover object-center"
+                    />
+                    <div>
+                      <p>{item.name}</p>
+                      <p className="line-clamp-1 font-normal">
+                        {item.description}
+                      </p>
+                    </div>
+                  </th>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <p className="font-medium text-lg ">
+                      {formatCurrency(parseInt(item.price) * item.amount)}
+                    </p>
+                    <p>Por unidad: {formatCurrency(parseInt(item.price))}</p>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="w-7 h-7 rounded-full bg-green-100 flex justify-center items-center">
+                      {item.amount}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 flex flex-row gap-2 whitespace-nowrap">
+                    <button
+                      className="text-indigo-500 hover:underline cursor-pointer"
+                      onClick={() => increaseProductCart(item.id)}
+                    >
+                      Agregar otro
+                    </button>
+                    <button
+                      className="text-indigo-500 hover:underline cursor-pointer"
+                      onClick={() => removeFromCart(item.id)}
+                    >
+                      Eliminar
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </section>
       <h4 className="px-5 my-7 text-2xl font-medium text-gray-600 w-full max-w-5xl">
         Escriba su ubicación
       </h4>
+
       <section className=" w-full max-w-5xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 px-5">
         <div>
           <label className="block mb-2 text-base font-medium text-gray-900 ">
@@ -153,7 +216,8 @@ function ShoppingCart() {
       <section className="px-5 max-w-5xl w-full mt-10 grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
         <p className="col-span-1 sm:col-span-2">
           El pedido deberá ser aprobado. Una vez aprobado, le llegará un correo
-          notificando la aprobación y mencionando su fecha de entrega. <span className="text-red-500 font-medium">*</span>
+          notificando la aprobación y mencionando su fecha de entrega.{" "}
+          <span className="text-red-500 font-medium">*</span>
         </p>
         <button className="bg-indigo-500 hover:bg-indigo-600 transition-colors h-11 rounded-md text-white font-medium text-base">
           Finalizar compra

@@ -32,6 +32,21 @@ export function ShoppingCartProvider({ children }) {
       }
     })
   }
+  function increaseProductCart(id) {
+    setCartItems(currItems => {
+      if (currItems.find(item => item.id === id) == null) {
+        return [...currItems]
+      } else {
+        return currItems.map(item => {
+          if (item.id === id) {
+            return { ...item, amount: item.amount + 1 }
+          } else {
+            return item
+          }
+        })
+      }
+    })
+  }
   function removeFromCart(id) {
     setCartItems((currItems) => {
       return currItems.filter((item) => item.id != id);
@@ -45,7 +60,8 @@ export function ShoppingCartProvider({ children }) {
         removeFromCart,
         cartItems,
         AddProductCar,
-        cartQuantity
+        cartQuantity,
+        increaseProductCart
       }}
     >
       {children}
