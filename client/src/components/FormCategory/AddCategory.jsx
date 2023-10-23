@@ -15,6 +15,7 @@ function AddCategory({ APIURL }) {
     e.preventDefault();
     try {
       await axios.post(APIURL, data)
+      toast.success("Categoria agregada", messageSettings)
     } catch (error) {
       toast.error("No se puede agregar la categoria", messageSettings)
     }

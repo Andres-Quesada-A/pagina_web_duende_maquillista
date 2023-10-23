@@ -10,7 +10,6 @@ function ConfigureCategoryProduct() {
   const [categories, setCategories] = useState([]);
   useEffect(() => {
     const getData = async () => {
-      console.log("here")
       try {
         const response = await axios.get('http://localhost:1234/api/get_product_category_list')
         const TempCategories = response.data
@@ -25,7 +24,6 @@ function ConfigureCategoryProduct() {
     }
     getData()
   }, []);
-  console.log(categories)
   return (
     <div className="w-full min-h-screen flex flex-col items-center mt-16 py-14 px-5">
       <header className="w-full max-w-4xl">
@@ -36,8 +34,8 @@ function ConfigureCategoryProduct() {
       </header>
       <section className="grid grid-cols-2 gap-10 w-full max-w-4xl mt-10 ">
         <AddCategory APIURL={"http://localhost:1234/api/create_product_category"}/>
-        <EditCategory Categories={categories} APIURL={""}/>
-        <DeleteCategory Categories={categories} APIURL={""}/>
+        <EditCategory Categories={categories} APIURL={"http://localhost:1234/api/edit_product_category"}/>
+        <DeleteCategory Categories={categories} APIURL={"http://localhost:1234/api/delete_product_category"}/>
       </section>
       <button
         className=" flex justify-center items-center mx-auto text-lg w-full max-w-[280px] mt-10 py-2 rounded-md text-indigo-500 bg-transparent hover:bg-indigo-500 hover:text-white border-2 border-indigo-500 transition-colors"

@@ -206,6 +206,7 @@ export class MasterController {
     async editProductCategory(req: Request, res: Response): Promise<Response> {
         try {
             const { description, newDescription } = req.body;
+            console.log(description, newDescription)
             const ProductControllerObject = new ProductController();
             const response = await ProductControllerObject.editProductCategory(
                 description,

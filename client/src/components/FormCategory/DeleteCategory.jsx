@@ -1,26 +1,26 @@
-import axios from 'axios';
-import { useState } from 'react'
-import { toast } from 'react-toastify';
-import { messageSettings } from '../../utils/messageSettings';
-import Confirmation from '../Modals/Confirmation';
+import axios from "axios";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import { messageSettings } from "../../utils/messageSettings";
+import Confirmation from "../Modals/Confirmation";
 
-function DeleteCategory({Categories, APIURL}) {
+function DeleteCategory({ Categories, APIURL }) {
   const [data, setData] = useState({});
   const HandleChange = (e) => {
     setData({ ...data, [e.target.id]: e.target.value });
   };
-  const HandleDelete = async() => {
-    console.log("handledelete")
-    // try {
-    //   axios.delete(`${APIURL}/data.category`)
-    // } catch (error) {
-    //   toast.error("No se puede eliminar la categoria", messageSettings)
-    // }
-  }
+  const HandleDelete = async () => {
+    try {
+      axios.delete(`${APIURL}/${data.category}`)
+      toast.success("Categoria eliminada", messageSettings)
+    } catch (error) {
+      toast.error("No se puede eliminar la categoria", messageSettings)
+    }
+  };
 
-  console.log(data)
+  console.log(data);
   return (
-    <form className="flex flex-col gap-4">
+    <section className="flex flex-col gap-4">
       <h4 className="text-xl font-medium">Eliminar Categoria</h4>
       <div>
         <label className="block mb-2 text-base font-medium text-gray-900 ">
@@ -40,12 +40,15 @@ function DeleteCategory({Categories, APIURL}) {
             ))}
         </select>
       </div>
-      <Confirmation title={"Confirmación"} description={"¿Está seguro de proceder con la eliminación? Esta acción no se puede deshacer."} handleDelete={HandleDelete}/>
-      <button >
-        Eliminar
-      </button>
-    </form>
+      <Confirmation
+        title={"Confirmación"}
+        description={
+          "¿Está seguro de proceder con la eliminación? Esta acción no se puede deshacer."
+        }
+        handleDelete={HandleDelete}
+      />
+    </section>
   );
 }
 
-export default DeleteCategory
+export default DeleteCategory;
