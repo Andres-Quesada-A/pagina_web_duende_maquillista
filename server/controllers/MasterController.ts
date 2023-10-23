@@ -104,8 +104,8 @@ export class MasterController {
                 description,
                 category,
                 imageUrl,
-                price,
-                weight,
+                parseInt(price),
+                parseFloat(weight),
                 available
             );
             return response
