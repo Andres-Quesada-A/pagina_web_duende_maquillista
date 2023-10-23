@@ -4,7 +4,7 @@
 -- Description: Soft deletes an order.
 --------------------------------------------------------------------------
 
-CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_DeleteOrder]
+CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_Orders_Delete]
     @OrderID INT
 AS
 BEGIN

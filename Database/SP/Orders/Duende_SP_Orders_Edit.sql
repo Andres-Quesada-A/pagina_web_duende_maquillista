@@ -4,9 +4,9 @@
 -- Description: Updates the status of an order.
 --------------------------------------------------------------------------
 
-CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_Order_Status]
-    @OrderID INT,
-    @NewStatusID INT
+CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_Order_Edit]
+    @IN_OrderID INT,
+    @IN_NewStatus VARCHAR(32)
 AS
 BEGIN
     SET NOCOUNT ON;         -- No metadata returned
@@ -14,6 +14,9 @@ BEGIN
     -- ERROR HANDLING
     DECLARE @ErrorNumber INT, @ErrorSeverity INT, @ErrorState INT, @Message VARCHAR(200);
     DECLARE @transactionBegun BIT = 0;
+
+    -- VARIABLE DECLARATION
+    DECLARE @IN_NewStatusID INT= NULL;
 
     BEGIN TRY
 
@@ -23,21 +26,22 @@ BEGIN
         IF NOT EXISTS(
             SELECT 1
             FROM Orders O
-            WHERE O.ID = @OrderID
+            WHERE O.ID = @IN_OrderID
                 AND O.Deleted = 0
             )
         BEGIN
-            RAISERROR('The indicated order does not exist %d.', 16, 1, @OrderID)
+            RAISERROR('The indicated order does not exist %d.', 16, 1, @IN_OrderID)
         END
 
+        SELECT @IN_NewStatusID = ID
+        FROM OrderStatuses
+        WHERE Description = @IN_NewStatus
+        AND Deleted = 0
+
         -- Verify if new status ID is valid
-        IF NOT EXISTS(
-            SELECT 1
-            FROM OrderStatuses OS
-            WHERE OS.ID = @NewStatusID
-            )
+        IF @IN_NewStatusID IS NULL
         BEGIN
-            RAISERROR('Invalid status ID %d.', 16, 1, @NewStatusID)
+            RAISERROR('Invalid status ID %d.', 16, 1, @IN_NewStatusID)
         END
 
         -- TRANSACTION BEGUN
@@ -49,8 +53,8 @@ BEGIN
 
         -- Update order status
         UPDATE Orders
-        SET orderStatusId = @NewStatusID
-        WHERE ID = @OrderID;
+        SET orderStatusId = @IN_NewStatusID
+        WHERE ID = @IN_OrderID;
 
         -- TRANSACTION COMMITTED
         IF @transactionBegun = 1

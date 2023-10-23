@@ -1,27 +1,27 @@
-import { ShoppingDetail } from "./ShoppingDetail";
+import { OrderProduct } from "./OrderProduct";
 
 export class ShoppingCart {
-    private shoppingDetails: ShoppingDetail[] = [];
+    private orderProducts: OrderProduct[] = [];
 
-    addShoppingDetail(shoppingDetail: ShoppingDetail): void {
-        this.shoppingDetails.push(shoppingDetail);
+    addShoppingDetail(orderProduct: OrderProduct): void {
+        this.orderProducts.push(orderProduct);
     }
 
-    removeShoppingDetail(shoppingDetail: ShoppingDetail): void {
-        const index = this.shoppingDetails.indexOf(shoppingDetail);
+    removeOrderProduct(orderProduct: OrderProduct): void {
+        const index = this.orderProducts.indexOf(orderProduct);
         if (index !== -1) {
-            this.shoppingDetails.splice(index, 1);
+            this.orderProducts.splice(index, 1);
         }
     }
 
-    getShoppingDetails(): ShoppingDetail[] {
-        return this.shoppingDetails;
+    getOrderProducts(): OrderProduct[] {
+        return this.orderProducts;
     }
 
     getTotal(): number {
         let total = 0;
 
-        // for (const detail of this.shoppingDetails) {
+        // for (const detail of this.orderProducts) {
         //     const product = detail.product;
         //     const amount = detail.amount;
         //     total += product.price * amount;

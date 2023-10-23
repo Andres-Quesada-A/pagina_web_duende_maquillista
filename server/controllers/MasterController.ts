@@ -10,6 +10,7 @@ import { User } from "../models/User";
 import { UserController } from "./UserController";
 import { ImageController } from "./ImageController";
 import { ProductController } from "./ProductController";
+import { OrderController } from "./OrderController";
 import ConnectionDAO from "../DAOS/ConnectionDAO";
 
 export class MasterController {
@@ -422,24 +423,65 @@ export class MasterController {
     }
 
     // Method to create an order
-    createOrder(
-        province: string,
-        canton: string,
-        district: string,
-        specificAddress: string,
-        cart: ShoppingCart,
-        imageUrl: string
-    ): boolean {
-        // Logic to create an order
-        // Returns true if the creation is successful, otherwise returns false
-        return true; // Change this with real logic
+    async createOrder(req:Request,res:Response): Promise<Response> {
+       try{
+        const {province, canton, district, specificAddress, shippingFee, products, userId, imageUrl} = req.body;
+        const OrderControllerObject = new OrderController();
+        const response = await OrderControllerObject.createOrder(province, canton, district, specificAddress, shippingFee, products, userId, imageUrl);
+        return response
+        ? res.status(200).json({response: "Ok"})
+        : res.status(400).json({response: undefined});
+       } catch(error:any){
+        return res.status(400).json({ message: error[0] ? error[0].message : undefined });
+       }
     }
 
     // Method to edit an order
-    editOrder(id: number, status: string): boolean {
-        // Logic to edit an order
-        // Returns true if the editing is successful, otherwise returns false
-        return true; // Change this with real logic
+    async editOrder(req: Request, res:Response): Promise<Response> {
+        try{
+            const {id, status} = req.body;
+            const OrderControllerObject = new OrderController();
+            const response = await OrderControllerObject.editOrder(id, status);
+            return response 
+            ? res.status(200).json({response: "Ok"}) 
+            : res.status(400).json({response:  undefined});
+        } catch (error: any) {
+            return res.status(400).json({ message: error[0] ? error[0].message : undefined });
+        }
+    }
+
+    async getOrderList(req: Request, res:Response): Promise<Response> {
+        try{
+            const OrderControllerObject = new OrderController();
+            const response = await OrderControllerObject.getOrderList();
+            return res.json(response);
+        } catch (error: any) {
+            return res.status(400).json({ message: error[0] ? error[0].message : undefined });
+        }
+    }
+
+    async getOrderDetails(req: Request, res:Response): Promise<Response> {
+        try{
+            const id = Number(req.params.id);
+            const OrderControllerObject = new OrderController();
+            const response = await OrderControllerObject.getOrderDetails(id);
+            return res.status(200).json(response);
+        } catch (error: any) {
+            return res.status(400).json({ message: error[0] ? error[0].message : undefined });
+        }
+    }
+
+    async deleteOrder(req: Request, res:Response): Promise<Response> {
+        try{
+            const id = Number(req.params.id);
+            const OrderControllerObject = new OrderController();
+            const response = await OrderControllerObject.deleteOrder(id);
+            return response 
+            ? res.status(200).json({response: "Ok"}) 
+            : res.status(400).json({response:  undefined});
+        } catch (error: any) {
+            return res.status(400).json({ message: error[0] ? error[0].message : undefined });
+        }
     }
 
     // Method to add a product to the shopping cart
