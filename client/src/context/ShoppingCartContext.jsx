@@ -1,30 +1,30 @@
-import { createContext, useContext } from "react"
-import { useLocalStorage } from "../hooks/useLocalStorage"
+import { createContext, useContext } from "react";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
-const ShoppingCartContext = createContext({})
+const ShoppingCartContext = createContext({});
 
 export function useShoppingCart() {
-  return useContext(ShoppingCartContext)
+  return useContext(ShoppingCartContext);
 }
 export function ShoppingCartProvider({ children }) {
-  const [cartItems, setCartItems] = useLocalStorage("shopping-cart", [])
+  const [cartItems, setCartItems] = useLocalStorage("shopping-cart", []);
 
   const cartQuantity = cartItems.reduce(
-    (quantity, item) => item.quantity + quantity,
+    (amount, item) => item.amount + amount,
     0
-  )
+  );
 
   function getItemQuantity(id) {
-    return cartItems.find(item => item.id === id)?.quantity || 0
+    return cartItems.find((item) => item.id == id)?.amount || 0;
   }
-  function increaseCartQuantity(id) {
+  function AddProductCar(product) {
     setCartItems(currItems => {
-      if (currItems.find(item => item.id === id) == null) {
-        return [...currItems, { id, quantity: 1 }]
+      if (currItems.find(item => item.id === product.id) == null) {
+        return [...currItems, { ...product, amount: product.amount }]
       } else {
         return currItems.map(item => {
-          if (item.id === id) {
-            return { ...item, quantity: item.quantity + 1 }
+          if (item.id === product.id) {
+            return { ...item, amount: product.amount }
           } else {
             return item
           }
@@ -32,14 +32,14 @@ export function ShoppingCartProvider({ children }) {
       }
     })
   }
-  function decreaseCartQuantity(id) {
+  function increaseProductCart(id) {
     setCartItems(currItems => {
-      if (currItems.find(item => item.id === id)?.quantity === 1) {
-        return currItems.filter(item => item.id !== id)
+      if (currItems.find(item => item.id === id) == null) {
+        return [...currItems]
       } else {
         return currItems.map(item => {
           if (item.id === id) {
-            return { ...item, quantity: item.quantity - 1 }
+            return { ...item, amount: item.amount + 1 }
           } else {
             return item
           }
@@ -48,23 +48,23 @@ export function ShoppingCartProvider({ children }) {
     })
   }
   function removeFromCart(id) {
-    setCartItems(currItems => {
-      return currItems.filter(item => item.id !== id)
-    })
+    setCartItems((currItems) => {
+      return currItems.filter((item) => item.id != id);
+    });
   }
 
   return (
     <ShoppingCartContext.Provider
       value={{
         getItemQuantity,
-        increaseCartQuantity,
-        decreaseCartQuantity,
         removeFromCart,
         cartItems,
-        cartQuantity
+        AddProductCar,
+        cartQuantity,
+        increaseProductCart
       }}
     >
       {children}
     </ShoppingCartContext.Provider>
-  )
+  );
 }

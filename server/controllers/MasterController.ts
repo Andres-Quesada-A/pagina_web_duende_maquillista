@@ -10,6 +10,7 @@ import { User } from "../models/User";
 import { UserController } from "./UserController";
 import { ImageController } from "./ImageController";
 import { ProductController } from "./ProductController";
+import { OrderController } from "./OrderController";
 import ConnectionDAO from "../DAOS/ConnectionDAO";
 
 export class MasterController {
@@ -46,20 +47,45 @@ export class MasterController {
 
     // Method to register a new user
     async registerUser(req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
-        const {name, lastName1, lastName2, email, password} = req.body;
-        const UserControllerObject = new UserController()
-        const response = await UserControllerObject.registerUser(name, lastName1, lastName2, email, password)
-        console.log(response, "response")
-        return response ? res.status(200).json({response: true}) : res.status(400).json({response: false}); // Change this with real logic
+        try {
+            const { name, lastName1, lastName2, email, password } = req.body;
+            const UserControllerObject = new UserController();
+            const response = await UserControllerObject.registerUser(name, lastName1, lastName2, email, password);
+            const token = response.token;
+            delete response.token;
+            res.cookie("token", token, { httpOnly: true });
+            return res.status(200).json(response);
+        } catch (error: any) {
+            return res.status(400).json({ message: error[0] ? error[0].message : undefined });
+        }
     }
 
     // Method to log in
     // login(email: string, password: string): boolean {
-    async login(req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
-        const {email, password} = req.params
-        const UserControllerObject = new UserController()
-        const response = await UserControllerObject.login(email, password)
-        return response ? res.status(200).json({response: true}) : res.status(400).json({response: false});
+    async logIn(req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
+        try {
+            const { email, password } = req.params;
+            const UserControllerObject = new UserController();
+            const response = await UserControllerObject.logIn(email, password);
+            const token = response.token;
+            delete response.token;
+            res.cookie("token", token, { httpOnly: true });
+            return res.status(200).json(response);
+        } catch (error: any) {
+            return res.status(400).json({ message: error[0] ? error[0].message : undefined });
+        }
+    }
+
+    // Method to check if the user is logged in
+    async loggedIn(req: Request, res: Response): Promise<Response> {
+        try {
+            const UserControllerObject = new UserController();
+            const token = req.cookies.token;
+            const response = await UserControllerObject.loggedIn(token);
+            return res.status(200).json(response);
+        } catch (error: any) {
+            return res.status(400).json({ message: error[0] ? error[0].message : undefined });
+        }
     }
 
     // Method to get a list of products
@@ -103,8 +129,8 @@ export class MasterController {
                 description,
                 category,
                 imageUrl,
-                price,
-                weight,
+                parseInt(price),
+                parseFloat(weight),
                 available
             );
             return response
@@ -171,6 +197,7 @@ export class MasterController {
                 ? res.status(200).json({ message: "Ok" })
                 : res.status(400).json({ message: undefined });
         } catch (error: any) {
+            console.log("error en master controller")
             return res.status(400).json({ message: error[0] ? error[0].message : undefined } );
         }
     }
@@ -204,6 +231,7 @@ export class MasterController {
     async editProductCategory(req: Request, res: Response): Promise<Response> {
         try {
             const { description, newDescription } = req.body;
+            console.log(description, newDescription)
             const ProductControllerObject = new ProductController();
             const response = await ProductControllerObject.editProductCategory(
                 description,
@@ -422,24 +450,65 @@ export class MasterController {
     }
 
     // Method to create an order
-    createOrder(
-        province: string,
-        canton: string,
-        district: string,
-        specificAddress: string,
-        cart: ShoppingCart,
-        imageUrl: string
-    ): boolean {
-        // Logic to create an order
-        // Returns true if the creation is successful, otherwise returns false
-        return true; // Change this with real logic
+    async createOrder(req:Request,res:Response): Promise<Response> {
+       try{
+        const {province, canton, district, specificAddress, shippingFee, products, userId, imageUrl} = req.body;
+        const OrderControllerObject = new OrderController();
+        const response = await OrderControllerObject.createOrder(province, canton, district, specificAddress, shippingFee, products, userId, imageUrl);
+        return response
+        ? res.status(200).json({response: "Ok"})
+        : res.status(400).json({response: undefined});
+       } catch(error:any){
+        return res.status(400).json({ message: error[0] ? error[0].message : undefined });
+       }
     }
 
     // Method to edit an order
-    editOrder(id: number, status: string): boolean {
-        // Logic to edit an order
-        // Returns true if the editing is successful, otherwise returns false
-        return true; // Change this with real logic
+    async editOrder(req: Request, res:Response): Promise<Response> {
+        try{
+            const {id, status} = req.body;
+            const OrderControllerObject = new OrderController();
+            const response = await OrderControllerObject.editOrder(id, status);
+            return response 
+            ? res.status(200).json({response: "Ok"}) 
+            : res.status(400).json({response:  undefined});
+        } catch (error: any) {
+            return res.status(400).json({ message: error[0] ? error[0].message : undefined });
+        }
+    }
+
+    async getOrderList(req: Request, res:Response): Promise<Response> {
+        try{
+            const OrderControllerObject = new OrderController();
+            const response = await OrderControllerObject.getOrderList();
+            return res.json(response);
+        } catch (error: any) {
+            return res.status(400).json({ message: error[0] ? error[0].message : undefined });
+        }
+    }
+
+    async getOrderDetails(req: Request, res:Response): Promise<Response> {
+        try{
+            const id = Number(req.params.id);
+            const OrderControllerObject = new OrderController();
+            const response = await OrderControllerObject.getOrderDetails(id);
+            return res.status(200).json(response);
+        } catch (error: any) {
+            return res.status(400).json({ message: error[0] ? error[0].message : undefined });
+        }
+    }
+
+    async deleteOrder(req: Request, res:Response): Promise<Response> {
+        try{
+            const id = Number(req.params.id);
+            const OrderControllerObject = new OrderController();
+            const response = await OrderControllerObject.deleteOrder(id);
+            return response 
+            ? res.status(200).json({response: "Ok"}) 
+            : res.status(400).json({response:  undefined});
+        } catch (error: any) {
+            return res.status(400).json({ message: error[0] ? error[0].message : undefined });
+        }
     }
 
     // Method to add a product to the shopping cart

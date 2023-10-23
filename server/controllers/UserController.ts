@@ -1,7 +1,8 @@
 import { UserDAO } from "../DAOS/UserDAO";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
 export class UserController {
-    private UserDAO: UserDAO
+    private UserDAO: UserDAO;
     constructor() {
         // this.users = [];
         this.UserDAO = new UserDAO();
@@ -20,25 +21,60 @@ export class UserController {
     }
 
     // Method to log in
-    async login(email: string, password: string): Promise<boolean> {
-        try {
-            const response = await this.UserDAO.login(email, password)
-            return response
-        } catch (error) {
-            return false   
-        }
+    async logIn(email: string, password: string): Promise<any> {
+        const response = await this.UserDAO.logIn(email, password);
+        return response;
+    }
+
+    // Method to check if the user is logged in
+    async loggedIn(token: string): Promise<any> {
+        return new Promise((resolve, reject) => {
+            if (!token) {
+                resolve({ loggedIn: false });
+              }
+
+              jwt.verify(token, 'DuendeMaquillista', (err, decoded) => {
+                if (err) {
+                    console.log(err);
+                    resolve({ loggedIn: false });
+                } else {
+                    const userData = decoded as JwtPayload;
+
+                    if (!userData) {
+                        resolve({ loggedIn: false });
+                    } else {
+                        resolve({
+                            loggedIn: true,
+                            user: {
+                                id: userData.id,
+                                name: userData.name,
+                                lastName: userData.lastName,
+                                email: userData.email,
+                                userType: userData.typeUser,
+                            }
+                        });
+                    };                    
+                }
+              });
+        });
     }
 
     // Method to register a new user
-    async registerUser(name: string, lastName1: string, lastName2: string, email: string, password: string): Promise<boolean> {
-        try {
-            const response = await this.UserDAO.registerUser(name, lastName1, lastName2, email, password)
-            console.log(response)
-            return true;
-        } catch (error) {
-            console.log(error)
-            return false
-        }
+    async registerUser(
+        name: string,
+        lastName1: string,
+        lastName2: string,
+        email: string,
+        password: string
+    ): Promise<any> {
+        const response = await this.UserDAO.registerUser(
+            name,
+            lastName1,
+            lastName2,
+            email,
+            password
+        );
+        return response;
     }
 
     // Method to edit user information

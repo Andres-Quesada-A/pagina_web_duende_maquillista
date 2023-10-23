@@ -1,11 +1,12 @@
 --------------------------------------------------------------------------
 -- Author:      Fabián Vargas
 -- Date:        23-10-12
--- Description: Soft deletes an order.
+-- Description: Updates the status of an order.
 --------------------------------------------------------------------------
 
-CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_Orders_Delete]
-    @IN_OrderID INT
+CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_Orders_Edit]
+    @IN_OrderID INT,
+    @IN_NewStatus VARCHAR(32)
 AS
 BEGIN
     SET NOCOUNT ON;         -- No metadata returned
@@ -13,6 +14,9 @@ BEGIN
     -- ERROR HANDLING
     DECLARE @ErrorNumber INT, @ErrorSeverity INT, @ErrorState INT, @Message VARCHAR(200);
     DECLARE @transactionBegun BIT = 0;
+
+    -- VARIABLE DECLARATION
+    DECLARE @IN_NewStatusID INT= NULL;
 
     BEGIN TRY
 
@@ -29,6 +33,17 @@ BEGIN
             RAISERROR('The indicated order does not exist %d.', 16, 1, @IN_OrderID)
         END
 
+        SELECT @IN_NewStatusID = ID
+        FROM OrderStatuses
+        WHERE Description = @IN_NewStatus
+        AND Deleted = 0
+
+        -- Verify if new status ID is valid
+        IF @IN_NewStatusID IS NULL
+        BEGIN
+            RAISERROR('Invalid status ID %d.', 16, 1, @IN_NewStatusID)
+        END
+
         -- TRANSACTION BEGUN
         IF @@TRANCOUNT = 0
         BEGIN
@@ -36,9 +51,9 @@ BEGIN
             BEGIN TRANSACTION;
         END;
 
-        -- Soft delete order
+        -- Update order status
         UPDATE Orders
-        SET Deleted = 1
+        SET orderStatusId = @IN_NewStatusID
         WHERE ID = @IN_OrderID;
 
         -- TRANSACTION COMMITTED

@@ -6,12 +6,32 @@ import { toast } from "react-toastify";
 import ImagePlaceholder from "../../images/placeholderImage.jpeg";
 import SwitchFormInputs from "../../components/form/SwitchFormInputs";
 import { CreateProduct } from "../../Structures/addProduct";
+import axios from "axios";
 
 function AddProduct() {
   const [file, setFile] = useState("");
   const [data, setData] = useState({});
   const [previewURL, setPreviewURL] = useState("");
   const [per, setPerc] = useState(null);
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const getData = async () => {
+      const APIURL = "http://localhost:1234/api/get_product_category_list";
+      try {
+        const response = await axios.get(APIURL);
+        const TempCategories = response.data;
+        const Formated = TempCategories.map((item) => ({
+          value: item.description,
+          label: item.description,
+        }));
+        setCategories([{ label: "Seleccione", value: "" }, ...Formated]);
+      } catch (error) {
+        toast.info("No hay categorias", messageSettings);
+      }
+    };
+    getData();
+  }, []);
 
   useEffect(() => {
     const uploadFile = () => {
@@ -30,7 +50,7 @@ function AddProduct() {
         },
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            setData((prev) => ({ ...prev, img: downloadURL }));
+            setData((prev) => ({ ...prev, imageUrl: downloadURL }));
           });
         }
       );
@@ -50,64 +70,104 @@ function AddProduct() {
     }
   };
 
-  const handleChage = (e) => {
+  const handleChange = (e) => {
     setData({ ...data, [e.target.id]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const APIURL = "http://localhost:1234/api/create_product";
+
     try {
-        
+      await axios.post(APIURL, {...data,available: data.available == "true" });
+      toast.success("Producto creado", messageSettings);
     } catch (error) {
-        
+      toast.error("Ha ocurrido un error", messageSettings);
     }
-  }
+  };
+  
   return (
-    <div className="w-full min-h-screen flex flex-col items-center mt-16 py-14">
+    <div className="w-full min-h-screen flex flex-col items-center mt-16 py-14 px-5">
       <header className="w-full max-w-4xl">
         <h1 className="font-medium text-3xl text-indigo-500">
           Añadir producto
         </h1>
         <hr className="border-indigo-500 border-1 mt-2"></hr>
       </header>
-      <form className="w-full max-w-4xl grid grid-cols-2 gap-10 mt-10 pb-10" onSubmit={handleSubmit}>
+      <form
+        className="w-full max-w-4xl grid grid-cols-2 gap-10 mt-10 pb-10"
+        onSubmit={handleSubmit}
+      >
         <div className="grid grid-cols-1 gap-2">
-          <h4 className="text-xl font-medium text-gray-700 w-full">Datos del producto</h4>
+          <h4 className="text-xl font-medium text-gray-700 w-full">
+            Datos del producto
+          </h4>
           <SwitchFormInputs
-            HandleChange={handleChage}
+            HandleChange={handleChange}
             structureForm={CreateProduct}
             data={data}
           />
+          <div>
+            <label className="block mb-2 text-base font-medium text-gray-900 ">
+              Categoria
+            </label>
+            <select
+              id="category"
+              onChange={handleChange}
+              required={true}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:outline-none focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100 block w-full p-2.5 "
+            >
+              {categories &&
+                categories.map((item, index) => (
+                  <option key={index} value={item.value}>
+                    {item.label}
+                  </option>
+                ))}
+            </select>
+          </div>
           <div className="flex gap-5 mt-4">
             <label className="font-medium">Estado</label>
             <div>
               <input
                 type="radio"
-                id="state"
-                value="1"
+                id="available"
+                value={true}
                 name="state"
-                onChange={handleChage}
+                onChange={handleChange}
               />
               <label className="ml-2">Disponible</label>
               <br />
               <input
                 type="radio"
-                id="state"
-                value="0"
+                id="available"
+                value={false}
                 name="state"
-                onChange={handleChage}
+                onChange={handleChange}
               />
               <label className="ml-2">No disponible</label>
               <br />
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4 mt-5">
-            <button className="text-lg w-full py-2 rounded-md bg-indigo-500 text-white hover:bg-indigo-400 transition-colors" type="submit" >Confirmar</button>
-            <button className="text-lg w-full py-2 rounded-md text-indigo-500 bg-transparent hover:bg-indigo-500 hover:text-white border-2 border-indigo-500 transition-colors" onClick={() => history.back()}>Cancelar</button>
+            <button
+              className="text-lg w-full py-2 rounded-md bg-indigo-500 text-white hover:bg-indigo-400 transition-colors"
+              type="submit"
+              disabled={per < 100 || !per}
+            >
+              Confirmar
+            </button>
+            <button
+              className="text-lg w-full py-2 rounded-md text-indigo-500 bg-transparent hover:bg-indigo-500 hover:text-white border-2 border-indigo-500 transition-colors"
+              onClick={() => history.back()}
+            >
+              Cancelar
+            </button>
           </div>
         </div>
         <div className="flex flex-col gap-5 items-center">
-          <label className="text-xl font-medium text-gray-700 w-full">Imagen</label>
+          <label className="text-xl font-medium text-gray-700 w-full">
+            Imagen
+          </label>
           <img
             src={previewURL ? previewURL : ImagePlaceholder}
             alt="Preview"

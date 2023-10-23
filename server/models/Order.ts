@@ -1,33 +1,35 @@
 import { Address } from "./Address";
-import { STATES } from "./STATES";
+import { STATUSES } from "./STATUSES";
 import { ShoppingCart } from "./ShoppingCart";
 import { User } from "./User";
+import { OrderProduct } from "./OrderProduct";
+import { Product } from "./Product";
 
 export class Order {
     private id: number;
-    private cart: ShoppingCart;
+    private products: OrderProduct[];
     private timestamp: string;
     private voucherImageUrl: string;
     private client: User;
     private address: Address;
-    private state: STATES;
+    private status: STATUSES;
   
     constructor(
       id: number,
-      cart: ShoppingCart,
+      products: OrderProduct[],
       timestamp: string,
       voucherImageUrl: string,
       client: User,
       address: Address,
-      state: STATES
+      status: STATUSES
     ) {
       this.id = id;
-      this.cart = cart;
+      this.products = products;
       this.timestamp = timestamp;
       this.voucherImageUrl = voucherImageUrl;
       this.client = client;
       this.address = address;
-      this.state = state;
+      this.status = status;
     }
   
     getId(): number {
@@ -38,12 +40,12 @@ export class Order {
       this.id = id;
     }
   
-    getCart(): ShoppingCart {
-      return this.cart;
+    getProducts(): OrderProduct[] {
+      return this.products;
     }
   
-    setCart(cart: ShoppingCart) {
-      this.cart = cart;
+    setProducts(products: OrderProduct[]) {
+      this.products = products;
     }
   
     getTimestamp(): string {
@@ -78,11 +80,11 @@ export class Order {
       this.address = address;
     }
   
-    getState(): STATES {
-      return this.state;
+    getStatus(): STATUSES {
+      return this.status;
     }
   
-    setState(state: STATES) {
-      this.state = state;
+    setStatus(status: STATUSES) {
+      this.status = status;
     }
   }

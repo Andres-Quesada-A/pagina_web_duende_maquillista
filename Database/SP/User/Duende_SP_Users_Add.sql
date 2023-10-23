@@ -19,14 +19,16 @@ BEGIN
     DECLARE @ErrorNumber INT, @ErrorSeverity INT, @ErrorState INT, @Message VARCHAR(200);
     DECLARE @transactionBegun BIT = 0;
 
+    -- VARIABLE DECLARATION
+    DECLARE @createdId INT = NULL;
+
     BEGIN TRY
         -- VALIDATIONS
         IF LTRIM(RTRIM(@IN_name)) = '' OR
            LTRIM(RTRIM(@IN_lastName1)) = '' OR
            LTRIM(RTRIM(@IN_lastName2)) = '' OR
            LTRIM(RTRIM(@IN_email)) = '' OR
-           LTRIM(RTRIM(@IN_password)) = '' OR
-           LTRIM(RTRIM(@IN_token)) = ''
+           LTRIM(RTRIM(@IN_password)) = ''
         BEGIN
             RAISERROR('Todos los campos son obligatorios. Por favor, complete la información.', 16, 1);
         END;
@@ -57,11 +59,26 @@ BEGIN
             0-- Assuming a new user is not deleted
         );
 
+        SET @createdId = SCOPE_IDENTITY();
+
         -- COMMIT TRANSACTION
         IF @transactionBegun = 1
         BEGIN
             COMMIT TRANSACTION;
         END;
+
+        SELECT  [id],
+                [name],
+                [lastName1],
+                [lastName2],
+                [email],
+                [password],
+                [token],
+                [administrator],
+                [deleted]
+        FROM [dbo].[Users]
+        WHERE [id] = @createdId;
+
     END TRY
     BEGIN CATCH
         SET @ErrorNumber = ERROR_NUMBER();

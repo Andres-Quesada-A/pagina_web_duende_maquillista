@@ -1,44 +1,27 @@
 --------------------------------------------------------------------------
--- Author:      Fabián Vargas
--- Date:        23-10-12
--- Description: Updates the status of an order.
+-- Autor:       Paúl Rodríguez García
+-- Fecha:       2023-10-23
+-- Descripción: Procedure to edit a user's token
 --------------------------------------------------------------------------
 
-CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_Order_Status]
-    @OrderID INT,
-    @NewStatusID INT
+CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_Users_EditToken]
+    -- Parameters
+    @IN_userId              INT,
+    @IN_token               VARCHAR(300)
 AS
 BEGIN
-    SET NOCOUNT ON;         -- No metadata returned
+    SET NOCOUNT ON; -- No metadata returned
 
     -- ERROR HANDLING
     DECLARE @ErrorNumber INT, @ErrorSeverity INT, @ErrorState INT, @Message VARCHAR(200);
     DECLARE @transactionBegun BIT = 0;
 
     BEGIN TRY
-
         -- VALIDATIONS
-
-        -- Verify if order exists
-        IF NOT EXISTS(
-            SELECT 1
-            FROM Orders O
-            WHERE O.ID = @OrderID
-                AND O.Deleted = 0
-            )
+        IF(LTRIM(RTRIM(@IN_token)) = '')
         BEGIN
-            RAISERROR('The indicated order does not exist %d.', 16, 1, @OrderID)
-        END
-
-        -- Verify if new status ID is valid
-        IF NOT EXISTS(
-            SELECT 1
-            FROM OrderStatuses OS
-            WHERE OS.ID = @NewStatusID
-            )
-        BEGIN
-            RAISERROR('Invalid status ID %d.', 16, 1, @NewStatusID)
-        END
+            RAISERROR('El token no puede estar vacío.', 16, 1);
+        END;
 
         -- TRANSACTION BEGUN
         IF @@TRANCOUNT = 0
@@ -47,12 +30,14 @@ BEGIN
             BEGIN TRANSACTION;
         END;
 
-        -- Update order status
-        UPDATE Orders
-        SET orderStatusId = @NewStatusID
-        WHERE ID = @OrderID;
+            -- UPDATE USER
+            UPDATE [dbo].[Users]
+            SET
+                token = LTRIM(RTRIM(@IN_token))
+            WHERE
+                id = @IN_userId;
 
-        -- TRANSACTION COMMITTED
+        -- COMMIT TRANSACTION
         IF @transactionBegun = 1
         BEGIN
             COMMIT TRANSACTION;
@@ -60,7 +45,6 @@ BEGIN
 
     END TRY
     BEGIN CATCH
-
         SET @ErrorNumber = ERROR_NUMBER();
         SET @ErrorSeverity = ERROR_SEVERITY();
         SET @ErrorState = ERROR_STATE();
@@ -89,6 +73,5 @@ BEGIN
 
         RAISERROR('%s - Error Number: %i', 
             @ErrorSeverity, @ErrorState, @Message, @ErrorNumber);
-
     END CATCH;
 END;

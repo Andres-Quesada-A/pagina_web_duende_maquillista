@@ -36,18 +36,18 @@ export class ImageDAO {
                         resolve(categories);
                     } else {
                         // case when the query did not return any data
-                        const damage: { error: boolean, message: string | undefined }[] = [{error: true, message: String(result.message)}];
+                        const damage: { error: boolean, message: string | undefined }[] = [{ error: true, message: String(result.message) }];
                         reject(damage);
                     }
 
                 }).catch((error) => {
                     //fail in the execution of the query
-                    damage.push({error: true, message: String(error.message)});
+                    damage.push({ error: true, message: String(error.message) });
                     reject(damage);
                 });
             } catch (error) {
                 // any errors that occur during the process
-                damage.push({error: true, message: undefined})
+                damage.push({ error: true, message: undefined })
                 reject(damage)
             }
         });
@@ -69,12 +69,12 @@ export class ImageDAO {
 
                 }).catch((error) => {
                     //fail in the execution of the query
-                    damage.push({error: true, message: String(error.message)});
+                    damage.push({ error: true, message: String(error.message) });
                     reject(damage);
                 });
             } catch (error) {
                 // any errors that occur during the process
-                damage.push({error: true, message: undefined})
+                damage.push({ error: true, message: undefined })
                 reject(damage)
             }
         });
@@ -97,12 +97,12 @@ export class ImageDAO {
 
                 }).catch((error) => {
                     //fail in the execution of the query
-                    damage.push({error: true, message: String(error.message)});
+                    damage.push({ error: true, message: String(error.message) });
                     reject(damage);
                 });
             } catch (error) {
                 // any errors that occur during the process
-                damage.push({error: true, message: undefined})
+                damage.push({ error: true, message: undefined })
                 reject(damage)
             }
         });
@@ -124,12 +124,12 @@ export class ImageDAO {
 
                 }).catch((error) => {
                     //fail in the execution of the query
-                    damage.push({error: true, message: String(error.message)});
+                    damage.push({ error: true, message: String(error.message) });
                     reject(damage);
                 });
             } catch (error) {
                 // any errors that occur during the process
-                damage.push({error: true, message: undefined})
+                damage.push({ error: true, message: undefined })
                 reject(damage)
             }
         });
@@ -155,12 +155,12 @@ export class ImageDAO {
 
                 }).catch((error) => {
                     //fail in the execution of the query
-                    damage.push({error: true, message: String(error.message)});
+                    damage.push({ error: true, message: String(error.message) });
                     reject(damage);
                 });
             } catch (error) {
                 // any errors that occur during the process
-                damage.push({error: true, message: undefined})
+                damage.push({ error: true, message: undefined })
                 reject(damage)
             }
         });
@@ -184,12 +184,12 @@ export class ImageDAO {
 
                 }).catch((error) => {
                     //fail in the execution of the query
-                    damage.push({error: true, message: String(error.message)});
+                    damage.push({ error: true, message: String(error.message) });
                     reject(damage);
                 });
             } catch (error) {
                 // any errors that occur during the process
-                damage.push({error: true, message: undefined})
+                damage.push({ error: true, message: undefined })
                 reject(damage)
             }
         });
@@ -212,12 +212,12 @@ export class ImageDAO {
 
                 }).catch((error) => {
                     //fail in the execution of the query
-                    damage.push({error: true, message: String(error.message)});
+                    damage.push({ error: true, message: String(error.message) });
                     reject(damage);
                 });
             } catch (error) {
                 // any errors that occur during the process
-                damage.push({error: true, message: undefined})
+                damage.push({ error: true, message: undefined })
                 reject(damage)
             }
         });
@@ -225,15 +225,14 @@ export class ImageDAO {
 
     // Method to create an image
     async createImage(
-        imageCategory: string, 
-        imageSubcategory: string, 
-        name: string, 
-        description: string, 
-        tags: string, 
-        imageUrl: string): Promise<Image | undefined>
-    {
+        imageCategory: string,
+        imageSubcategory: string,
+        name: string,
+        description: string,
+        tags: string,
+        imageUrl: string): Promise<Image | undefined> {
         const SQL = ConnectionDAO.getInstance();
-        
+
         const damage: { message: string | undefined }[] = [];
 
         // Define the schema of the TVP
@@ -245,39 +244,39 @@ export class ImageDAO {
 
         return new Promise((resolve, reject) => {
             try {
-                SQL.query("Duende_SP_Image_Add", 
-                { 
-                    "IN_ImageCategory": imageCategory, 
-                    "IN_ImageSubcategory": imageSubcategory, 
-                    "IN_Name": name, 
-                    "IN_Description": description, 
-                    "IN_Tags": tvpSchema, 
-                    "IN_ImageUrl": imageUrl 
-                })
-                .then((result) => {
-                    //query was successful
-                    ;
-                    const image: any = result?.recordset[0];
-                    const imageObj = new Image(
-                        image.id,
-                        image.name,
-                        image.date,
-                        image.description,
-                        image.imageCategory,
-                        image.imageSubcategory, 
-                        image.tags, 
-                        image.imageUrl
+                SQL.query("Duende_SP_Image_Add",
+                    {
+                        "IN_ImageCategory": imageCategory,
+                        "IN_ImageSubcategory": imageSubcategory,
+                        "IN_Name": name,
+                        "IN_Description": description,
+                        "IN_Tags": tvpSchema,
+                        "IN_ImageUrl": imageUrl
+                    })
+                    .then((result) => {
+                        //query was successful
+                        ;
+                        const image: any = result?.recordset[0];
+                        const imageObj = new Image(
+                            image.id,
+                            image.name,
+                            image.date,
+                            image.description,
+                            image.imageCategory,
+                            image.imageSubcategory,
+                            image.tags,
+                            image.imageUrl
                         );
-                    resolve(imageObj);
+                        resolve(imageObj);
 
-                }).catch((error) => {
-                    //fail in the execution of the query
-                    damage.push({message: String(error.message)});
-                    reject(damage);
-                });
+                    }).catch((error) => {
+                        //fail in the execution of the query
+                        damage.push({ message: String(error.message) });
+                        reject(damage);
+                    });
             } catch (error) {
                 // any errors that occur during the process
-                damage.push({ message: undefined})
+                damage.push({ message: undefined })
                 reject(damage)
             }
         });
@@ -286,13 +285,12 @@ export class ImageDAO {
     // Method to edit an image
     async editImage(
         id: number,
-        imageCategory: string, 
-        imageSubcategory: string, 
-        name: string, 
+        imageCategory: string,
+        imageSubcategory: string,
+        name: string,
         description: string,
-        tags: string, 
-        imageUrl: string): Promise<boolean> 
-    {
+        tags: string,
+        imageUrl: string): Promise<boolean> {
         const SQL = ConnectionDAO.getInstance();
         const damage: { message: string | undefined }[] = [];
 
@@ -305,28 +303,28 @@ export class ImageDAO {
 
         return new Promise((resolve, reject) => {
             try {
-                SQL.query("Duende_SP_Image_Edit", 
-                {
-                    "IN_ImageId": id,
-                    "IN_ImageCategory": imageCategory, 
-                    "IN_ImageSubcategory": imageSubcategory, 
-                    "IN_Name": name, 
-                    "IN_Description": description,
-                    "IN_Tags": tvpSchema,  
-                    "IN_ImageUrl": imageUrl 
-                })
-                .then((result) => {
-                    //query was successful
-                    resolve(true);
+                SQL.query("Duende_SP_Image_Edit",
+                    {
+                        "IN_ImageId": id,
+                        "IN_ImageCategory": imageCategory,
+                        "IN_ImageSubcategory": imageSubcategory,
+                        "IN_Name": name,
+                        "IN_Description": description,
+                        "IN_Tags": tvpSchema,
+                        "IN_ImageUrl": imageUrl
+                    })
+                    .then((result) => {
+                        //query was successful
+                        resolve(true);
 
-                }).catch((error) => {
-                    //fail in the execution of the query
-                    damage.push({message: String(error.message)});
-                    reject(damage);
-                });
+                    }).catch((error) => {
+                        //fail in the execution of the query
+                        damage.push({ message: String(error.message) });
+                        reject(damage);
+                    });
             } catch (error) {
                 // any errors that occur during the process
-                damage.push({ message: undefined})
+                damage.push({ message: undefined })
                 reject(damage)
             }
         });
@@ -339,22 +337,22 @@ export class ImageDAO {
 
         return new Promise((resolve, reject) => {
             try {
-                SQL.query("Duende_SP_Image_Delete", 
-                { 
-                    "IN_ImageId": id
-                })
-                .then((result) => {
-                    //query was successful
-                    resolve(true);
+                SQL.query("Duende_SP_Image_Delete",
+                    {
+                        "IN_ImageId": id
+                    })
+                    .then((result) => {
+                        //query was successful
+                        resolve(true);
 
-                }).catch((error) => {
-                    //fail in the execution of the query
-                    damage.push({message: String(error.message)});
-                    reject(damage);
-                });
+                    }).catch((error) => {
+                        //fail in the execution of the query
+                        damage.push({ message: String(error.message) });
+                        reject(damage);
+                    });
             } catch (error) {
                 // any errors that occur during the process
-                damage.push({ message: undefined})
+                damage.push({ message: undefined })
                 reject(damage)
             }
         });
@@ -367,33 +365,33 @@ export class ImageDAO {
 
         return new Promise((resolve, reject) => {
             try {
-                SQL.query("Duende_SP_Image_Details", 
-                { 
-                    "IN_ImageId": id
-                })
-                .then((result) => {
-                    //query was successful
-                    const image: any = result?.recordset[0];
-                    const imageObj = new Image(
-                        image.ImageID,
-                        image.Name,
-                        image.Date,
-                        image.Description, 
-                        image.Category, // is wrong
-                        image.Subcategory, 
-                        image.Tags, 
-                        image.URL
+                SQL.query("Duende_SP_Image_Details",
+                    {
+                        "IN_ImageId": id
+                    })
+                    .then((result) => {
+                        //query was successful
+                        const image: any = result?.recordset[0];
+                        const imageObj = new Image(
+                            image.ImageID,
+                            image.Name,
+                            image.Date,
+                            image.Description,
+                            image.Category, // is wrong
+                            image.Subcategory,
+                            image.Tags,
+                            image.URL
                         );
-                    resolve(imageObj);
+                        resolve(imageObj);
 
-                }).catch((error) => {
-                    //fail in the execution of the query
-                    damage.push({message: String(error.message)});
-                    reject(damage);
-                });
+                    }).catch((error) => {
+                        //fail in the execution of the query
+                        damage.push({ message: String(error.message) });
+                        reject(damage);
+                    });
             } catch (error) {
                 // any errors that occur during the process
-                damage.push({ message: undefined})
+                damage.push({ message: undefined })
                 reject(damage)
             }
         });
@@ -403,31 +401,31 @@ export class ImageDAO {
         const SQL = ConnectionDAO.getInstance();
         const damage: { message: string | undefined }[] = [];
         return new Promise((resolve, reject) => {
-            try{
+            try {
                 SQL.query("Duende_SP_Image_List")
-                .then((result) => {
-                    //query was successful
-                    const images: Image[] = result?.recordset.map((row: any) => {
-                        return new Image(
-                            row.ImageID,
-                            row.Name,
-                            row.Date,
-                            row.Description, 
-                            row.Category, // is wrong
-                            row.Subcategory, 
-                            row.Tags, 
-                            row.URL
+                    .then((result) => {
+                        //query was successful
+                        const images: Image[] = result?.recordset.map((row: any) => {
+                            return new Image(
+                                row.ImageID,
+                                row.Name,
+                                row.Date,
+                                row.Description,
+                                row.Category, // is wrong
+                                row.Subcategory,
+                                row.Tags,
+                                row.URL
                             );
+                        });
+                        resolve(images);
+                    }).catch((error) => {
+                        //fail in the execution of the query
+                        damage.push({ message: String(error.message) });
+                        reject(damage);
                     });
-                    resolve(images);
-                }).catch((error) => {
-                    //fail in the execution of the query
-                    damage.push({message: String(error.message)});
-                    reject(damage);
-                });
             } catch (error) {
                 // any errors that occur during the process
-                damage.push({ message: undefined})
+                damage.push({ message: undefined })
                 reject(damage)
             }
         });

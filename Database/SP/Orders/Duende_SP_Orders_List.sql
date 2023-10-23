@@ -15,21 +15,44 @@ BEGIN
 
     BEGIN TRY
         -- Retrieve order list
-        SELECT 
+         SELECT 
             O.id AS OrderID,
             OS.description AS OrderStatus,
             U.id AS UserID,
-            A.id AS AddressID,
+            U.name as UserName,
+            U.lastname1 AS UserLastname1,
+            U.lastname2 AS UserLastname2,
+            U.email AS UserEmail,
+            U.password AS UserPassword,
+            U.token AS UserToken,   
+            A.specificAddress AS 'Address',
+            A.province AS 'Province',
+            A.canton AS 'Canton',
+            A.district AS 'District',
+            A.shippingFee AS 'ShippingFee',
             O.voucherImageUrl,
             O.timestamp,
-            O.deleted
-        FROM 
-            Orders O
+            (
+                SELECT P.id,
+                    P.name,
+                    P.description,
+                    PC.Description as category,
+                    P.price,
+                    P.imageUrl,
+                    P.weight,
+                    P.available,
+                    OP.amount
+                    FROM Products P
+                    INNER JOIN ProductCategories as PC ON P.categoryId = PC.id
+                    INNER JOIN OrderProducts OP ON P.id = OP.productId
+                    WHERE OP.orderId = O.id
+                    FOR JSON PATH
+            ) AS Products
+            FROM Orders O
             INNER JOIN OrderStatuses OS ON O.orderStatusId = OS.id
             INNER JOIN Users U ON O.userId = U.id
             INNER JOIN Addresses A ON O.addressId = A.id
-        WHERE 
-            O.deleted = 0;
+            WHERE O.deleted = 0;
 
     END TRY
     BEGIN CATCH

@@ -1,15 +1,26 @@
-import { useState } from 'react'
+import axios from "axios";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import { messageSettings } from "../../utils/messageSettings";
+import Confirmation from "../Modals/Confirmation";
 
-function DeleteCategory({Categories}) {
+function DeleteCategory({ Categories, APIURL }) {
   const [data, setData] = useState({});
   const HandleChange = (e) => {
     setData({ ...data, [e.target.id]: e.target.value });
   };
-  const HandleSubmit = (e) => {
-    e.preventDefault();
+  const HandleDelete = async () => {
+    try {
+      axios.delete(`${APIURL}/${data.category}`)
+      toast.success("Categoria eliminada", messageSettings)
+    } catch (error) {
+      toast.error("No se puede eliminar la categoria", messageSettings)
+    }
   };
+
+  console.log(data);
   return (
-    <form className="flex flex-col gap-4" onSubmit={HandleSubmit}>
+    <section className="flex flex-col gap-4">
       <h4 className="text-xl font-medium">Eliminar Categoria</h4>
       <div>
         <label className="block mb-2 text-base font-medium text-gray-900 ">
@@ -23,17 +34,21 @@ function DeleteCategory({Categories}) {
         >
           {Categories &&
             Categories.map((item, index) => (
-              <option key={index} value={item.id}>
-                {item.description}
+              <option key={index} value={item.value}>
+                {item.label}
               </option>
             ))}
         </select>
       </div>
-      <button className="flex justify-center items-center mx-auto text-white bg-indigo-500 hover:bg-indigo-400 transition-colors rounded-md w-full max-w-[280px] font-medium py-2">
-        Eliminar
-      </button>
-    </form>
+      <Confirmation
+        title={"Confirmación"}
+        description={
+          "¿Está seguro de proceder con la eliminación? Esta acción no se puede deshacer."
+        }
+        handleDelete={HandleDelete}
+      />
+    </section>
   );
 }
 
-export default DeleteCategory
+export default DeleteCategory;

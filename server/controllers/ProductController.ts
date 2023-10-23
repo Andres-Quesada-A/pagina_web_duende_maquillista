@@ -78,6 +78,7 @@ export class ProductController {
         const response = await this.ProductDAO.createProductCategory(
             description
         );
+        console.log("response createProductCategory", response)
         return response;
     }
 
