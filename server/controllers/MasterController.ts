@@ -47,20 +47,45 @@ export class MasterController {
 
     // Method to register a new user
     async registerUser(req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
-        const {name, lastName1, lastName2, email, password} = req.body;
-        const UserControllerObject = new UserController()
-        const response = await UserControllerObject.registerUser(name, lastName1, lastName2, email, password)
-        console.log(response, "response")
-        return response ? res.status(200).json({response: true}) : res.status(400).json({response: false}); // Change this with real logic
+        try {
+            const { name, lastName1, lastName2, email, password } = req.body;
+            const UserControllerObject = new UserController();
+            const response = await UserControllerObject.registerUser(name, lastName1, lastName2, email, password);
+            const token = response.token;
+            delete response.token;
+            res.cookie("token", token, { httpOnly: true });
+            return res.status(200).json(response);
+        } catch (error: any) {
+            return res.status(400).json({ message: error[0] ? error[0].message : undefined });
+        }
     }
 
     // Method to log in
     // login(email: string, password: string): boolean {
-    async login(req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
-        const {email, password} = req.params
-        const UserControllerObject = new UserController()
-        const response = await UserControllerObject.login(email, password)
-        return response ? res.status(200).json({response: true}) : res.status(400).json({response: false});
+    async logIn(req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
+        try {
+            const { email, password } = req.params;
+            const UserControllerObject = new UserController();
+            const response = await UserControllerObject.logIn(email, password);
+            const token = response.token;
+            delete response.token;
+            res.cookie("token", token, { httpOnly: true });
+            return res.status(200).json(response);
+        } catch (error: any) {
+            return res.status(400).json({ message: error[0] ? error[0].message : undefined });
+        }
+    }
+
+    // Method to check if the user is logged in
+    async loggedIn(req: Request, res: Response): Promise<Response> {
+        try {
+            const UserControllerObject = new UserController();
+            const token = req.cookies.token;
+            const response = await UserControllerObject.loggedIn(token);
+            return res.status(200).json(response);
+        } catch (error: any) {
+            return res.status(400).json({ message: error[0] ? error[0].message : undefined });
+        }
     }
 
     // Method to get a list of products

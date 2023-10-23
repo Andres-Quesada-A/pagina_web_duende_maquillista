@@ -1,7 +1,7 @@
 import express, {json} from 'express'; // importar express y otras dependencias
 import cors from 'cors'
+import cookieParser from 'cookie-parser';
 // import { corsMiddleware } from './middlewares/cors'; // importar el middleware de CORS
-
 
 // ROUTES
 import UserRouter from './routes/User.routes'
@@ -14,6 +14,7 @@ import OrderRouter from './routes/Order.routes';
 const app = express(); // crear una instancia de la aplicación Express
 app.use(json()); // usar middleware para manejar datos JSON
 app.use(cors());
+app.use(cookieParser());
 // app.use(corsMiddleware()); // usar middleware de CORS
 app.disable('x-powered-by'); // desactivar el encabezado "x-powered-by"
 

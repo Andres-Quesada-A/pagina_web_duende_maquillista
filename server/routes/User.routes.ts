@@ -1,14 +1,15 @@
-import {Router} from 'express'
+import { Router } from "express";
 
-import {MasterController} from '../controllers/MasterController'
+import { MasterController } from "../controllers/MasterController";
 
-const MasterControllerObject = new MasterController()
+const MasterControllerObject = new MasterController();
 
-const UserRouter = Router()
+const UserRouter = Router();
 
-UserRouter.get(`/login/:email/:password`, MasterControllerObject.login)
-UserRouter.post(`/register_user`, MasterControllerObject.registerUser)
-UserRouter.put(`/update_user`, MasterControllerObject.editUser)
+UserRouter.post(`/login/:email/:password`, MasterControllerObject.logIn);
+UserRouter.get(`/login`, MasterControllerObject.loggedIn);
+UserRouter.post(`/register_user`, MasterControllerObject.registerUser);
+UserRouter.put(`/update_user`, MasterControllerObject.editUser);
 // UserRouter.delete(`/delete_user/:idUser`, )
 
-export default UserRouter
+export default UserRouter;
