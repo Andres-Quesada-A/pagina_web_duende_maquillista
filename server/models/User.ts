@@ -73,11 +73,11 @@ export class User {
       this.password = password;
     }
   
-    getYoken(): string {
+    getToken(): string {
       return this.token;
     }
   
-    setYoken(token: string) {
+    setToken(token: string) {
       this.token = token;
     }
   }
