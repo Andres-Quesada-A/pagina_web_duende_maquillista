@@ -172,6 +172,7 @@ export class MasterController {
                 ? res.status(200).json({ message: "Ok" })
                 : res.status(400).json({ message: undefined });
         } catch (error: any) {
+            console.log("error en master controller")
             return res.status(400).json({ message: error[0] ? error[0].message : undefined } );
         }
     }

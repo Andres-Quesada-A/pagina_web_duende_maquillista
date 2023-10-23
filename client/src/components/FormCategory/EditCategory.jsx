@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import InputCustom from '../form/InputCustom';
 
-function EditCategory({ Categories}) {
+function EditCategory({ Categories, APIURL}) {
   const [data, setData] = useState({});
   const HandleChange = (e) => {
     setData({ ...data, [e.target.id]: e.target.value });
@@ -24,8 +24,8 @@ function EditCategory({ Categories}) {
         >
           {Categories &&
             Categories.map((item, index) => (
-              <option key={index} value={item.id}>
-                {item.description}
+              <option key={index} value={item.value}>
+                {item.label}
               </option>
             ))}
         </select>

@@ -48,3 +48,22 @@ export const Plane = (props) => {
     </svg>
   );
 };
+
+export function CloseIcon(props) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M15 9l-6 6m6 0L9 9m3 12a9 9 0 100-18 9 9 0 000 18z"
+        stroke="currentColor"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}

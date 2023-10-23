@@ -222,25 +222,32 @@ export class ProductDAO {
         const SQL = ConnectionDAO.getInstance();
         const damage: { message: string | undefined }[] = [];
 
+        console.log("Dao", description)
+
         return new Promise((resolve, reject) => {
             try {
                 SQL.query("Duende_SP_ProductCategory_Add", {
                     IN_description: description,
                 })
                     .then((result) => {
+                        console.log(result, "Result")
                         const productCategory: any = result?.recordset[0];
+                        console.log("here", productCategory)
                         const productCategoryObj = new ProductCategory(
                             productCategory.description
                         );
+                        console.log(productCategoryObj)
                         resolve(productCategoryObj);
                     })
                     .catch((error) => {
+                        console.error(error)
                         damage.push({
                             message: String(error.message),
                         });
                         reject(damage);
                     });
             } catch (error) {
+                console.error(error)
                 damage.push({ message: undefined });
                 reject(damage);
             }
