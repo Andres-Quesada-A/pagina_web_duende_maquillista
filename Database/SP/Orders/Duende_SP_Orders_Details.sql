@@ -25,7 +25,16 @@ BEGIN
             O.voucherImageUrl,
             O.timestamp,
             O.deleted,
-            P.name AS ProductName,
+            (
+                SELECT P.id,
+                    P.name,
+                    P.description,
+                    P.price,
+                    P.imageUrl
+                    FROM Products P
+                    WHERE P.id = OP.productId
+                    FOR JSON PATH
+            ) AS Products,
             OP.amount AS Quantity
         FROM 
             Orders O
