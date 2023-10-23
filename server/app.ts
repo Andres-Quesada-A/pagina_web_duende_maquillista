@@ -9,7 +9,7 @@ import ImageCategoryRouter from './routes/ImageCategory.routes'
 import ImageSubcategoryRouter from './routes/ImageSubcategory.routes'
 import ProductRouter from './routes/Product.routes'
 import ImageRouter from './routes/Image.routes';
-
+import OrderRouter from './routes/Order.routes';
 
 const app = express(); // crear una instancia de la aplicación Express
 app.use(json()); // usar middleware para manejar datos JSON
@@ -22,6 +22,7 @@ app.use('/api', ImageCategoryRouter);
 app.use('/api', ImageSubcategoryRouter); 
 app.use('/api', ProductRouter)
 app.use('/api', ImageRouter);
+app.use('/api', OrderRouter);
 
 // const PORT: number = parseInt(process.env.PORT) || 1234; // obtener el puerto del entorno o utilizar el puerto 1234 por defecto
 const PORT: number = 1234; // obtener el puerto del entorno o utilizar el puerto 1234 por defecto
