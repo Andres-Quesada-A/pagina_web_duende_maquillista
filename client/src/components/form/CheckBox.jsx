@@ -20,7 +20,7 @@ function CheckBox({ label, id, HandleChange, data }) {
         />
       )}
 
-      <label className="mb-2 pl-2 text-base font-medium text-gray-900 ">
+      <label className="mb-2 pl-2 text-base font-medium text-gray-900" htmlFor={id}>
         {label}
       </label>
     </div>
