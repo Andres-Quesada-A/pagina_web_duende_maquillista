@@ -4,7 +4,7 @@
 -- Description: Updates the status of an order.
 --------------------------------------------------------------------------
 
-CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_Order_Edit]
+CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_Orders_Edit]
     @IN_OrderID INT,
     @IN_NewStatus VARCHAR(32)
 AS

@@ -12,7 +12,7 @@ const OrderRouter = Router();
 OrderRouter.get(`/get_order_list`, MasterControllerObject.getOrderList);
 OrderRouter.get(`/get_order/:id`, MasterControllerObject.getOrderDetails);
 OrderRouter.post(`/create_order`, MasterControllerObject.createOrder);
-OrderRouter.put(`/edit_order/`, MasterControllerObject.editOrder);
+OrderRouter.put(`/edit_order`, MasterControllerObject.editOrder);
 OrderRouter.delete(`/delete_order/:id`, MasterControllerObject.deleteOrder);
 
 export default OrderRouter;

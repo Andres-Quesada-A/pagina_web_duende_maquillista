@@ -5,7 +5,7 @@
 --------------------------------------------------------------------------
 
 CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_Orders_Delete]
-    @OrderID INT
+    @IN_OrderID INT
 AS
 BEGIN
     SET NOCOUNT ON;         -- No metadata returned
@@ -22,11 +22,11 @@ BEGIN
         IF NOT EXISTS(
             SELECT 1
             FROM Orders O
-            WHERE O.ID = @OrderID
+            WHERE O.ID = @IN_OrderID
                 AND O.Deleted = 0
             )
         BEGIN
-            RAISERROR('The indicated order does not exist %d.', 16, 1, @OrderID)
+            RAISERROR('The indicated order does not exist %d.', 16, 1, @IN_OrderID)
         END
 
         -- TRANSACTION BEGUN
@@ -39,7 +39,7 @@ BEGIN
         -- Soft delete order
         UPDATE Orders
         SET Deleted = 1
-        WHERE ID = @OrderID;
+        WHERE ID = @IN_OrderID;
 
         -- TRANSACTION COMMITTED
         IF @transactionBegun = 1

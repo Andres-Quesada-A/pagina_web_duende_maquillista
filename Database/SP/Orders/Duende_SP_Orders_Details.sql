@@ -16,35 +16,54 @@ BEGIN
 
     BEGIN TRY
 
+        IF NOT EXISTS(
+            SELECT 1 FROM Orders
+            WHERE id = @IN_OrderID
+                AND deleted = 0
+        )
+        BEGIN 
+            RAISERROR('The indicated order does not exist %d.', 16, 1, @IN_OrderID)
+        END
+        
         -- Retrieve order with products
         SELECT 
             O.id AS OrderID,
             OS.description AS OrderStatus,
             U.id AS UserID,
-            A.id AS AddressID,
+            U.name as UserName,
+            U.lastname1 AS UserLastname1,
+            U.lastname2 AS UserLastname2,
+            U.email AS UserEmail,
+            U.password AS UserPassword,
+            U.token AS UserToken,   
+            A.specificAddress AS 'Address',
+            A.province AS 'Province',
+            A.canton AS 'Canton',
+            A.district AS 'District',
+            A.shippingFee AS 'ShippingFee',
             O.voucherImageUrl,
             O.timestamp,
-            O.deleted,
             (
                 SELECT P.id,
                     P.name,
                     P.description,
+                    PC.Description as category,
                     P.price,
-                    P.imageUrl
+                    P.imageUrl,
+                    P.weight,
+                    P.available,
+                    OP.amount
                     FROM Products P
-                    WHERE P.id = OP.productId
+                    INNER JOIN ProductCategories as PC ON P.categoryId = PC.id
+                    INNER JOIN OrderProducts OP ON P.id = OP.productId
+                    WHERE OP.orderId = O.id
                     FOR JSON PATH
-            ) AS Products,
-            OP.amount AS Quantity
-        FROM 
-            Orders O
+            ) AS Products
+            FROM Orders O
             INNER JOIN OrderStatuses OS ON O.orderStatusId = OS.id
             INNER JOIN Users U ON O.userId = U.id
             INNER JOIN Addresses A ON O.addressId = A.id
-            INNER JOIN OrderProducts OP ON O.id = OP.orderId
-            INNER JOIN Products P ON OP.productId = P.id
-        WHERE 
-            O.id = @IN_OrderID
+            WHERE O.id = @IN_OrderID
             AND O.deleted = 0;
 
     END TRY

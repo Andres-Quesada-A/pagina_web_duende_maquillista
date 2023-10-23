@@ -39,7 +39,7 @@ export class OrderController {
         district: string,
         specificAddress: string,
         shippingFee: number,
-        products: OrderProduct[],
+        products: any[],
         userId: number,
         imageUrl: string): Promise<boolean> {
         const response = await this.OrderDAO.createOrder(province, canton, district, specificAddress, shippingFee, products, userId, imageUrl);
