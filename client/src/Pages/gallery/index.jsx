@@ -1,12 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { useEffect, useState } from "react";
-import { ImagesMockup } from "../../mockups/images";
-import Product from "../../components/cards/product";
 import SelectCustom from "../../components/form/SelectCustom";
-import {
-  CheckboxOptions,
-  OptionsFilterPrice,
-} from "../../Structures/shopFilters";
 import SwitchFormInputs from "../../components/form/SwitchFormInputs";
 import ImageCard from "../../components/cards/ImageCard";
 import axios from 'axios';
@@ -47,8 +41,7 @@ function Gallery() {
       console.log(response)
       setData(dataImage);
     }).catch((error) => {
-      console.log(error);
-      setData(ImagesMockup);
+      toast.error("Ocurrió un error al cargar las imágenes", messageSettings);
     })
 
     axios.get(apiCategoryURL).then((response) => {
@@ -56,7 +49,7 @@ function Gallery() {
       console.log(response)
       setCategory(dataCategories);
     }).catch((error) => {
-      toast.error("No se logro recuperar las categorias", messageSettings);
+      toast.error("Ocurrió un error al cargar las categorías", messageSettings);
     })
   }, []);
 

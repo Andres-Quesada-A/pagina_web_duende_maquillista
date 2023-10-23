@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import EditCategory from "../../components/FormCategory/EditCategory";
-import AddCategory from "../../components/FormCategory/addCategory";
-import DeleteCategory from "../../components/FormCategory/deleteCategory";
+import AddCategory from "../../components/FormCategory/AddCategory";
+import DeleteCategory from "../../components/FormCategory/DeleteCategory";
 import { toast } from "react-toastify";
 import { messageSettings } from "../../utils/messageSettings";
 import axios from "axios";
@@ -32,7 +32,7 @@ function ConfigureCategoryProduct() {
         </h1>
         <hr className="border-indigo-500 border-1 mt-2"></hr>
       </header>
-      <section className="grid grid-cols-2 gap-10 w-full max-w-4xl mt-10 ">
+      <section className="grid grid-cols-1 gap-10 w-1/4 max-w-4xl mt-10 ">
         <AddCategory APIURL={"http://localhost:1234/api/create_product_category"}/>
         <EditCategory Categories={categories} APIURL={"http://localhost:1234/api/edit_product_category"}/>
         <DeleteCategory Categories={categories} APIURL={"http://localhost:1234/api/delete_product_category"}/>

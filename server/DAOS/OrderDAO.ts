@@ -21,7 +21,7 @@ export class OrderDAO {
         imageUrl: string
     ): Promise<boolean> {
         const SQL = ConnectionDAO.getInstance();
-        const damage: { message: string | undefined }[] = [];
+        const damage: { customError: string | undefined }[] = [];
         
         const tvpSchema = new sqlcon.Table('CartTVP');
         tvpSchema.columns.add('productId', sqlcon.Int);
@@ -47,12 +47,11 @@ export class OrderDAO {
                         resolve(true);
                     }).catch((error) => {
                         //fail in the execution of the query
-                        damage.push({ message: String(error.message) });
+                        damage.push({ customError: error.customError });
                         reject(false);
                     })
             } catch (error) {
                 // any errors that occur during the process
-                damage.push({ message: undefined })
                 reject(damage)
             }
         })
@@ -61,7 +60,7 @@ export class OrderDAO {
 
     async editOrder(id: number, status: string): Promise<boolean> {
         const SQL = ConnectionDAO.getInstance();
-        const damage: { message: string | undefined }[] = [];
+        const damage: { customError: string | undefined }[] = [];
 
         return new Promise((resolve, reject) => {
             try {
@@ -73,12 +72,11 @@ export class OrderDAO {
                         resolve(true);
                     }).catch((error) => {
                         //fail in the execution of the query
-                        damage.push({ message: String(error.message) });
+                        damage.push({ customError: error.customError });
                         reject(false);
                     })
             } catch (error) {
                 // any errors that occur during the process
-                damage.push({ message: undefined })
                 reject(damage)
             }
         })
@@ -86,7 +84,7 @@ export class OrderDAO {
 
     getOrderDetails(id: number): Promise<Order> {
         const SQL = ConnectionDAO.getInstance();
-        const damage: { message: string | undefined }[] = [];
+        const damage: { customError: string | undefined }[] = [];
 
         return new Promise((resolve, reject) => {
             try{
@@ -140,12 +138,11 @@ export class OrderDAO {
                     resolve(orderObj);
                 }).catch((error) => {
                     //fail in the execution of the query
-                    damage.push({ message: String(error.message) });
+                    damage.push({ customError: error.customError });
                     reject(damage);
                 })
             } catch(error) {
                 // any errors that occur during the process
-                damage.push({ message: undefined })
                 reject(damage);
             }
         });
@@ -153,7 +150,7 @@ export class OrderDAO {
 
     async getOrderList(): Promise<Order[]> {
         const SQL = ConnectionDAO.getInstance();
-        const damage: { message: string | undefined }[] = [];
+        const damage: { customError: string | undefined }[] = [];
 
         return new Promise((resolve, reject) => {
             try{
@@ -211,12 +208,11 @@ export class OrderDAO {
                     resolve(orderlist);
                 }).catch((error) => {
                     //fail in the execution of the query
-                    damage.push({ message: String(error.message) });
+                    damage.push({ customError: error.customError });
                     reject(damage);
                 })
             } catch(error) {
                 // any errors that occur during the process
-                damage.push({ message: undefined })
                 reject(damage);
             }
         });
@@ -224,7 +220,7 @@ export class OrderDAO {
 
     async deleteOrder(id: number): Promise<boolean> {
         const SQL = ConnectionDAO.getInstance();
-        const damage: { message: string | undefined }[] = [];
+        const damage: { customError: string | undefined }[] = [];
 
         return new Promise((resolve, reject) => {
             try{
@@ -233,12 +229,11 @@ export class OrderDAO {
                     resolve(true);
                 }).catch((error) => {
                     //fail in the execution of the query
-                    damage.push({ message: String(error.message) });
+                    damage.push({ customError: error.customError });
                     reject(false);
                 })
             } catch(error) {
                 // any errors that occur during the process
-                damage.push({ message: undefined })
                 reject(damage);
             }
         });

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import EditCategory from "../../components/FormCategory/EditCategory";
-import AddCategory from "../../components/FormCategory/addCategory";
-import DeleteCategory from "../../components/FormCategory/deleteCategory";
+import AddCategory from "../../components/FormCategory/AddCategory";
+import DeleteCategory from "../../components/FormCategory/DeleteCategory";
 import AddSubcategory from "../../components/FormSubcategory/AddSubcategory";
 import DeleteSubcategory from "../../components/FormSubcategory/DeleteSubcategory";
 import EditSubcategory from "../../components/FormSubcategory/EditSubcategory";

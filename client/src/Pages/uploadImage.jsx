@@ -25,7 +25,7 @@ function UploadImage() {
         },
         (error) => {
           console.log(error)
-          toast.error("Could not upload image", messageSettings);
+          toast.error("Ocurrió un error al subir la imagen", messageSettings);
         },
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import InputCustom from '../form/InputCustom';
-import { messageSettings } from '../../utils/messageSettings';
+import { messageSettings, defaultError } from '../../utils/messageSettings';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
@@ -9,14 +9,18 @@ function EditCategory({ Categories, APIURL}) {
   const HandleChange = (e) => {
     setData({ ...data, [e.target.id]: e.target.value });
   };
-  const HandleSubmit = async (e) => {
+  const HandleSubmit = (e) => {
     e.preventDefault();
-    try {
-      await axios.put(APIURL, data)
-      toast.success("Categoria actualizada", messageSettings)
-    } catch (error) {
-      toast.error("No se puede actualizar la categoria", messageSettings)
-    }
+    axios.put(APIURL, data)
+      .then(() => {
+        toast.success("Categoria actualizada", messageSettings)
+      })
+      .catch((error) => {
+        const errorMessage =
+          error?.response?.data?.message ||
+          defaultError;
+        toast.error(errorMessage, messageSettings)
+      });
   };
   console.log(data)
   return (

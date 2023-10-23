@@ -5,7 +5,7 @@ import { Login } from "../Structures/LoginStructure";
 import { Helmet } from "react-helmet-async";
 import axios from "axios"
 import { toast } from "react-toastify";
-import { messageSettings } from "../utils/messageSettings";
+import { messageSettings, defaultError } from "../utils/messageSettings";
 import {useNavigate} from 'react-router-dom'
 
 function LoginPage() {
@@ -22,7 +22,11 @@ function LoginPage() {
       await axios.post(`http://localhost:1234/api/login/${data.email}/${data.password}`)
       navigate('/')
     } catch (error) {
-      toast.error("Algo ha salido mal", messageSettings)
+      console.log(error?.response?.data?.message);
+      const errorMessage =
+          error?.response?.data?.message ||
+          defaultError;
+        toast.error(errorMessage, messageSettings)
     }
   };
   return (

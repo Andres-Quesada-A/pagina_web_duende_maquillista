@@ -10,7 +10,7 @@ export class ImageDAO {
         // Logic to retrieve a list of image categories and subcategories
 
         const SQL = ConnectionDAO.getInstance();
-        const damage: { error: boolean, message: string | undefined }[] = [];
+        const damage: { customError: string | undefined }[] = [];
         //const SQL = DaoConnection.getInstance().getPool();
 
         return new Promise((resolve, reject) => {
@@ -36,18 +36,17 @@ export class ImageDAO {
                         resolve(categories);
                     } else {
                         // case when the query did not return any data
-                        const damage: { error: boolean, message: string | undefined }[] = [{ error: true, message: String(result.message) }];
+                        damage.push({ customError: String(result.customError) });
                         reject(damage);
                     }
 
                 }).catch((error) => {
                     //fail in the execution of the query
-                    damage.push({ error: true, message: String(error.message) });
+                    damage.push({ customError: error.customError });
                     reject(damage);
                 });
             } catch (error) {
                 // any errors that occur during the process
-                damage.push({ error: true, message: undefined })
                 reject(damage)
             }
         });
@@ -57,24 +56,21 @@ export class ImageDAO {
     async createImageCategory(category: string): Promise<any> {
 
         const SQL = ConnectionDAO.getInstance();
-        const damage: { error: boolean, message: string | undefined }[] = [];
-        const ccate = category;
+        const damage: { customError: string | undefined }[] = [];
 
         return new Promise((resolve, reject) => {
             try {
                 SQL.query("Duende_SP_ImageCategory_Add", { "IN_imageCategory": category }).then((result) => {
                     //query was successful
-                    const good: { category: string }[] = [{ category: ccate }];
-                    resolve(good);
+                    resolve(true);
 
                 }).catch((error) => {
                     //fail in the execution of the query
-                    damage.push({ error: true, message: String(error.message) });
+                    damage.push({ customError: error.customError });
                     reject(damage);
                 });
             } catch (error) {
                 // any errors that occur during the process
-                damage.push({ error: true, message: undefined })
                 reject(damage)
             }
         });
@@ -84,25 +80,21 @@ export class ImageDAO {
     async editImageCategory(category: string, newCategory: string): Promise<any> {
 
         const SQL = ConnectionDAO.getInstance();
-        const damage: { error: boolean, message: string | undefined }[] = [];
-        const ccate = category;
-        const newccate = newCategory;
+        const damage: { customError: string | undefined }[] = [];
 
         return new Promise((resolve, reject) => {
             try {
                 SQL.query("Duende_SP_ImageCategory_Edit", { "IN_newImageCategory": newCategory, "IN_imageCategory": category }).then((result) => {
                     //query was successful
-                    const good: { category: string, newCategory: string }[] = [{ category: ccate, newCategory: newccate }];
-                    resolve(good);
+                    resolve(true);
 
                 }).catch((error) => {
                     //fail in the execution of the query
-                    damage.push({ error: true, message: String(error.message) });
+                    damage.push({ customError: error.customError });
                     reject(damage);
                 });
             } catch (error) {
                 // any errors that occur during the process
-                damage.push({ error: true, message: undefined })
                 reject(damage)
             }
         });
@@ -112,24 +104,21 @@ export class ImageDAO {
     async deleteImageCategory(category: string): Promise<any> {
 
         const SQL = ConnectionDAO.getInstance();
-        const damage: { error: boolean, message: string | undefined }[] = [];
-        const ccate = category;
+        const damage: { customError: string | undefined }[] = [];
 
         return new Promise((resolve, reject) => {
             try {
                 SQL.query("Duende_SP_ImageCategory_Delete", { "IN_imageCategory": category }).then((result) => {
                     //query was successful
-                    const good: { category: string, delete: boolean }[] = [{ category: ccate, delete: true }];
-                    resolve(good);
+                    resolve(true);
 
                 }).catch((error) => {
                     //fail in the execution of the query
-                    damage.push({ error: true, message: String(error.message) });
+                    damage.push({ customError: error.customError });
                     reject(damage);
                 });
             } catch (error) {
                 // any errors that occur during the process
-                damage.push({ error: true, message: undefined })
                 reject(damage)
             }
         });
@@ -142,25 +131,21 @@ export class ImageDAO {
     async createImageSubcategory(category: string, subcategory: string): Promise<any> {
 
         const SQL = ConnectionDAO.getInstance();
-        const damage: { error: boolean, message: string | undefined }[] = [];
-        const ccate = category;
-        const subccate = subcategory;
+        const damage: { customError: string | undefined }[] = [];
 
         return new Promise((resolve, reject) => {
             try {
                 SQL.query("Duende_SP_ImageSubcategory_Add", { "IN_imageCategory": category, "IN_imageSubcategory": subcategory }).then((result) => {
                     //query was successful
-                    const good: { category: string, subcategory: string }[] = [{ category: ccate, subcategory: subccate }];
-                    resolve(good);
+                    resolve(true);
 
                 }).catch((error) => {
                     //fail in the execution of the query
-                    damage.push({ error: true, message: String(error.message) });
+                    damage.push({ customError: error.customError });
                     reject(damage);
                 });
             } catch (error) {
                 // any errors that occur during the process
-                damage.push({ error: true, message: undefined })
                 reject(damage)
             }
         });
@@ -170,26 +155,21 @@ export class ImageDAO {
     async editImageSubcategory(category: string, subcategory: string, newSubcategory: string): Promise<any> {
 
         const SQL = ConnectionDAO.getInstance();
-        const damage: { error: boolean, message: string | undefined }[] = [];
-        const ccate = category;
-        const subccate = subcategory;
-        const newsubccate = newSubcategory;
+        const damage: { customError: string | undefined }[] = [];
 
         return new Promise((resolve, reject) => {
             try {
                 SQL.query("Duende_SP_ImageSubcategory_Edit", { "IN_imageCategory": category, "IN_imageSubcategory": subcategory, "IN_newImageSubcategory": newSubcategory }).then((result) => {
                     //query was successful
-                    const good: { category: string, subcategory: string, newsubcategory: string }[] = [{ category: ccate, subcategory: subccate, newsubcategory: newsubccate }];
-                    resolve(good);
+                    resolve(true);
 
                 }).catch((error) => {
                     //fail in the execution of the query
-                    damage.push({ error: true, message: String(error.message) });
+                    damage.push({ customError: error.customError });
                     reject(damage);
                 });
             } catch (error) {
                 // any errors that occur during the process
-                damage.push({ error: true, message: undefined })
                 reject(damage)
             }
         });
@@ -199,25 +179,22 @@ export class ImageDAO {
     async deleteImageSubcategory(category: string, subcategory: string): Promise<any> {
 
         const SQL = ConnectionDAO.getInstance();
-        const damage: { error: boolean, message: string | undefined }[] = [];
-        const ccate = category;
-        const subccate = subcategory;
+        const damage: { customError: string | undefined }[] = [];
 
         return new Promise((resolve, reject) => {
             try {
                 SQL.query("Duende_SP_ImageSubcategory_Delete", { "IN_imageCategory": category, "IN_imageSubcategory": subcategory }).then((result) => {
                     //query was successful
-                    const good: { category: string, subcategory: string, delete: boolean }[] = [{ category: ccate, subcategory: subccate, delete: true }];
+                    const good: { category: string, subcategory: string, delete: boolean }[] = [{ category, subcategory, delete: true }];
                     resolve(good);
 
                 }).catch((error) => {
                     //fail in the execution of the query
-                    damage.push({ error: true, message: String(error.message) });
+                    damage.push({ customError: error.customError });
                     reject(damage);
                 });
             } catch (error) {
                 // any errors that occur during the process
-                damage.push({ error: true, message: undefined })
                 reject(damage)
             }
         });
@@ -233,7 +210,7 @@ export class ImageDAO {
         imageUrl: string): Promise<Image | undefined> {
         const SQL = ConnectionDAO.getInstance();
 
-        const damage: { message: string | undefined }[] = [];
+        const damage: { customError: string | undefined }[] = [];
 
         // Define the schema of the TVP
         const tvpSchema = new sqlcon.Table('TagsTVP');
@@ -271,12 +248,11 @@ export class ImageDAO {
 
                     }).catch((error) => {
                         //fail in the execution of the query
-                        damage.push({ message: String(error.message) });
+                        damage.push({ customError: error.customError });
                         reject(damage);
                     });
             } catch (error) {
                 // any errors that occur during the process
-                damage.push({ message: undefined })
                 reject(damage)
             }
         });
@@ -292,7 +268,7 @@ export class ImageDAO {
         tags: string,
         imageUrl: string): Promise<boolean> {
         const SQL = ConnectionDAO.getInstance();
-        const damage: { message: string | undefined }[] = [];
+        const damage: { customError: string | undefined }[] = [];
 
         // Define the schema of the TVP
         const tvpSchema = new sqlcon.Table('TagsTVP');
@@ -319,12 +295,11 @@ export class ImageDAO {
 
                     }).catch((error) => {
                         //fail in the execution of the query
-                        damage.push({ message: String(error.message) });
+                        damage.push({ customError: error.customError });
                         reject(damage);
                     });
             } catch (error) {
                 // any errors that occur during the process
-                damage.push({ message: undefined })
                 reject(damage)
             }
         });
@@ -333,7 +308,7 @@ export class ImageDAO {
     // Method to delete an image
     async deleteImage(id: number): Promise<boolean> {
         const SQL = ConnectionDAO.getInstance();
-        const damage: { message: string | undefined }[] = [];
+        const damage: { customError: string | undefined }[] = [];
 
         return new Promise((resolve, reject) => {
             try {
@@ -347,12 +322,11 @@ export class ImageDAO {
 
                     }).catch((error) => {
                         //fail in the execution of the query
-                        damage.push({ message: String(error.message) });
+                        damage.push({ customError: error.customError });
                         reject(damage);
                     });
             } catch (error) {
                 // any errors that occur during the process
-                damage.push({ message: undefined })
                 reject(damage)
             }
         });
@@ -361,7 +335,7 @@ export class ImageDAO {
     // Method to get an image
     async getImage(id: number): Promise<Image | undefined> {
         const SQL = ConnectionDAO.getInstance();
-        const damage: { message: string | undefined }[] = [];
+        const damage: { customError: string | undefined }[] = [];
 
         return new Promise((resolve, reject) => {
             try {
@@ -386,12 +360,11 @@ export class ImageDAO {
 
                     }).catch((error) => {
                         //fail in the execution of the query
-                        damage.push({ message: String(error.message) });
+                        damage.push({ customError: error.customError });
                         reject(damage);
                     });
             } catch (error) {
                 // any errors that occur during the process
-                damage.push({ message: undefined })
                 reject(damage)
             }
         });
@@ -399,7 +372,7 @@ export class ImageDAO {
 
     async getImageList(): Promise<Image[]> {
         const SQL = ConnectionDAO.getInstance();
-        const damage: { message: string | undefined }[] = [];
+        const damage: { customError: string | undefined }[] = [];
         return new Promise((resolve, reject) => {
             try {
                 SQL.query("Duende_SP_Image_List")
@@ -420,12 +393,11 @@ export class ImageDAO {
                         resolve(images);
                     }).catch((error) => {
                         //fail in the execution of the query
-                        damage.push({ message: String(error.message) });
+                        damage.push({ customError: error.customError });
                         reject(damage);
                     });
             } catch (error) {
                 // any errors that occur during the process
-                damage.push({ message: undefined })
                 reject(damage)
             }
         });
