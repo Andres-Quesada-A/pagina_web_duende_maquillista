@@ -8,7 +8,7 @@ import Product from "../../components/cards/product";
 import SelectCustom from "../../components/form/SelectCustom";
 import {
   CheckboxOptions,
-  OptionsFilterPrice,
+  OptionsFilterPrice
 } from "../../Structures/shopFilters";
 import SwitchFormInputs from "../../components/form/SwitchFormInputs";
 
