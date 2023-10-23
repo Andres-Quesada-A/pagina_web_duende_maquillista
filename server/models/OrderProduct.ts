@@ -1,6 +1,6 @@
 import { Product } from "./Product";
 
-export class ShoppingDetail {
+export class OrderProduct {
     private product: Product;
     private amount: number;
   
@@ -12,7 +12,7 @@ export class ShoppingDetail {
     getProduct(): Product {
       return this.product;
     }
-  
+    
     setProduct(product: Product) {
       this.product = product;
     }
