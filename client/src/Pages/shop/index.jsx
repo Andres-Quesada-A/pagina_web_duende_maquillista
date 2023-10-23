@@ -1,7 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { Search } from "../../components/Icons";
 import { useEffect, useState } from "react";
-import { productos } from "../../mockups/products";
 import { toast } from "react-toastify";
 import axios from "axios"
 import { messageSettings } from "../../utils/messageSettings";
@@ -17,25 +16,52 @@ function Shop() {
   const [search, setSearch] = useState({});
   const [filters, setFilters] = useState({});
   const [data, setData] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    // Request to get products
-    try {
-      axios.get(`http://localhost:1234/api/get_product_list`).then((res) => {
-        setData(res.data)
-     })
-    } catch (error) {
-        toast.error("Algo salió sal", messageSettings)
-    }
+      // Request to get products
+      axios
+          .get(`http://localhost:1234/api/get_product_list`)
+          .then((res) => {
+              setData(res.data);
+          })
+          .catch((error) => {
+              const errorMessage =
+                  error?.response?.data?.[0]?.message ||
+                  "Algo salió mal al cargar los productos";
+              toast.error(errorMessage, messageSettings);
+          });
+
+      // Request to get the categories
+      axios
+          .get(`http://localhost:1234/api/get_product_category_list`)
+          .then((res) => {
+            let newCategories = {};
+            res.data.forEach((category) => {
+              newCategories[category.description] = false;
+            });
+            setCategories(newCategories);
+            console.log(newCategories);
+          })
+          .catch((error) => {
+              const errorMessage =
+                  error?.response?.data?.[0]?.message ||
+                  "Algo salió mal al cargar las categorías";
+              toast.error(errorMessage, messageSettings);
+          });
   }, []);
 
   const handleChange = (e) => {
     setSearch({ ...search, [e.target.id]: e.target.value });
   };
 
-  const handleChangeFilters = (e) => {
-    setFilters({ ...filters, [e.target.id]: e.target.value });
+  const handleChangeCategories = (e) => {
+    setCategories({ ...categories, [e.target.id]: e.target.checked });
   };
+
+  useEffect(() => {
+    console.log(categories);
+  }, [categories]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -56,7 +82,7 @@ function Shop() {
           <h4 className="text-gray-600 font-semibold text-2xl mb-5">Filtros</h4>
           <form onSubmit={handleSubmit}>
             <SelectCustom
-              HandleChange={handleChangeFilters}
+              //HandleChange={handleChangeFilters}
               id="order-price"
               label="Ordenar por"
               options={OptionsFilterPrice}
@@ -64,8 +90,15 @@ function Shop() {
             />
             <h4 className="mt-4 mb-3 font-semibold">Productos</h4>
             <SwitchFormInputs
-              HandleChange={handleChangeFilters}
-              structureForm={CheckboxOptions}
+              HandleChange={handleChangeCategories}
+              structureForm={Object.keys(categories).map((category) => 
+                ({
+                  label: category,
+                  type: "checkbox",
+                  value: category,
+                  checked: categories[category]
+                })
+              )}
             />
             <button className="mt-3 bg-indigo-500 hover:bg-indigo-400 transition-colors py-1 font-medium text-white w-full text-lg rounded-md">
               Buscar

@@ -12,7 +12,7 @@ function Product({ id, imageUrl, name, description, available, price }) {
             available ? "Disponible" : "No Disponible"
           }</p>
           <p className="text-2xl text-gray-600 font-semibold flex justify-end gap-1">
-            <span className="text-xs">$</span>
+            <span className="text-xs">₡</span>
             {price}
           </p>
         </div>

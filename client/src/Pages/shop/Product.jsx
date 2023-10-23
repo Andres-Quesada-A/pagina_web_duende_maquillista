@@ -36,18 +36,18 @@ function ProductShop() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 w-full max-w-4xl mx-auto">
             <picture>
               <img
-                src={product.urlImage}
+                src={product.imageUrl}
                 className="rounded-md aspect-ratio-1/1 object-cover w-full max-w-md max-h-[500px]"
               />
             </picture>
             <div className="flex flex-col gap-4">
               <h1 className="text-2xl font-medium text-gray-600">
-                {product.title}
+                {product.name}
               </h1>
-              <p>{product.state}</p>
+              <p><span className="bold">Estado:</span> {product.available ? "Disponible" : "No disponible"}</p>
               <p>{product.description}</p>
               <p className="text-4xl text-gray-600 font-semibold flex justify-start gap-1">
-                <span className="text-base">$</span>
+                <span className="text-base">₡</span>
                 {product.price}
               </p>
               <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-5 items-end mt-5">
