@@ -69,6 +69,18 @@ BEGIN
 	        	RAISERROR('No se ingreso texto de la Subcategoria para modificar', 16, 1)
 	        END;
 
+        --palabras reservadas
+        IF(LTRIM(RTRIM(@IN_newImageSubcategory)) = 'seleccione')
+	        BEGIN
+	        	RAISERROR('La Subcategoria "%s" es invalida', 16, 1,@IN_newImageSubcategory)
+	        END;
+        
+        --palabras reservadas
+        IF ( LTRIM(RTRIM(@IN_newImageSubcategory)) LIKE '%,%')
+	        BEGIN
+	        	RAISERROR('La Subcategoria "%s" no puede tener ","', 16, 1,@IN_newImageSubcategory)
+	        END;
+
         --validacion de existencia previa de subcategoria
         IF EXISTS ( SELECT 1
                     FROM [dbo].ImageSubcategories Sc

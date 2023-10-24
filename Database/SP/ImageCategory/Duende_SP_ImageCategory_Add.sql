@@ -27,6 +27,18 @@ BEGIN
 	        	RAISERROR('No se ingreso texto para la Categoria', 16, 1)
 	        END;
 
+        --palabras reservadas
+        IF(LTRIM(RTRIM(@IN_imageCategory)) = 'seleccione')
+	        BEGIN
+	        	RAISERROR('La Categoria "%s" es invalida', 16, 1,@IN_imageCategory)
+	        END;
+        
+        --palabras reservadas
+        IF (LTRIM(RTRIM(@IN_imageCategory)) LIKE '%,%')
+	        BEGIN
+	        	RAISERROR('La Categoria "%s" no puede tener ","', 16, 1,@IN_imageCategory)
+	        END;
+
 
         --previous existence
         IF EXISTS (SELECT 1 FROM [dbo].ImageCategories C WHERE LTRIM(RTRIM(C.description)) = LTRIM(RTRIM(@IN_imageCategory)) AND C.deleted = 0)
