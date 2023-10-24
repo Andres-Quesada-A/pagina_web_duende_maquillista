@@ -56,7 +56,7 @@ export class MasterController {
             res.cookie("token", token, { httpOnly: true });
             return res.status(200).json(response);
         } catch (error: any) {
-            return res.status(400).json({ message: error[0] ? error[0].message : undefined });
+            return res.status(400).json({ message: error[0] ? error[0].customError : undefined });
         }
     }
 
@@ -72,7 +72,8 @@ export class MasterController {
             res.cookie("token", token, { httpOnly: true });
             return res.status(200).json(response);
         } catch (error: any) {
-            return res.status(400).json({ message: error[0] ? error[0].message : undefined });
+            console.log(error);
+            return res.status(400).json({ message: error[0] ? error[0].customError : undefined });
         }
     }
 
@@ -84,7 +85,7 @@ export class MasterController {
             const response = await UserControllerObject.loggedIn(token);
             return res.status(200).json(response);
         } catch (error: any) {
-            return res.status(400).json({ message: error[0] ? error[0].message : undefined });
+            return res.status(400).json({ message: error[0] ? error[0].customError : undefined });
         }
     }
 
@@ -95,7 +96,7 @@ export class MasterController {
             const response = await ProductControllerObject.getProductList();
             return res.json(response);
         } catch (error: any) {
-            return res.status(400).json({ message: error[0] ? error[0].message : undefined } );
+            return res.status(400).json({ message: error[0] ? error[0].customError : undefined } );
         }
     }
 
@@ -107,7 +108,7 @@ export class MasterController {
             const response = await ProductControllerObject.getProduct(id);
             return res.status(200).json(response);
         } catch (error: any) {
-            return res.status(400).json({ message: error[0] ? error[0].message : undefined } );
+            return res.status(400).json({ message: error[0] ? error[0].customError : undefined } );
         }
     }
 
@@ -135,9 +136,9 @@ export class MasterController {
             );
             return response
                 ? res.status(200).json({ message: "Ok" })
-                : res.status(400).json({ message: undefined });
+                : res.status(400).json({});
         } catch (error: any) {
-            return res.status(400).json({ message: error[0] ? error[0].message : undefined } );
+            return res.status(400).json({ message: error[0] ? error[0].customError : undefined } );
         }
     }
 
@@ -167,9 +168,9 @@ export class MasterController {
             );
             return response
                 ? res.status(200).json({ message: "Ok" })
-                : res.status(400).json({ message: undefined });
+                : res.status(400).json({});
         } catch (error: any) {
-            return res.status(400).json({ message: error[0] ? error[0].message : undefined } );
+            return res.status(400).json({ message: error[0] ? error[0].customError : undefined } );
         }
     }
 
@@ -181,9 +182,9 @@ export class MasterController {
             const response = await ProductControllerObject.deleteProduct(id);
             return response
                 ? res.status(200).json({ message: "Ok" })
-                : res.status(400).json({ message: undefined });
+                : res.status(400).json({});
         } catch (error: any) {
-            return res.status(400).json({ message: error[0] ? error[0].message : undefined } );
+            return res.status(400).json({ message: error[0] ? error[0].customError : undefined } );
         }
     }
 
@@ -195,10 +196,10 @@ export class MasterController {
             const response = await ProductControllerObject.createProductCategory(description);
             return response
                 ? res.status(200).json({ message: "Ok" })
-                : res.status(400).json({ message: undefined });
+                : res.status(400).json({});
         } catch (error: any) {
             console.log("error en master controller")
-            return res.status(400).json({ message: error[0] ? error[0].message : undefined } );
+            return res.status(400).json({ message: error[0] ? error[0].customError : undefined } );
         }
     }
 
@@ -209,7 +210,7 @@ export class MasterController {
             const response = await ProductControllerObject.getProductCategoryList();
             return res.json(response);
         } catch (error: any) {
-            return res.status(400).json({ message: error[0] ? error[0].message : undefined } );
+            return res.status(400).json({ message: error[0] ? error[0].customError : undefined } );
         }
     }
 
@@ -221,9 +222,9 @@ export class MasterController {
             const response = await ProductControllerObject.deleteProductCategory(description);
             return response
                 ? res.status(200).json({ message: "Ok" })
-                : res.status(400).json({ message: undefined });
+                : res.status(400).json({});
         } catch (error: any) {
-            return res.status(400).json({ message: error[0] ? error[0].message : undefined } );
+            return res.status(400).json({ message: error[0] ? error[0].customError : undefined } );
         }
     }
 
@@ -239,9 +240,9 @@ export class MasterController {
             );
             return response
                 ? res.status(200).json({ message: "Ok" })
-                : res.status(400).json({ message: undefined });
+                : res.status(400).json({});
         } catch (error: any) {
-            return res.status(400).json({ message: error[0] ? error[0].message : undefined } );
+            return res.status(400).json({ message: error[0] ? error[0].customError : undefined } );
         }
     }
 
@@ -251,7 +252,7 @@ export class MasterController {
             const response = await ImageControllerObject.getImageList();
             return res.json(response);
         } catch (error: any) {
-            return res.status(400).json({ message: error[0] ? error[0].message : undefined });
+            return res.status(400).json({ message: error[0] ? error[0].customError : undefined });
         }
     }
 
@@ -262,13 +263,12 @@ export class MasterController {
 
         try {
             ImageControllerObject.deleteImageSubcategory(String(req.params.category), String(req.params.subcategory)).then((result) => {
-                res.setHeader("Content-Type", "application/json").json(result)
+                res.status(200).json({ message: "Ok" })
             }).catch((error)=>{
-                res.setHeader("Content-Type", "application/json").status(400).json(error)
+                res.status(400).json({ message: error[0] ? error[0].customError : undefined })
             });
         } catch (error) {
-            const damage: { error: boolean, message: string }[] = [{error: true, message: "ocurrio un error imprevisto"}];
-            res.setHeader("Content-Type", "application/json").status(400).json(damage)
+            res.status(400).json({});
         }
     }
     
@@ -279,13 +279,12 @@ export class MasterController {
 
         try {
             ImageControllerObject.deleteImageCategory(String(req.params.category)).then((result) => {
-                res.setHeader("Content-Type", "application/json").json(result)
+                res.status(200).json({ message: "Ok" })
             }).catch((error)=>{
-                res.setHeader("Content-Type", "application/json").status(400).json(error)
+                res.status(400).json({ message: error[0] ? error[0].customError : undefined })
             });
         } catch (error) {
-            const damage: { error: boolean, message: string }[] = [{error: true, message: "ocurrio un error imprevisto"}];
-            res.setHeader("Content-Type", "application/json").status(400).json(damage)
+            res.status(400).json({});
         }
     }
 
@@ -296,13 +295,12 @@ export class MasterController {
 
         try {
             ImageControllerObject.createImageSubcategory(String(req.params.category), String(req.params.subcategory)).then((result) => {
-                res.setHeader("Content-Type", "application/json").json(result)
+                res.status(200).json({ message: "Ok" })
             }).catch((error)=>{
-                res.setHeader("Content-Type", "application/json").status(400).json(error)
+                res.status(400).json({ message: error[0] ? error[0].customError : undefined })
             });
         } catch (error) {
-            const damage: { error: boolean, message: string }[] = [{error: true, message: "ocurrio un error imprevisto"}];
-            res.setHeader("Content-Type", "application/json").status(400).json(damage)
+            res.status(400).json({});
         }
     }
 
@@ -313,13 +311,12 @@ export class MasterController {
 
         try {
             ImageControllerObject.editImageSubcategory(String(req.params.category), String(req.params.subcategory), String(req.params.new_subcategory)).then((result) => {
-                res.setHeader("Content-Type", "application/json").json(result)
+                res.status(200).json({ message: "Ok" })
             }).catch((error)=>{
-                res.setHeader("Content-Type", "application/json").status(400).json(error)
+                res.status(400).json({ message: error[0] ? error[0].customError : undefined })
             });
         } catch (error) {
-            const damage: { error: boolean, message: string }[] = [{error: true, message: "ocurrio un error imprevisto"}];
-            res.setHeader("Content-Type", "application/json").status(400).json(damage)
+            res.status(400).json({});
         }
     }
 
@@ -330,13 +327,12 @@ export class MasterController {
 
         try {
             ImageControllerObject.createImageCategory(String(req.params.category)).then((result) => {
-                res.setHeader("Content-Type", "application/json").json(result)
+                res.status(200).json({ message: "Ok" })
             }).catch((error)=>{
-                res.setHeader("Content-Type", "application/json").status(400).json(error)
+                res.status(400).json({ message: error[0] ? error[0].customError : undefined })
             });
         } catch (error) {
-            const damage: { error: boolean, message: string }[] = [{error: true, message: "ocurrio un error imprevisto"}];
-            res.setHeader("Content-Type", "application/json").status(400).json(damage)
+            res.status(400).json({});
         }
     }
 
@@ -347,13 +343,12 @@ export class MasterController {
 
         try {
             ImageControllerObject.editImageCategory(String(req.params.category), String(req.params.new_category)).then((result) => {
-                res.setHeader("Content-Type", "application/json").json(result)
+                res.status(200).json({ message: "Ok" })
             }).catch((error)=>{
-                res.setHeader("Content-Type", "application/json").status(400).json(error)
+                res.status(400).json({ message: error[0] ? error[0].customError : undefined })
             });
         } catch (error) {
-            const damage: { error: boolean, message: string }[] = [{error: true, message: "ocurrio un error imprevisto"}];
-            res.setHeader("Content-Type", "application/json").status(400).json(damage)
+            res.status(400).json({});
         }
     }
 
@@ -376,7 +371,7 @@ export class MasterController {
             ? res.status(200).json({response: "Ok"}) 
             : res.status(400).json({response:  undefined});
         } catch (error: any) {
-            return res.status(400).json({ message: error[0] ? error[0].message : undefined } );
+            return res.status(400).json({ message: error[0] ? error[0].customError : undefined } );
         }
         
     }
@@ -399,7 +394,7 @@ export class MasterController {
                 ? res.status(200).json({response: "Ok"}) 
                 : res.status(400).json({response:  undefined});
             } catch (error: any) {
-                return res.status(400).json({ message: error[0] ? error[0].message : undefined } );
+                return res.status(400).json({ message: error[0] ? error[0].customError : undefined } );
             } 
     }
 
@@ -414,7 +409,7 @@ export class MasterController {
             ? res.status(200).json({response: "Ok"}) 
             : res.status(400).json({response:  undefined});
         } catch (error: any) {
-            return res.status(400).json({ message: error[0] ? error[0].message : undefined } );
+            return res.status(400).json({ message: error[0] ? error[0].customError : undefined } );
         }
     }
 
@@ -427,7 +422,7 @@ export class MasterController {
             const response = await ImageControllerObject.getImage(id);
             return res.status(200).json(response);
         } catch (error: any) {
-            return res.status(400).json({ message: error[0] ? error[0].message : undefined });
+            return res.status(400).json({ message: error[0] ? error[0].customError : undefined });
         }
     }
 
@@ -438,13 +433,12 @@ export class MasterController {
 
         try {
             ImageControllerObject.getImageCategoryList().then((result) => {
-                res.setHeader("Content-Type", "application/json").json(result)
+                res.status(200).json(result)
             }).catch((error)=>{
-                res.setHeader("Content-Type", "application/json").status(400).json(error)
+                res.status(400).json({ message: error[0] ? error[0].customError : undefined })
             });
         } catch (error) {
-            const damage: { error: boolean, message: string }[] = [{error: true, message: "ocurrio un error imprevisto"}];
-            res.setHeader("Content-Type", "application/json").status(400).json(damage)
+            res.status(400).json({});
         }
         
     }
@@ -459,7 +453,7 @@ export class MasterController {
         ? res.status(200).json({response: "Ok"})
         : res.status(400).json({response: undefined});
        } catch(error:any){
-        return res.status(400).json({ message: error[0] ? error[0].message : undefined });
+        return res.status(400).json({ message: error[0] ? error[0].customError : undefined });
        }
     }
 
@@ -473,7 +467,7 @@ export class MasterController {
             ? res.status(200).json({response: "Ok"}) 
             : res.status(400).json({response:  undefined});
         } catch (error: any) {
-            return res.status(400).json({ message: error[0] ? error[0].message : undefined });
+            return res.status(400).json({ message: error[0] ? error[0].customError : undefined });
         }
     }
 
@@ -483,7 +477,7 @@ export class MasterController {
             const response = await OrderControllerObject.getOrderList();
             return res.json(response);
         } catch (error: any) {
-            return res.status(400).json({ message: error[0] ? error[0].message : undefined });
+            return res.status(400).json({ message: error[0] ? error[0].customError : undefined });
         }
     }
 
@@ -494,7 +488,7 @@ export class MasterController {
             const response = await OrderControllerObject.getOrderDetails(id);
             return res.status(200).json(response);
         } catch (error: any) {
-            return res.status(400).json({ message: error[0] ? error[0].message : undefined });
+            return res.status(400).json({ message: error[0] ? error[0].customError : undefined });
         }
     }
 
@@ -507,7 +501,7 @@ export class MasterController {
             ? res.status(200).json({response: "Ok"}) 
             : res.status(400).json({response:  undefined});
         } catch (error: any) {
-            return res.status(400).json({ message: error[0] ? error[0].message : undefined });
+            return res.status(400).json({ message: error[0] ? error[0].customError : undefined });
         }
     }
 

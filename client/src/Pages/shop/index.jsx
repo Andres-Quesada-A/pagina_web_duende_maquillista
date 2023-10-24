@@ -1,5 +1,4 @@
 import { Helmet } from "react-helmet-async";
-import { Search } from "../../components/Icons";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -24,10 +23,7 @@ function Shop() {
         setProducts(JSON.stringify(res.data));
       })
       .catch((error) => {
-        const errorMessage =
-          error?.response?.data?.[0]?.message ||
-          "Algo salió mal al cargar los productos";
-        toast.error(errorMessage, messageSettings);
+        toast.error("Ocurrió un error al cargar las categorías", messageSettings);
       });
 
     // Request to get the categories
@@ -42,10 +38,7 @@ function Shop() {
         console.log(newCategories);
       })
       .catch((error) => {
-        const errorMessage =
-          error?.response?.data?.[0]?.message ||
-          "Algo salió mal al cargar las categorías";
-        toast.error(errorMessage, messageSettings);
+        toast.error("Ocurrió un error al cargar los productos", messageSettings);
       });
   }, []);
 

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { messageSettings } from "../../utils/messageSettings";
+import { messageSettings, defaultError } from "../../utils/messageSettings";
 import Confirmation from "../Modals/Confirmation";
 
 function DeleteCategory({ Categories, APIURL }) {
@@ -9,13 +9,17 @@ function DeleteCategory({ Categories, APIURL }) {
   const HandleChange = (e) => {
     setData({ ...data, [e.target.id]: e.target.value });
   };
-  const HandleDelete = async () => {
-    try {
-      axios.delete(`${APIURL}/${data.category}`)
-      toast.success("Categoria eliminada", messageSettings)
-    } catch (error) {
-      toast.error("No se puede eliminar la categoria", messageSettings)
-    }
+  const HandleDelete = () => {
+    axios.delete(`${APIURL}/${data.category}`)
+      .then(() => {
+        toast.success("Categoria eliminada", messageSettings)
+      })
+      .catch((error) => {
+        const errorMessage =
+          error?.response?.data?.message ||
+          defaultError;
+        toast.error(errorMessage, messageSettings)
+      });
   };
   return (
     <section className="flex flex-col gap-4">

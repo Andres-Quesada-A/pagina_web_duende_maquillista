@@ -81,10 +81,10 @@ class ConnectionDAO {
                     // that error message will be returned
 
                     if (error.number == 50000 && message.at(-1) == "50000") {
-                        reject({ message: message[0] });
+                        reject({ customError: message[0] });
                     } else {
                         // Not a custom error
-                        reject({ message: undefined });
+                        reject({ customError: undefined });
                         console.log(error);
                     }
                 } else {

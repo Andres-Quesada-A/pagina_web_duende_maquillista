@@ -30,7 +30,7 @@ function ProductShop() {
       .catch((error) => {
         const errorMessage =
           error?.response?.data?.message ||
-          "Algo salió mal al cargar el detalle del producto";
+          "Ocurrió un error al cargar el detalle del producto";
         toast.error(errorMessage, messageSettings);
       });
   }, [idProduct]);

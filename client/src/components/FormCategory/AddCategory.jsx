@@ -1,8 +1,8 @@
 import { useState } from "react";
 import InputCustom from "../form/InputCustom";
-import {toast} from 'react-toastify';
-import {messageSettings} from '../../utils/messageSettings';
-import axios from 'axios';
+import {toast} from 'react-toastify'
+import { messageSettings, defaultError } from '../../utils/messageSettings'
+import axios from 'axios'
 
 function AddCategory({ APIURL }) {
   const [data, setData] = useState({});
@@ -11,15 +11,18 @@ function AddCategory({ APIURL }) {
     setData({ ...data, [e.target.id]: e.target.value });
   };
 
-  const HandleSubmit = async (e) => {
+  const HandleSubmit = (e) => {
     e.preventDefault();
-    try {
-      const url = APIURL + "/" + data.description // == http://localhost:1234/api/create_category/:category
-      await axios.post(url, data.description)
-      toast.success("Categoria agregada", messageSettings)
-    } catch (error) {
-      toast.error("No se puede agregar la categoria", messageSettings)
-    }
+    axios.post(APIURL, data)
+      .then(() => {
+        toast.success("Categoria agregada", messageSettings)
+      })
+      .catch((error) => {
+        const errorMessage =
+          error?.response?.data?.message ||
+          defaultError;
+        toast.error(errorMessage, messageSettings)
+      });
   };
   return (
     <form className="flex flex-col gap-4 " onSubmit={HandleSubmit}>

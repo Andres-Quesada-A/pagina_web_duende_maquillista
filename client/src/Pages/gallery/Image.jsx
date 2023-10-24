@@ -1,9 +1,6 @@
 import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useEffect, useState } from "react";
-import SelectCustom from "../../components/form/SelectCustom";
-import { AmountOptions } from "../../Structures/shopFilters";
-import { ImagesMockup } from "../../mockups/images";
 import axios from 'axios';
 
 

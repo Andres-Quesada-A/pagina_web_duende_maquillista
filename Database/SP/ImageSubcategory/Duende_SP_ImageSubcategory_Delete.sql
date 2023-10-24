@@ -49,6 +49,15 @@ BEGIN
 	        	RAISERROR('No se ingreso texto de la Subcategoria a modificar', 16, 1)
 	        END;
 
+        -- No se pueden borrar subcategorías con imágenes
+        IF EXISTS(SELECT 1
+                  FROM [dbo].[Images] I
+                  WHERE I.[subcategoryId] = @UseIdSubcategory
+                    AND I.[deleted] = 0)
+        BEGIN
+            RAISERROR('No se puede eliminar la subcategoría "%s" porque tiene imágenes asociadas', 16, 1, @IN_imageSubcategory);
+        END;
+
         SELECT @UseIdSubcategory = Sc.id
         FROM [dbo].ImageSubcategories Sc
         WHERE Sc.categoryId = @UsecategoryId

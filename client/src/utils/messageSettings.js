@@ -8,3 +8,5 @@ export const messageSettings = {
     progress: undefined,
     theme: "light",
   };
+
+export const defaultError = "Algo ha salido mal";

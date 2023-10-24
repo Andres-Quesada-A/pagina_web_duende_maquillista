@@ -1,7 +1,7 @@
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { useEffect, useState } from "react";
 import { storage } from "../../config/firebase";
-import { messageSettings } from "../../utils/messageSettings";
+import { messageSettings, defaultError } from "../../utils/messageSettings";
 import { toast } from "react-toastify";
 import ImagePlaceholder from "../../images/placeholderImage.jpeg";
 import SwitchFormInputs from "../../components/form/SwitchFormInputs";
@@ -46,7 +46,7 @@ function AddProduct() {
           setPerc(progress);
         },
         (error) => {
-          toast.error("Could not upload image", messageSettings);
+          toast.error("Ocurrió un error al subir la imagen", messageSettings);
         },
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
@@ -82,7 +82,10 @@ function AddProduct() {
       await axios.post(APIURL, {...data,available: data.available == "true" });
       toast.success("Producto creado", messageSettings);
     } catch (error) {
-      toast.error("Ha ocurrido un error", messageSettings);
+      const errorMessage =
+          error?.response?.data?.message ||
+          defaultError;
+      toast.error(errorMessage, messageSettings);
     }
   };
   

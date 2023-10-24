@@ -5,7 +5,7 @@ import { Register } from "../Structures/LoginStructure";
 import { Helmet } from "react-helmet-async";
 import axios from "axios"
 import { toast } from "react-toastify";
-import { messageSettings } from "../utils/messageSettings";
+import { messageSettings, defaultError } from "../utils/messageSettings";
 
 function RegisterPage() {
   const [data, setData] = useState({});
@@ -22,9 +22,15 @@ function RegisterPage() {
     }
     try {
       const response = await axios.post(`http://localhost:1234/api/register_user`, data)
-      toast.success("Datos registrados", messageSettings)
+      toast.success("Datos registrados\nEn breve será redirigido", messageSettings)
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 4000); // 4 seconds
     } catch (error) {
-      toast.error("Ha ocurrido un error", messageSettings)
+      const errorMessage =
+          error?.response?.data?.message ||
+          defaultError;
+      toast.error(errorMessage, messageSettings)
     }
   };
   return (

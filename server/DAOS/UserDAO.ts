@@ -20,7 +20,7 @@ export class UserDAO {
     async registerUser(name: string, lastName1: string, lastName2: string, email: string, password: string): Promise<any> {
         return new Promise((resolve, reject) => {
             const SQL = ConnectionDAO.getInstance();
-            const damage: { error: boolean; message: string | undefined }[] = [];
+            const damage: { customError: string | undefined }[] = [];
 
             bcrypt
                 .hash(password, 10)
@@ -51,21 +51,19 @@ export class UserDAO {
                                         token,
                                     });
                                 } else {
-                                    reject({ message: undefined });
+                                    reject(damage);
                                 }
                             })
                             .catch((error) => {
                                 //fail in the execution of the query
                                 damage.push({
-                                    error: true,
-                                    message: String(error.message).replace(/\"/g, "'"),
+                                    customError: error.customError,
                                 });
                                 reject(damage);
                             });
                     } catch (error) {
                         // any errors that occur during the process
-                        damage.push({ error: true, message: undefined });
-                        reject(damage);
+                        reject();
                     }
                 })
                 .catch((error) => {});
@@ -75,44 +73,50 @@ export class UserDAO {
     async logIn(email: string, password: string): Promise<any> {
         return new Promise((resolve, reject) => {
             const SQL = ConnectionDAO.getInstance();
+            const damage: { customError: string | undefined }[] = [];
+
             SQL.query("Duende_SP_Users_Get_By_Email", { IN_email: email })
                 .then((result) => {
-                    if (result.length === 0) {
-                        reject({ message: "El usuario no existe" });
-                    }
-                    const user = result.recordset[0];
-                    bcrypt
-                        .compare(password, user.password)
-                        .then(async (passwordMatch) => {
-                            if (passwordMatch) {
-                                const token = GenerateToken(user.id, user.name, user.lastName1 + " " + user.lastName2, user.email, user.administrator ? 1 : 0);
-                                const editTokenResult = await this.editToken(user.id, token);
-                                if (editTokenResult) {
-                                    resolve({
-                                        loggedIn: true,
-                                        user: {
-                                            id: user.id,
-                                            name: user.name,
-                                            lastName: user.lastName1 + " " + user.lastName2,
-                                            email: user.email,
-                                            userType: user.administrator ? 1 : 0,
-                                        },
-                                        token,
-                                    });
+                    if (result.recordset.length === 0) {
+                        damage.push({ customError: "El usuario no existe" });
+                        reject(damage);
+                    } else {
+                        const user = result.recordset[0];
+                        bcrypt
+                            .compare(password, user.password)
+                            .then(async (passwordMatch) => {
+                                if (passwordMatch) {
+                                    const token = GenerateToken(user.id, user.name, user.lastName1 + " " + user.lastName2, user.email, user.administrator ? 1 : 0);
+                                    const editTokenResult = await this.editToken(user.id, token);
+                                    if (editTokenResult) {
+                                        resolve({
+                                            loggedIn: true,
+                                            user: {
+                                                id: user.id,
+                                                name: user.name,
+                                                lastName: user.lastName1 + " " + user.lastName2,
+                                                email: user.email,
+                                                userType: user.administrator ? 1 : 0,
+                                            },
+                                            token,
+                                        });
+                                    } else {
+                                        reject(damage);
+                                    }
                                 } else {
-                                    reject({ message: undefined });
+                                    damage.push({ customError: "Contraseña incorrecta" });
+                                    reject(damage);
                                 }
-                            } else {
-                                reject({ message: "Contraseña incorrecta" });
-                            }
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                            reject({ message: undefined });
-                        });
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                                reject(damage);
+                            });
+                    }
                 })
                 .catch((error) => {
-                    reject({ message: error.message });
+                    damage.push({ customError: error.customError });
+                    reject(damage);
                 });
         });
     }
@@ -129,10 +133,10 @@ export class UserDAO {
                         resolve(true);
                     })
                     .catch((error) => {
-                        reject({ message: error.message });
+                        reject([{ customError: error.message }]);
                     });
             } catch (error) {
-                reject({ message: undefined });
+                reject();
             }
         });
     }
