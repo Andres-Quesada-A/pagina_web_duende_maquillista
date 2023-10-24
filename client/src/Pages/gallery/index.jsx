@@ -35,7 +35,7 @@ function Gallery() {
     const apiImageURL = 'http://localhost:1234/api/get_image_list'
     const apiCategoryURL = 'http://localhost:1234/api/get_category'
 
-    axios.get(apiImageURL).then((response) => {
+    axios.get(apiImageURL, { withCredentials: true }).then((response) => {
       const dataImage = response.data
       setImageFiltered(dataImage)
       console.log(response)
@@ -44,7 +44,7 @@ function Gallery() {
       toast.error("Ocurrió un error al cargar las imágenes", messageSettings);
     })
 
-    axios.get(apiCategoryURL).then((response) => {
+    axios.get(apiCategoryURL, { withCredentials: true }).then((response) => {
       const dataCategories = response.data
       console.log(response)
       setCategory(dataCategories);

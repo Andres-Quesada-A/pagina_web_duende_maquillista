@@ -12,7 +12,7 @@ function DeleteCategory({ Categories, APIURL }) {
   const HandleDelete = () => {
     console.log(data)
     console.log(`${APIURL}/${data.category}`)
-    axios.delete(`${APIURL}/${data.category}`)
+    axios.delete(`${APIURL}/${data.category}`, { withCredentials: true })
       .then(() => {
         toast.success("Categoria eliminada", messageSettings)
       })

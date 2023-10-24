@@ -29,7 +29,7 @@ function ConfigureCategory() {
   useEffect(() => {
     // Aqui se deben recuperar las categorias y subcategorias
 
-    axios.get(apiCategoryURL.get).then((response) => {
+    axios.get(apiCategoryURL.get, { withCredentials: true }).then((response) => {
       const dataCategories = response.data
       console.log(response)
       setData(dataCategories);

@@ -19,7 +19,7 @@ function AddProduct() {
     const getData = async () => {
       const APIURL = "http://localhost:1234/api/get_product_category_list";
       try {
-        const response = await axios.get(APIURL);
+        const response = await axios.get(APIURL, { withCredentials: true });
         const TempCategories = response.data;
         const Formated = TempCategories.map((item) => ({
           value: item.description,
@@ -79,7 +79,7 @@ function AddProduct() {
     const APIURL = "http://localhost:1234/api/create_product";
 
     try {
-      await axios.post(APIURL, {...data,available: data.available == "true" });
+      await axios.post(APIURL, {...data,available: data.available == "true" }, { withCredentials: true });
       toast.success("Producto creado", messageSettings);
     } catch (error) {
       const errorMessage =

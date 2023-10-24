@@ -25,7 +25,7 @@ function ImageGallery() {
     
     const apiImageURL = 'http://localhost:1234/api/get_image_list'
 
-    axios.get(apiImageURL).then((response) => {
+    axios.get(apiImageURL, { withCredentials: true }).then((response) => {
       const dataImage = response.data;
     
       //codigo no relevante

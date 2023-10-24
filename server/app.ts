@@ -13,7 +13,11 @@ import OrderRouter from './routes/Order.routes';
 
 const app = express(); // crear una instancia de la aplicación Express
 app.use(json()); // usar middleware para manejar datos JSON
-app.use(cors());
+app.use(cors({
+  origin: ["http://localhost:5173", /http:\/\/localhost:5173\/.+/],
+  methods: ["GET", "POST", "PUT"],
+  credentials: true
+}));
 app.use(cookieParser());
 // app.use(corsMiddleware()); // usar middleware de CORS
 app.disable('x-powered-by'); // desactivar el encabezado "x-powered-by"

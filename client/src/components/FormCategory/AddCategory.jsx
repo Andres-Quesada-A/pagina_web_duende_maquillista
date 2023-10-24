@@ -13,7 +13,7 @@ function AddCategory({ APIURL }) {
 
   const HandleSubmit = (e) => {
     e.preventDefault();
-    axios.post(APIURL, data)
+    axios.post(APIURL, data, { withCredentials: true })
       .then(() => {
         toast.success("Categoria agregada", messageSettings)
       })

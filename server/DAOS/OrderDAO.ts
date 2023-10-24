@@ -28,7 +28,7 @@ export class OrderDAO {
         tvpSchema.columns.add('quantity', sqlcon.Int);
 
         products.forEach((product) => {
-            tvpSchema.rows.add(product.getProduct().getId(), product.getAmount());
+            tvpSchema.rows.add(product.id, product.amount);
         });
 
         return new Promise((resolve, reject) => {
