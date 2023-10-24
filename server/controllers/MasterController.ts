@@ -294,7 +294,7 @@ export class MasterController {
         const ImageControllerObject = new ImageController();
 
         try {
-            ImageControllerObject.createImageSubcategory(String(req.params.category), String(req.params.subcategory)).then((result) => {
+            ImageControllerObject.createImageSubcategory(String(req.body.category), String(req.body.subcategory)).then((result) => {
                 res.status(200).json({ message: "Ok" })
             }).catch((error)=>{
                 res.status(400).json({ message: error[0] ? error[0].customError : undefined })
@@ -310,7 +310,7 @@ export class MasterController {
         const ImageControllerObject = new ImageController();
 
         try {
-            ImageControllerObject.editImageSubcategory(String(req.params.category), String(req.params.subcategory), String(req.params.new_subcategory)).then((result) => {
+            ImageControllerObject.editImageSubcategory(String(req.body.category), String(req.body.subcategory), String(req.body.new_subcategory)).then((result) => {
                 res.status(200).json({ message: "Ok" })
             }).catch((error)=>{
                 res.status(400).json({ message: error[0] ? error[0].customError : undefined })
@@ -326,7 +326,7 @@ export class MasterController {
         const ImageControllerObject = new ImageController();
 
         try {
-            ImageControllerObject.createImageCategory(String(req.params.category)).then((result) => {
+            ImageControllerObject.createImageCategory(String(req.body.category)).then((result) => {
                 res.status(200).json({ message: "Ok" })
             }).catch((error)=>{
                 res.status(400).json({ message: error[0] ? error[0].customError : undefined })
@@ -342,7 +342,7 @@ export class MasterController {
         const ImageControllerObject = new ImageController();
 
         try {
-            ImageControllerObject.editImageCategory(String(req.params.category), String(req.params.new_category)).then((result) => {
+            ImageControllerObject.editImageCategory(String(req.body.category), String(req.body.new_category)).then((result) => {
                 res.status(200).json({ message: "Ok" })
             }).catch((error)=>{
                 res.status(400).json({ message: error[0] ? error[0].customError : undefined })
