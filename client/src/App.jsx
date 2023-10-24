@@ -20,6 +20,7 @@ import UploadImage from "./Pages/uploadImage";
 import AddProduct from "./Pages/products/AddProduct";
 import ConfigureCategory from "./Pages/Category/ConfigureCategory";
 import ConfigureCategoryProduct from "./Pages/Category/ConfigureCategoryProduct";
+import EditProduct from "./Pages/products/EditProduct";
 
 const noRequirement = [
   "/login",
@@ -52,6 +53,7 @@ function App() {
             <Route exact path="/shoppingCart" element={<ShoppingCart />} />
             <Route exact path="/uploadImage" element={<UploadImage />} />
             <Route exact path="/add_product" element={<AddProduct />} />
+            <Route exact path="/edit_product/:idProduct" element={<EditProduct />} />
             <Route exact path="/configure_category" element={<ConfigureCategory />} />
             <Route exact path="/configure_category_product" element={<ConfigureCategoryProduct />} />
             <Route path="*" element={<Error404 />} />

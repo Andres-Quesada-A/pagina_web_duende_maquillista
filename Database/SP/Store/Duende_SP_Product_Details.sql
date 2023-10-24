@@ -31,7 +31,8 @@ BEGIN
                 P.[description],
                 P.[imageUrl],
                 P.[price],
-                P.[available]
+                P.[available],
+                P.[weight]
         FROM    [dbo].[Products] P
         JOIN    [dbo].[ProductCategories] PC
             ON  P.[categoryId] = PC.[id]
