@@ -21,6 +21,7 @@ import AddProduct from "./Pages/products/AddProduct";
 import ConfigureCategory from "./Pages/Category/ConfigureCategory";
 import ConfigureCategoryProduct from "./Pages/Category/ConfigureCategoryProduct";
 import EditProduct from "./Pages/products/EditProduct";
+import { AuthContextProvider } from "./context/AuthContext";
 
 const noRequirement = [
   "/login",
@@ -33,7 +34,8 @@ function App() {
   const { pathname } = useLocation();
 
   return (
-      <ShoppingCartProvider>
+    <ShoppingCartProvider>
+      <AuthContextProvider>
         {!noRequirement.includes(pathname) && <NavBar />}
         <ScrollToTop>
           <Routes>
@@ -53,27 +55,40 @@ function App() {
             <Route exact path="/shoppingCart" element={<ShoppingCart />} />
             <Route exact path="/uploadImage" element={<UploadImage />} />
             <Route exact path="/add_product" element={<AddProduct />} />
-            <Route exact path="/edit_product/:idProduct" element={<EditProduct />} />
-            <Route exact path="/configure_category" element={<ConfigureCategory />} />
-            <Route exact path="/configure_category_product" element={<ConfigureCategoryProduct />} />
+            <Route
+              exact
+              path="/edit_product/:idProduct"
+              element={<EditProduct />}
+            />
+            <Route
+              exact
+              path="/configure_category"
+              element={<ConfigureCategory />}
+            />
+            <Route
+              exact
+              path="/configure_category_product"
+              element={<ConfigureCategoryProduct />}
+            />
             <Route path="*" element={<Error404 />} />
           </Routes>
         </ScrollToTop>
 
         <Footer />
         <ToastContainer
-            position="bottom-right"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-          />
-      </ShoppingCartProvider>
+          position="bottom-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+      </AuthContextProvider>
+    </ShoppingCartProvider>
   );
 }
 

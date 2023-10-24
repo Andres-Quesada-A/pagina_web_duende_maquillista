@@ -1,11 +1,15 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { location } from "../Structures/location";
 import PlaceholderImage from "../images/placeholderImage.jpeg";
 import { useShoppingCart } from "../context/ShoppingCartContext";
 import { formatCurrency } from "../utils/formatCurrency";
+import { AuthContext } from "../context/AuthContext";
+import { toast } from "react-toastify";
+import { messageSettings } from "../utils/messageSettings";
 
 function ShoppingCart() {
   const { cartItems, removeFromCart, increaseProductCart } = useShoppingCart();
+  const { GetUserID } = useContext(AuthContext);
   const [file, setFile] = useState("");
   const [previewURL, setPreviewURL] = useState("");
   const [exactLocation, setExactLocation] = useState({
@@ -51,6 +55,18 @@ function ShoppingCart() {
     }
   };
 
+  const handleSubmit = () => {
+    const userID = GetUserID();
+    if (!userID){
+      toast.error("Ha ocurrido un error, Inicie sesión nuevamente", messageSettings)
+    }
+    try {
+      //verificar que todo esté lleno
+      // province, canton, district, specificAddress, shippingFee, products, userId, imageUrl
+    } catch (error) {
+      toast.error("Algo ha salido mal", messageSettings)
+    }
+  };
   console.log(cartItems);
   return (
     <div className="flex flex-col items-center pb-16">
@@ -219,7 +235,10 @@ function ShoppingCart() {
           notificando la aprobación y mencionando su fecha de entrega.{" "}
           <span className="text-red-500 font-medium">*</span>
         </p>
-        <button className="bg-indigo-500 hover:bg-indigo-600 transition-colors h-11 rounded-md text-white font-medium text-base">
+        <button
+          onClick={handleSubmit}
+          className="bg-indigo-500 hover:bg-indigo-600 transition-colors h-11 rounded-md text-white font-medium text-base"
+        >
           Finalizar compra
         </button>
       </section>
