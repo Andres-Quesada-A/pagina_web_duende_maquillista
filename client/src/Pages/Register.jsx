@@ -6,29 +6,26 @@ import { Helmet } from "react-helmet-async";
 import axios from "axios"
 import { toast } from "react-toastify";
 import { messageSettings, defaultError } from "../utils/messageSettings";
+import { useNavigate } from "react-router-dom";
 
 function RegisterPage() {
   const [data, setData] = useState({});
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.id]: e.target.value });
   };
 
-  const goToHome = () => {
-    window.location.href = '/';
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (data.password != data.confirm_password){
-      toast.error("Las contraseñas no son iguales", messageSettings)
+      toast.error("Las contraseñas no son iguales.", messageSettings)
       return
     }
     try {
-      const response = await axios.post(`http://localhost:1234/api/register_user`, data, { withCredentials: true })
-      const specificMessageSettings = messageSettings;
-      specificMessageSettings.onCloseCompleted = goToHome;
-      toast.success("Datos registrados. En breve será redirigido.", specificMessageSettings)
+      const response = await axios.post(`http://localhost:1234/api/register_user`, data)
+      toast.success("Cuenta creada exitosamente. Ahora puede iniciar sesión.", messageSettings);
+      navigate('/');
     } catch (error) {
       const errorMessage =
           error?.response?.data?.message ||
