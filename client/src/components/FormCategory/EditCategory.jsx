@@ -34,8 +34,8 @@ function EditCategory({ Categories, APIURL}) {
         >
           {Categories &&
             Categories.map((item, index) => (
-              <option key={index} value={item.value}>
-                {item.label}
+              <option key={index} value={item.description}>
+                {item.description}
               </option>
             ))}
         </select>

@@ -17,8 +17,6 @@ function DeleteCategory({ Categories, APIURL }) {
       toast.error("No se puede eliminar la categoria", messageSettings)
     }
   };
-
-  console.log(data);
   return (
     <section className="flex flex-col gap-4">
       <h4 className="text-xl font-medium">Eliminar Categoria</h4>
@@ -34,8 +32,8 @@ function DeleteCategory({ Categories, APIURL }) {
         >
           {Categories &&
             Categories.map((item, index) => (
-              <option key={index} value={item.value}>
-                {item.label}
+              <option key={index} value={item.description}>
+                {item.description}
               </option>
             ))}
         </select>
