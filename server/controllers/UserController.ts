@@ -50,7 +50,7 @@ export class UserController {
                                 name: userData.name,
                                 lastName: userData.lastName,
                                 email: userData.email,
-                                userType: userData.typeUser,
+                                userType: userData.userType,
                             }
                         });
                     };                    
