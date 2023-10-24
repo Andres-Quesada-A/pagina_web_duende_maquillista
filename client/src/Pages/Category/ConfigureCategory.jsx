@@ -31,7 +31,7 @@ function ConfigureCategory() {
     axios.get(apiCategoryURL.get).then((response) => {
       const dataCategories = response.data
       console.log(response)
-      //setData(dataCategories);
+      setData(dataCategories);
       setCategories(dataCategories.map(item => ({"description": item.category})))
     }).catch((error) => {
       toast.error("No se logro recuperar las categorias", messageSettings);
@@ -62,16 +62,12 @@ function ConfigureCategory() {
       </header>
       <section className="grid grid-cols-2 gap-10 w-full max-w-4xl mt-10 ">
         <AddCategory APIURL={apiCategoryURL.post}/>
-        <AddSubcategory Categories={categories} />
-        <EditCategory Categories={categories} APIURL={apiCategoryURL.put} />
-        <EditSubcategory
-          Categories={categories}
-          SubCategories={data}
+        <AddSubcategory Categories={[{ subcategory: null, description: "seleccione" }, ...categories]  } APIURL={apiSubcategoryURL.post} />
+        <EditCategory Categories={[{ subcategory: null, description: "seleccione" }, ...categories]} APIURL={apiCategoryURL.put} />
+        <EditSubcategory Categories={[{ subcategory: null, category: "seleccione" }, ...data]} APIURL={apiSubcategoryURL.put}
         />
-        <DeleteCategory Categories={categories} APIURL={apiCategoryURL.delete} />
-        <DeleteSubcategory
-          Categories={categories}
-          SubCategories={data}
+        <DeleteCategory Categories={[{ subcategory: null, description: "seleccione" }, ...categories]} APIURL={apiCategoryURL.delete} />
+        <DeleteSubcategory Categories={[{ subcategory: null, category: "seleccione" }, ...data]} Subcategories={categories} APIURL={apiSubcategoryURL.delete}
         />
       </section>
       <button

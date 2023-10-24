@@ -1,13 +1,35 @@
-import { useState } from "react";
-import InputCustom from "../form/InputCustom";
+import React, { useState } from 'react'
+import InputCustom from '../form/InputCustom';
+import { messageSettings, defaultError } from '../../utils/messageSettings';
+import { toast } from 'react-toastify';
+import axios from 'axios';
 
-function AddSubcategory({ Categories }) {
+function AddSubcategory({ Categories, APIURL}) {
   const [data, setData] = useState({});
+  const [category, setCategory] = useState({});
+  
   const HandleChange = (e) => {
     setData({ ...data, [e.target.id]: e.target.value });
   };
+  
+  const HandleCategoryChange = (e) =>{
+    setCategory({ ...category, [e.target.id]: e.target.value });
+  };
+  
   const HandleSubmit = (e) => {
     e.preventDefault();
+    const fullData = {...data, ...category}
+    console.log(fullData)
+    axios.post(APIURL, fullData)
+      .then(() => {
+        toast.success("Subcategoria añadida", messageSettings)
+      })
+      .catch((error) => {
+        const errorMessage =
+          error?.response?.data?.message ||
+          defaultError;
+        toast.error(errorMessage, messageSettings)
+      });
   };
   return (
     <form className="flex flex-col gap-4" onSubmit={HandleSubmit}>
@@ -18,7 +40,7 @@ function AddSubcategory({ Categories }) {
         </label>
         <select
           id="category"
-          onChange={HandleChange}
+          onChange={HandleCategoryChange}
           required={true}
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:outline-none focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100 block w-full p-2.5 "
         >
@@ -32,7 +54,7 @@ function AddSubcategory({ Categories }) {
       </div>
       <InputCustom
         HandleChange={HandleChange}
-        id="description"
+        id="subcategory"
         label="Subcategoria"
         required={true}
         type="text"
