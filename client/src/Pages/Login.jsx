@@ -19,7 +19,7 @@ function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`http://localhost:1234/api/login/${data.email}/${data.password}`)
+      await axios.post(`http://localhost:1234/api/login/${data.email}/${data.password}`, undefined, { withCredentials: true })
       navigate('/')
     } catch (error) {
       console.log(error?.response?.data?.message);

@@ -18,7 +18,7 @@ function Shop() {
   useEffect(() => {
     // Request to get products
     axios
-      .get(`http://localhost:1234/api/get_product_list`)
+      .get(`http://localhost:1234/api/get_product_list`, { withCredentials: true })
       .then((res) => {
         setProducts(JSON.stringify(res.data));
       })

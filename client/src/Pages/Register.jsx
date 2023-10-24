@@ -25,7 +25,7 @@ function RegisterPage() {
       return
     }
     try {
-      const response = await axios.post(`http://localhost:1234/api/register_user`, data)
+      const response = await axios.post(`http://localhost:1234/api/register_user`, data, { withCredentials: true })
       const specificMessageSettings = messageSettings;
       specificMessageSettings.onCloseCompleted = goToHome;
       toast.success("Datos registrados. En breve será redirigido.", specificMessageSettings)

@@ -20,7 +20,7 @@ function AddSubcategory({ Categories, APIURL}) {
     e.preventDefault();
     const fullData = {...data, ...category}
     console.log(fullData)
-    axios.post(APIURL, fullData)
+    axios.post(APIURL, fullData, { withCredentials: true })
       .then(() => {
         toast.success("Subcategoria añadida", messageSettings)
       })

@@ -42,7 +42,7 @@ function DeleteSubcategory({ Categories, APIURL }) {
     const fullData = {...subcategory, ...category}
     console.log(fullData)
     console.log(APIURL)
-    axios.delete(`${APIURL}/${fullData.category}/${fullData.subcategory}`)
+    axios.delete(`${APIURL}/${fullData.category}/${fullData.subcategory}`, { withCredentials: true })
       .then(() => {
         toast.success("Categoria eliminada", messageSettings)
       })

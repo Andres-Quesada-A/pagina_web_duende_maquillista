@@ -20,7 +20,7 @@ function EditCategory({ Categories, APIURL}) {
     e.preventDefault();
     const fullData = {...data, ...category}
     console.log(fullData)
-    axios.put(APIURL, fullData)
+    axios.put(APIURL, fullData, { withCredentials: true })
       .then(() => {
         toast.success("Categoria actualizada", messageSettings)
       })

@@ -23,7 +23,7 @@ function EditProduct() {
                 "http://localhost:1234/api/get_product_category_list";
             const GET_PRODUCT_API_URL = "http://localhost:1234/api/get_product/";
             try {
-                const response = await axios.get(CATEGORY_API_URL);
+                const response = await axios.get(CATEGORY_API_URL, { withCredentials: true });
                 const TempCategories = response.data;
                 const Formated = TempCategories.map((item) => ({
                     value: item.description,
@@ -37,7 +37,7 @@ function EditProduct() {
                 toast.error("Ocurrió un error al cargar las categorías", messageSettings);
             }
             try {
-                const response = await axios.get(GET_PRODUCT_API_URL + idProduct);
+                const response = await axios.get(GET_PRODUCT_API_URL + idProduct, { withCredentials: true });
                 setData({
                     name: response.data.name,
                     description: response.data.description,
@@ -123,7 +123,7 @@ function EditProduct() {
                 ...data,
                 available: data.available == "true",
                 id: parseInt(idProduct),
-            });
+            }, { withCredentials: true });
             toast.success("Producto modificado", messageSettings);
         } catch (error) {
             const errorMessage = error?.response?.data?.message || defaultError;

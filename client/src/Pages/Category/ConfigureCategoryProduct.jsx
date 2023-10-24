@@ -11,7 +11,7 @@ function ConfigureCategoryProduct() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await axios.get('http://localhost:1234/api/get_product_category_list')
+        const response = await axios.get('http://localhost:1234/api/get_product_category_list', { withCredentials: true })
         const TempCategories = response.data
         const Formated = TempCategories.map(item => ({
           value: item.description,
