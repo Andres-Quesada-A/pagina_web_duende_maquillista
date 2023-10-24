@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import SwitchFormInputs from "../components/form/SwitchFormInputs";
 import Image from "../images/imageLogin.png";
 import { Login } from "../Structures/LoginStructure";
@@ -7,10 +7,12 @@ import axios from "axios"
 import { toast } from "react-toastify";
 import { messageSettings, defaultError } from "../utils/messageSettings";
 import {useNavigate} from 'react-router-dom'
+import {AuthContext} from "../context/AuthContext"
 
 function LoginPage() {
   const [data, setData] = useState({email: "Andres@gmail.com", password: "1234Hello"});
   const navigate = useNavigate();
+  const { dispatch } = useContext(AuthContext)
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.id]: e.target.value });
@@ -19,7 +21,8 @@ function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`http://localhost:1234/api/login/${data.email}/${data.password}`)
+      const response = await axios.post(`http://localhost:1234/api/login/${data.email}/${data.password}`)
+      dispatch({ type: 'LOGIN', payload: response.data })
       navigate('/')
     } catch (error) {
       console.log(error?.response?.data?.message);
