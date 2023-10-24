@@ -278,7 +278,16 @@ export class MasterController {
         const ImageControllerObject = new ImageController();
 
         try {
-            ImageControllerObject.deleteImageCategory(String(req.params.category)).then((result) => {
+            const category = req.params.category
+            const description = req.params.description
+            var texto: string
+            if (category===undefined) {
+                texto = description 
+            } else{
+                texto = category
+            }
+            console.log(texto)
+            ImageControllerObject.deleteImageCategory(texto).then((result) => {
                 res.status(200).json({ message: "Ok" })
             }).catch((error)=>{
                 res.status(400).json({ message: error[0] ? error[0].customError : undefined })
@@ -294,7 +303,7 @@ export class MasterController {
         const ImageControllerObject = new ImageController();
 
         try {
-            ImageControllerObject.createImageSubcategory(String(req.body.category), String(req.body.subcategory)).then((result) => {
+            ImageControllerObject.createImageSubcategory(String(req.params.category), String(req.body.subcategory)).then((result) => {
                 res.status(200).json({ message: "Ok" })
             }).catch((error)=>{
                 res.status(400).json({ message: error[0] ? error[0].customError : undefined })
@@ -310,7 +319,7 @@ export class MasterController {
         const ImageControllerObject = new ImageController();
 
         try {
-            ImageControllerObject.editImageSubcategory(String(req.body.category), String(req.body.subcategory), String(req.body.new_subcategory)).then((result) => {
+            ImageControllerObject.editImageSubcategory(String(req.params.category), String(req.body.subcategory), String(req.body.new_subcategory)).then((result) => {
                 res.status(200).json({ message: "Ok" })
             }).catch((error)=>{
                 res.status(400).json({ message: error[0] ? error[0].customError : undefined })
@@ -326,7 +335,15 @@ export class MasterController {
         const ImageControllerObject = new ImageController();
 
         try {
-            ImageControllerObject.createImageCategory(String(req.body.category)).then((result) => {
+            const category : string = req.body.category
+            const description : string = req.body.description
+            var texto: string
+            if (category===undefined) {
+                texto = description 
+            } else{
+                texto = category
+            }
+            ImageControllerObject.createImageCategory(texto).then((result) => {
                 res.status(200).json({ message: "Ok" })
             }).catch((error)=>{
                 res.status(400).json({ message: error[0] ? error[0].customError : undefined })
@@ -340,9 +357,24 @@ export class MasterController {
     editImageCategory(req: Request, res: Response) {
         // Logic to edit an image category
         const ImageControllerObject = new ImageController();
-
         try {
-            ImageControllerObject.editImageCategory(String(req.body.category), String(req.body.new_category)).then((result) => {
+            const category = req.body.category
+            const description = req.body.description
+            var texto: string
+            if (category===undefined) {
+                texto = description 
+            } else{
+                texto = category
+            }
+            const new_category = req.body.new_category
+            const newDescription = req.body.newDescription
+            var newTexto: string
+            if (category===undefined) {
+                newTexto = newDescription 
+            } else{
+                newTexto = new_category
+            }
+            ImageControllerObject.editImageCategory(texto, newTexto).then((result) => {
                 res.status(200).json({ message: "Ok" })
             }).catch((error)=>{
                 res.status(400).json({ message: error[0] ? error[0].customError : undefined })

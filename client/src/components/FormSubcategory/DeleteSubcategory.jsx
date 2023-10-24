@@ -24,7 +24,7 @@ function DeleteSubcategory({ Categories, SubCategories }) {
         >
           {Categories &&
             Categories.map((item, index) => (
-              <option key={index} value={item.id}>
+              <option key={index} value={item.description}>
                 {item.description}
               </option>
             ))}

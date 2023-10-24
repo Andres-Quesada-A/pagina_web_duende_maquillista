@@ -2,9 +2,37 @@ import { useState } from 'react'
 import InputCustom from '../form/InputCustom';
 
 function EditSubcategory({ Categories, SubCategories }) {
-  const [data, setData] = useState({});
+  const [selectedCategory, setSelectedCategory] = useState({});
+  const [selectedSubcategory, setSelectedSubcategory] = useState({});
+  const [Subcategory, setSubcategory] = useState({});
+  
+  //function getSubcategories() {
+  //  const selectedCategoryObject = category.find(item => item.category === filters.category);
+  //  if (selectedCategoryObject && selectedCategoryObject.subcategory) {
+  //    const subcategories = selectedCategoryObject.subcategory.map(item => ({
+  //      label: item,
+  //      type: "checkbox",
+  //      value: item,
+  //    }));
+  //    return subcategories
+  //  } else {
+  //    return [];
+  //  }
+  //}
+
+
   const HandleChange = (e) => {
-    setData({ ...data, [e.target.id]: e.target.value });
+    setSelectedCategory({ ...selectedCategory, [e.target.id]: e.target.value });
+  };
+  const HandleCategoryChange = (e) => {
+    setSelectedCategory({ ...selectedCategory, [e.target.id]: e.target.value });
+    
+    
+    setSubcategory() //analisis
+    setSelectedSubcategory({})
+  };
+  const HandleSubcategoryChange = (e) => {
+    setSelectedSubcategory({ ...selectedSubcategory, [e.target.id]: e.target.value });
   };
   const HandleSubmit = (e) => {
     e.preventDefault();
@@ -18,13 +46,13 @@ function EditSubcategory({ Categories, SubCategories }) {
         </label>
         <select
           id="category"
-          onChange={HandleChange}
+          onChange={HandleCategoryChange}
           required={true}
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:outline-none focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100 block w-full p-2.5 "
         >
           {Categories &&
             Categories.map((item, index) => (
-              <option key={index} value={item.id}>
+              <option key={index} value={item.description}>
                 {item.description}
               </option>
             ))}
@@ -36,7 +64,7 @@ function EditSubcategory({ Categories, SubCategories }) {
         </label>
         <select
           id="subcategory"
-          onChange={HandleChange}
+          onChange={HandleSubcategoryChange}
           required={true}
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:outline-none focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100 block w-full p-2.5 "
         >

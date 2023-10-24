@@ -15,12 +15,12 @@ function ConfigureCategory() {
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
   const apiCategoryURL = {get:'http://localhost:1234/api/get_category',
-  post:'http://localhost:1234/api/create_category/',// :category
-  put:'http://localhost:1234/api/edit_category/',// :category/:new_category
-  delete:'http://localhost:1234/api/delete_category/'}// :category
-  const apiSubcategoryURL = {post: 'http://localhost:1234/api/create_subcategory/', // :category/:subcategory
-  put: 'http://localhost:1234/api/edit_subcategory/', //:category/:subcategory/:new_subcategory
-  delete: 'http://localhost:1234/api/delete_subcategory/'}// :category/:subcategory
+  post:'http://localhost:1234/api/create_category',// :category
+  put:'http://localhost:1234/api/edit_category',// :category/:new_category
+  delete:'http://localhost:1234/api/delete_category'}// :category
+  const apiSubcategoryURL = {post: 'http://localhost:1234/api/create_subcategory', // :category/:subcategory
+  put: 'http://localhost:1234/api/edit_subcategory', //:category/:subcategory/:new_subcategory
+  delete: 'http://localhost:1234/api/delete_subcategory'}// :category/:subcategory
 
 
   useEffect(() => {
@@ -50,7 +50,7 @@ function ConfigureCategory() {
 
     setSubcategoryfilters({ ...Subcategoryfilters, [e.target.id]: e.target.checked });
   };
-  console.log(data)
+  console.log(categories)
 
   return (
     <div className="w-full min-h-screen flex flex-col items-center mt-16 py-14 px-5">

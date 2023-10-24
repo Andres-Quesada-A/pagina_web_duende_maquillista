@@ -6,12 +6,21 @@ import axios from 'axios';
 
 function EditCategory({ Categories, APIURL}) {
   const [data, setData] = useState({});
+  const [category, setCategory] = useState({});
+  
   const HandleChange = (e) => {
     setData({ ...data, [e.target.id]: e.target.value });
   };
+  
+  const HandleCategoryChange = (e) =>{
+    setCategory({ ...category, [e.target.id]: e.target.value });
+  };
+  
   const HandleSubmit = (e) => {
     e.preventDefault();
-    axios.put(APIURL, data)
+    const fullData = {...data, ...category}
+    console.log(fullData)
+    axios.put(APIURL, fullData)
       .then(() => {
         toast.success("Categoria actualizada", messageSettings)
       })
@@ -22,7 +31,6 @@ function EditCategory({ Categories, APIURL}) {
         toast.error(errorMessage, messageSettings)
       });
   };
-  console.log(data)
   return (
     <form className="flex flex-col gap-4" onSubmit={HandleSubmit}>
       <h4 className="text-xl font-medium">Modificar Categoria</h4>
@@ -32,7 +40,7 @@ function EditCategory({ Categories, APIURL}) {
         </label>
         <select
           id="description"
-          onChange={HandleChange}
+          onChange={HandleCategoryChange}
           required={true}
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:outline-none focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100 block w-full p-2.5 "
         >
