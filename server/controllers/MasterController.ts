@@ -262,7 +262,14 @@ export class MasterController {
         const ImageControllerObject = new ImageController();
 
         try {
-            ImageControllerObject.deleteImageSubcategory(String(req.params.category), String(req.params.subcategory)).then((result) => {
+            const subcategory : any = req.params.subcategory
+            var texto: string
+            if ((subcategory===undefined) || (subcategory === "undefined") ) {
+                texto = "" 
+            } else{
+                texto = subcategory
+            }
+            ImageControllerObject.deleteImageSubcategory(String(req.params.category), texto).then((result) => {
                 res.status(200).json({ message: "Ok" })
             }).catch((error)=>{
                 res.status(400).json({ message: error[0] ? error[0].customError : undefined })
@@ -278,15 +285,14 @@ export class MasterController {
         const ImageControllerObject = new ImageController();
 
         try {
-            const category = req.params.category
-            const description = req.params.description
+            const category:any = req.params.category
+            const description:any = req.params.description
             var texto: string
             if (category===undefined) {
                 texto = description 
             } else{
                 texto = category
             }
-            console.log(texto)
             ImageControllerObject.deleteImageCategory(texto).then((result) => {
                 res.status(200).json({ message: "Ok" })
             }).catch((error)=>{
@@ -319,7 +325,15 @@ export class MasterController {
         const ImageControllerObject = new ImageController();
 
         try {
-            ImageControllerObject.editImageSubcategory(String(req.body.category), String(req.body.subcategory), String(req.body.new_subcategory)).then((result) => {
+            const subcategory : any = req.body.subcategory
+            var texto: string
+            if ((subcategory===undefined) || (subcategory === "undefined") ) {
+                texto = ""
+            } else{
+                texto = subcategory
+            }
+            console.log(texto)
+            ImageControllerObject.editImageSubcategory(String(req.body.category), texto, String(req.body.newSubcategory)).then((result) => {
                 res.status(200).json({ message: "Ok" })
             }).catch((error)=>{
                 res.status(400).json({ message: error[0] ? error[0].customError : undefined })

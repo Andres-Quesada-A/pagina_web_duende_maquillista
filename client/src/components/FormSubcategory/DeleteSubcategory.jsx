@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
-import InputCustom from '../form/InputCustom';
-import { messageSettings, defaultError } from '../../utils/messageSettings';
-import { toast } from 'react-toastify';
-import axios from 'axios';
+import { useState } from "react";
+import InputCustom from "../form/InputCustom";
+import {toast} from 'react-toastify'
+import { messageSettings, defaultError } from '../../utils/messageSettings'
+import axios from 'axios'
 
 function DeleteSubcategory({ Categories, APIURL }) {
   const [category, setCategory] = useState({});
@@ -28,15 +28,13 @@ function DeleteSubcategory({ Categories, APIURL }) {
   const HandleCategoryChange = (e) => {
     var x = {[e.target.id]: e.target.value}
     setCategory({ ...category, [e.target.id]: e.target.value });
-    console.log("entra")
     setSubcategories(getSubcategories(x))
-    console.log("x",x)
-    console.log(subcategories);
-    
   };
+
   const HandleSubcategoryChange = (e) => {
     setSubcategory({ ...subcategory, [e.target.id]: e.target.value });
   };
+
   const HandleSubmit = (e) => {
     e.preventDefault();
     const fullData = {...subcategory, ...category}
@@ -44,7 +42,7 @@ function DeleteSubcategory({ Categories, APIURL }) {
     console.log(APIURL)
     axios.delete(`${APIURL}/${fullData.category}/${fullData.subcategory}`)
       .then(() => {
-        toast.success("Categoria eliminada", messageSettings)
+        toast.success("Subcategoria eliminada", messageSettings)
       })
       .catch((error) => {
         const errorMessage =
