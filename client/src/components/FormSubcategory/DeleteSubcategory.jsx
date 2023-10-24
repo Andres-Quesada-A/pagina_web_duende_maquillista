@@ -4,7 +4,7 @@ import { messageSettings, defaultError } from '../../utils/messageSettings';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
-function DeleteSubcategory({ Categories, Subcategories, APIURL }) {
+function DeleteSubcategory({ Categories, APIURL }) {
   const [category, setCategory] = useState({});
   const [subcategories, setSubcategories] = useState({});
   const [subcategory, setSubcategory] = useState({});
@@ -18,7 +18,7 @@ function DeleteSubcategory({ Categories, Subcategories, APIURL }) {
       const subcategories = selectedObject.subcategory.map(item => ({
         subcategory: item,
       }));
-      return subcategories
+      return [{"subcategory" : "seleccione"}, ...subcategories ]
     } else {
       return {};
     }
@@ -39,24 +39,20 @@ function DeleteSubcategory({ Categories, Subcategories, APIURL }) {
   };
   const HandleSubmit = (e) => {
     e.preventDefault();
-    const fullData = {...data, ...category}
+    const fullData = {...subcategory, ...category}
     console.log(fullData)
-    axios.post(APIURL, fullData)
+    console.log(APIURL)
+    axios.delete(`${APIURL}/${fullData.category}/${fullData.subcategory}`)
       .then(() => {
-        toast.success("Subcategoria eliminada", messageSettings)
+        toast.success("Categoria eliminada", messageSettings)
       })
       .catch((error) => {
         const errorMessage =
-          error?.response?.data?.message ||
+          error?.response?.fullData?.message ||
           defaultError;
         toast.error(errorMessage, messageSettings)
       });
   };
-  //console.log(category)
-  //console.log(subcategory)
-  //console.log(Categories)
-  Subcategories.map((item,index) => {subcategory: item.subcategory})
-  console.log(subcategories)
 
   return (
     <form className="flex flex-col gap-4" onSubmit={HandleSubmit}>
@@ -99,7 +95,7 @@ function DeleteSubcategory({ Categories, Subcategories, APIURL }) {
     </select>
   </div>
 ) : (
-  // Render something else if Categories is empty or null
+  // Render something else if subcategories is empy or null
   <div>
     <label className="block mb-2 text-base font-medium text-gray-900">
       Subcategoria

@@ -40,7 +40,7 @@ BEGIN
         --validacion de existencia previa
         IF (@UsecategoryId IS NULL)
             BEGIN
-                RAISERROR('la Categoria "%s" no existe', 16, 1,@IN_imageCategory)
+                RAISERROR('La Categoria "%s" no existe', 16, 1,@IN_imageCategory)
             END;
 
         --validacion de subcategoria
@@ -48,6 +48,19 @@ BEGIN
 	        BEGIN
 	        	RAISERROR('No se ingreso texto de la Subcategoria a agregar', 16, 1)
 	        END;
+
+        --palabras reservadas
+        IF(LTRIM(RTRIM(@IN_imageSubcategory)) = 'seleccione')
+	        BEGIN
+	        	RAISERROR('La Subcategoria "%s" es invalida', 16, 1,@IN_imageSubcategory)
+	        END;
+        
+        --palabras reservadas
+        IF ( LTRIM(RTRIM(@IN_imageSubcategory)) LIKE '%,%')
+	        BEGIN
+	        	RAISERROR('La Subcategoria "%s" no puede tener ","', 16, 1,@IN_imageSubcategory)
+	        END;
+
 
         --validacion de existencia previa de subcategoria
         IF EXISTS ( SELECT 1

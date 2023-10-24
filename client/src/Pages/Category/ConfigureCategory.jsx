@@ -11,9 +11,7 @@ import axios from 'axios';
 
 function ConfigureCategory() {
   const [data, setData] = useState([]);
-  const [categoryFilter, setcategoryFilter] = useState({});
   const [categories, setCategories] = useState([]);
-  const [subcategories, setSubcategories] = useState([]);
   const apiCategoryURL = {get:'http://localhost:1234/api/get_category',
   post:'http://localhost:1234/api/create_category',// :category
   put:'http://localhost:1234/api/edit_category',// :category/:new_category
@@ -32,7 +30,7 @@ function ConfigureCategory() {
       const dataCategories = response.data
       console.log(response)
       setData(dataCategories);
-      setCategories(dataCategories.map(item => ({"description": item.category})))
+      setCategories(dataCategories.map(item => ({"value": item.category})))
     }).catch((error) => {
       toast.error("Ocurrió un error al cargar las categorías", messageSettings);
     })
@@ -62,12 +60,12 @@ function ConfigureCategory() {
       </header>
       <section className="grid grid-cols-2 gap-10 w-full max-w-4xl mt-10 ">
         <AddCategory APIURL={apiCategoryURL.post}/>
-        <AddSubcategory Categories={[{ subcategory: null, description: "seleccione" }, ...categories]  } APIURL={apiSubcategoryURL.post} />
-        <EditCategory Categories={[{ subcategory: null, description: "seleccione" }, ...categories]} APIURL={apiCategoryURL.put} />
+        <AddSubcategory Categories={[{ subcategory: null, value: "seleccione" }, ...categories]  } APIURL={apiSubcategoryURL.post} />
+        <EditCategory Categories={[{ subcategory: null, value: "seleccione" }, ...categories]} APIURL={apiCategoryURL.put} />
         <EditSubcategory Categories={[{ subcategory: null, category: "seleccione" }, ...data]} APIURL={apiSubcategoryURL.put}
         />
-        <DeleteCategory Categories={[{ subcategory: null, description: "seleccione" }, ...categories]} APIURL={apiCategoryURL.delete} />
-        <DeleteSubcategory Categories={[{ subcategory: null, category: "seleccione" }, ...data]} Subcategories={categories} APIURL={apiSubcategoryURL.delete}
+        <DeleteCategory Categories={[{ subcategory: null, value: "seleccione" }, ...categories]} APIURL={apiCategoryURL.delete} />
+        <DeleteSubcategory Categories={[{ subcategory: null, category: "seleccione" }, ...data]} APIURL={apiSubcategoryURL.delete}
         />
       </section>
       <button
