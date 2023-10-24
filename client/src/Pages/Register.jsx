@@ -14,6 +14,10 @@ function RegisterPage() {
     setData({ ...data, [e.target.id]: e.target.value });
   };
 
+  const goToHome = () => {
+    window.location.href = '/';
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (data.password != data.confirm_password){
@@ -22,10 +26,9 @@ function RegisterPage() {
     }
     try {
       const response = await axios.post(`http://localhost:1234/api/register_user`, data)
-      toast.success("Datos registrados\nEn breve será redirigido", messageSettings)
-      setTimeout(() => {
-        window.location.href = '/';
-      }, 4000); // 4 seconds
+      const specificMessageSettings = messageSettings;
+      specificMessageSettings.onCloseCompleted = goToHome;
+      toast.success("Datos registrados. En breve será redirigido.", specificMessageSettings)
     } catch (error) {
       const errorMessage =
           error?.response?.data?.message ||
