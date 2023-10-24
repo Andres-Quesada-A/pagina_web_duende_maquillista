@@ -34,7 +34,7 @@ function ConfigureCategory() {
       setData(dataCategories);
       setCategories(dataCategories.map(item => ({"description": item.category})))
     }).catch((error) => {
-      toast.error("No se logro recuperar las categorias", messageSettings);
+      toast.error("Ocurrió un error al cargar las categorías", messageSettings);
     })
 
   }, []);

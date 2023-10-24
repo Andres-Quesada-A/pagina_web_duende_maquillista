@@ -46,8 +46,8 @@ function AddSubcategory({ Categories, APIURL}) {
         >
           {Categories &&
             Categories.map((item, index) => (
-              <option key={index} value={item.description}>
-                {item.description}
+              <option key={index} value={item.value}>
+                {item.value}
               </option>
             ))}
         </select>

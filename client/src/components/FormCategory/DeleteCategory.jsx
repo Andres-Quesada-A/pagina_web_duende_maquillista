@@ -23,6 +23,7 @@ function DeleteCategory({ Categories, APIURL }) {
         toast.error(errorMessage, messageSettings)
       });
   };
+
   return (
     <section className="flex flex-col gap-4">
       <h4 className="text-xl font-medium">Eliminar Categoria</h4>
@@ -38,8 +39,8 @@ function DeleteCategory({ Categories, APIURL }) {
         >
           {Categories &&
             Categories.map((item, index) => (
-              <option key={index} value={item.description}>
-                {item.description}
+              <option key={index} value={item.value}>
+                {item.value}
               </option>
             ))}
         </select>
