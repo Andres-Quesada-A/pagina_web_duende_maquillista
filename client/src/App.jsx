@@ -22,6 +22,7 @@ import ConfigureCategory from "./Pages/Category/ConfigureCategory";
 import ConfigureCategoryProduct from "./Pages/Category/ConfigureCategoryProduct";
 import EditProduct from "./Pages/products/EditProduct";
 import { AuthContextProvider } from "./context/AuthContext";
+import OrdersPage from "./Pages/orders";
 
 const noRequirement = [
   "/login",
@@ -70,6 +71,7 @@ function App() {
               path="/configure_category_product"
               element={<ConfigureCategoryProduct />}
             />
+            <Route exact path="/orders" element={<OrdersPage />} />
             <Route path="*" element={<Error404 />} />
           </Routes>
         </ScrollToTop>
