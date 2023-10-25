@@ -10,7 +10,8 @@ import {messageSettings} from '../../utils/messageSettings';
 import axios from 'axios';
 
 function ConfigureCategory() {
-  const [data, setData] = useState([]);
+  const [raw, setRaw] = useState([]);
+  const [formatData, setFormatData] = useState([]);
   const [categories, setCategories] = useState([]);
   const apiCategoryURL = {
     get:'http://localhost:1234/api/get_category',
@@ -23,17 +24,17 @@ function ConfigureCategory() {
     put: 'http://localhost:1234/api/edit_subcategory', //:category/:subcategory/:new_subcategory
     delete: 'http://localhost:1234/api/delete_subcategory'// :category/:subcategory
   }
-  const preSelectionValue = { subcategory: null, value: "seleccione" }
-  const preSelectionCategory = { subcategory: null, category: "seleccione" }
+  const preSelectionValue = { value: "seleccione", subcategory: null }
 
   useEffect(() => {
     // Aqui se deben recuperar las categorias y subcategorias
 
     axios.get(apiCategoryURL.get, { withCredentials: true }).then((response) => {
-      const dataCategories = response.data
-      console.log(response)
-      setData(dataCategories);
-      setCategories(dataCategories.map(item => ({"value": item.category})))
+      const rawdata = response.data
+      setRaw(rawdata)
+
+      setFormatData([ preSelectionValue ,...rawdata.map(item => ({"value": item.category, "subcategory": item.subcategory}))]);
+      setCategories([ preSelectionValue ,...rawdata.map(item => ({"value": item.category}))])
     }).catch((error) => {
       toast.error("Ocurrió un error al cargar las categorías", messageSettings);
     })
@@ -50,13 +51,13 @@ function ConfigureCategory() {
       </header>
       <section className="grid grid-cols-2 gap-10 w-full max-w-4xl mt-10 ">
         <AddCategory APIURL={apiCategoryURL.post}/>
-        <AddSubcategory Categories={[preSelectionValue, ...categories]  } APIURL={apiSubcategoryURL.post} />
+        <AddSubcategory Categories={categories} APIURL={apiSubcategoryURL.post} />
 
-        <EditCategory Categories={[preSelectionValue, ...categories]} APIURL={apiCategoryURL.put} />
-        <EditSubcategory Categories={[preSelectionCategory, ...data]} APIURL={apiSubcategoryURL.put} />
+        <EditCategory Categories={categories} APIURL={apiCategoryURL.put} />
+        <EditSubcategory Raw={formatData} APIURL={apiSubcategoryURL.put} />
 
-        <DeleteCategory Categories={[preSelectionValue, ...categories]} APIURL={apiCategoryURL.delete} />
-        <DeleteSubcategory Categories={[preSelectionCategory, ...data]} APIURL={apiSubcategoryURL.delete} />
+        <DeleteCategory Categories={categories} APIURL={apiCategoryURL.delete} />
+        <DeleteSubcategory Raw={formatData} APIURL={apiSubcategoryURL.delete} />
       </section>
       <button
         className=" flex justify-center items-center mx-auto text-lg w-full max-w-[280px] mt-10 py-2 rounded-md text-indigo-500 bg-transparent hover:bg-indigo-500 hover:text-white border-2 border-indigo-500 transition-colors"

@@ -4,45 +4,47 @@ import {toast} from 'react-toastify'
 import { messageSettings, defaultError } from '../../utils/messageSettings'
 import axios from 'axios'
 
-function EditSubcategory({ Categories, APIURL }) {
+function EditSubcategory({ Raw, APIURL }) {
   const [selectedCategory, setSelectedCategory] = useState({});
-  const [subcategory, setSubcategory] = useState({});
+  const [selectedSubcategory, setSelectedSubcategory] = useState({});
+  const [selectedNewSubcategory, setSelectedNewSubcategory] = useState({});
   const [subcategories, setSubcategories] = useState({});
-  const [newSubcategory, setnewSubcategory] = useState({});
   const aux = [{subcategory: ""}]
 
   function getSubcategories(x) {
-    const selectedObject = Categories.find(item => item.category === x.category);
-    //console.log(Categories);
-    console.log("object",selectedObject);
+    const selectedObject = Raw.find(item => item.value === x.category);
+
+    //console.log("object",selectedObject);
     if (selectedObject && selectedObject.subcategory) {
       const subcategories = selectedObject.subcategory.map(item => ({
         subcategory: item,
       }));
-      return [{"subcategory" :  "seleccione"}, ...subcategories ]
+      return [{"subcategory": "seleccione"}, ...subcategories ]
     } else {
       return {};
     }
   }
 
   const HandleNewSubcategoryChange = (e) => {
-    setnewSubcategory({ ...newSubcategory, [e.target.id]: e.target.value });
+    setSelectedNewSubcategory({ ...selectedNewSubcategory, [e.target.id]: e.target.value });
   };
+
   const HandleCategoryChange = (e) => {
     var x = {[e.target.id]: e.target.value}
-    setSubcategory({ ...subcategory, [e.target.id]: e.target.value });
+    setSelectedCategory({ ...selectedNewSubcategory, [e.target.id]: e.target.value });
     setSubcategories(getSubcategories(x))
+    setSelectedSubcategory({ });
   };
 
   const HandleSubcategoryChange = (e) => {
-    setSubcategory({ ...subcategory, [e.target.id]: e.target.value });
+    setSelectedSubcategory({ ...selectedSubcategory, [e.target.id]: e.target.value });
   };
 
   const HandleSubmit = (e) => {
     e.preventDefault();
-    const fullData = {...newSubcategory, ...subcategory, ...selectedCategory}
-    console.log(fullData)
-    console.log(APIURL)
+    const fullData = {...selectedNewSubcategory, ...selectedSubcategory, ...selectedCategory}
+    //console.log(fullData)
+    //console.log(APIURL)
     axios.put(APIURL, fullData)
       .then(() => {
         toast.success("Subcategoria modificada", messageSettings)
@@ -54,7 +56,7 @@ function EditSubcategory({ Categories, APIURL }) {
         toast.error(errorMessage, messageSettings)
       });
   };
-
+  //console.log([selectedCategory, selectedSubcategory, selectedNewSubcategory])
   return (
     <form className="flex flex-col gap-4" onSubmit={HandleSubmit}>
       <h4 className="text-xl font-medium">Modificar Subcategoria</h4>
@@ -68,10 +70,10 @@ function EditSubcategory({ Categories, APIURL }) {
           required={true}
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:outline-none focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100 block w-full p-2.5 "
         >
-          {Categories &&
-            Categories.map((item, index) => (
-              <option key={index} value={item.category}>
-                {item.category}
+          {Raw &&
+            Raw.map((item, index) => (
+              <option key={index} value={item.value}>
+                {item.value}
               </option>
             ))}
         </select>

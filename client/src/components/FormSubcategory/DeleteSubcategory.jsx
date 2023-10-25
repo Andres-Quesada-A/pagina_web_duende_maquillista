@@ -4,40 +4,42 @@ import {toast} from 'react-toastify'
 import { messageSettings, defaultError } from '../../utils/messageSettings'
 import axios from 'axios'
 
-function DeleteSubcategory({ Categories, APIURL }) {
-  const [category, setCategory] = useState({});
+function DeleteSubcategory({ Raw, APIURL }) {
+
+  const [selectedCategory, setSelectedCategory] = useState({});
+  const [selectedSubcategory, setSelectedSubcategory] = useState({});
   const [subcategories, setSubcategories] = useState({});
-  const [subcategory, setSubcategory] = useState({});
   const aux = [{subcategory: ""}]
 
+
+
   function getSubcategories(x) {
-    const selectedObject = Categories.find(item => item.category === x.category);
-    //console.log(Categories);
-    console.log("object",selectedObject);
+    const selectedObject = Raw.find(item => item.value === x.category);
+
     if (selectedObject && selectedObject.subcategory) {
       const subcategories = selectedObject.subcategory.map(item => ({
         subcategory: item,
       }));
       return [{"subcategory" : "seleccione"}, ...subcategories ]
     } else {
-      return {};
+      return [{}];
     }
   }
 
 
   const HandleCategoryChange = (e) => {
     var x = {[e.target.id]: e.target.value}
-    setCategory({ ...category, [e.target.id]: e.target.value });
+    setSelectedCategory({ ...selectedCategory, [e.target.id]: e.target.value });
     setSubcategories(getSubcategories(x))
   };
 
   const HandleSubcategoryChange = (e) => {
-    setSubcategory({ ...subcategory, [e.target.id]: e.target.value });
+    setSelectedSubcategory({ ...selectedSubcategory, [e.target.id]: e.target.value });
   };
 
   const HandleSubmit = (e) => {
     e.preventDefault();
-    const fullData = {...subcategory, ...category}
+    const fullData = {...selectedSubcategory, ...selectedCategory}
     console.log(fullData)
     console.log(APIURL)
     axios.delete(`${APIURL}/${fullData.category}/${fullData.subcategory}`, { withCredentials: true })
@@ -65,10 +67,10 @@ function DeleteSubcategory({ Categories, APIURL }) {
           required={true}
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:outline-none focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100 block w-full p-2.5 "
         >
-          {Categories &&
-            Categories.map((item, index) => (
-              <option key={index} value={item.category}>
-                {item.category}
+          {Raw &&
+            Raw.map((item, index) => (
+              <option key={index} value={item.value}>
+                {item.value}
               </option>
             ))}
         </select>
