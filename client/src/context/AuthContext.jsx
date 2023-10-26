@@ -29,7 +29,7 @@ export const AuthContextProvider = ({ children }) => {
   }
 
   const getUserType = () => {
-    return state.currentUser?.user?.userType
+    return state.currentUser?.user?.userType | 0
   }
   const getLoginStatus = () => {
     return state.currentUser?.loggedIn || false

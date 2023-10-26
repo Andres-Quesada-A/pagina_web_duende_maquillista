@@ -52,6 +52,13 @@ export function ShoppingCartProvider({ children }) {
       return currItems.filter((item) => item.id != id);
     });
   }
+  function removeCart() {
+    setCartItems([]);
+  }
+  function getCartItems() {
+    const items = cartItems.map(item => { return {id: item.id, amount: item.amount}}) 
+    return items
+  }
 
   return (
     <ShoppingCartContext.Provider
@@ -61,7 +68,9 @@ export function ShoppingCartProvider({ children }) {
         cartItems,
         AddProductCar,
         cartQuantity,
-        increaseProductCart
+        increaseProductCart,
+        removeCart,
+        getCartItems
       }}
     >
       {children}

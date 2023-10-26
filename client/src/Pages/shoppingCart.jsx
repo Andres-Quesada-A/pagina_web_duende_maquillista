@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { location } from "../Structures/location";
 import PlaceholderImage from "../images/placeholderImage.jpeg";
 import { useShoppingCart } from "../context/ShoppingCartContext";
@@ -6,17 +6,48 @@ import { formatCurrency } from "../utils/formatCurrency";
 import { useAuthContext } from "../context/AuthContext";
 import { toast } from "react-toastify";
 import { messageSettings } from "../utils/messageSettings";
+import { storage } from "../config/firebase";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import axios from 'axios'
 
 function ShoppingCart() {
-  const { cartItems, removeFromCart, increaseProductCart } = useShoppingCart();
+  const { cartItems, getCartItems, removeFromCart, increaseProductCart, removeCart } = useShoppingCart();
   const { GetUserID } = useAuthContext();
   const [file, setFile] = useState("");
   const [previewURL, setPreviewURL] = useState("");
+  const [per, setPerc] = useState(null);
+  const [data, setData] = useState({});
   const [exactLocation, setExactLocation] = useState({
     selectedProvince: "",
     selectedCanton: "",
     selectedDistrict: "",
   });
+
+  useEffect(() => {
+    const uploadFile = () => {
+      const storageRef = ref(storage, file.name);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          setPerc(progress);
+        },
+        (error) => {
+          console.log(error);
+          toast.error("Ocurrió un error al subir la imagen", messageSettings);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            setData((prev) => ({ ...prev, img: downloadURL }));
+          });
+        }
+      );
+    };
+    file && uploadFile();
+  }, [file]);
 
   const provinces = location.provinces;
 
@@ -55,19 +86,34 @@ function ShoppingCart() {
     }
   };
 
-  const handleSubmit = () => {
-    const userID = GetUserID();
-    if (!userID){
-      toast.error("Ha ocurrido un error, Inicie sesión nuevamente", messageSettings)
+  const handleSubmit = async () => {
+    const userId = GetUserID();
+    if (!userId) {
+      toast.error(
+        "Ha ocurrido un error, Inicie sesión nuevamente",
+        messageSettings
+      );
     }
     try {
       //verificar que todo esté lleno
       // province, canton, district, specificAddress, shippingFee, products, userId, imageUrl
+      const RequestData = {
+        province: exactLocation.selectedProvince,
+        canton: exactLocation.selectedCanton,
+        district: exactLocation.selectedDistrict,
+        specificAddress: exactLocation.exact,
+        shippingFee: 0,
+        products: getCartItems(),
+        userId,
+        imageUrl: data.img,
+      };
+      await axios.post('http://localhost:1234/api/create_order', RequestData)
+      toast.success("Orden realizada", messageSettings);
+      removeCart()
     } catch (error) {
-      toast.error("Algo ha salido mal", messageSettings)
+      toast.error("Algo ha salido mal", messageSettings);
     }
   };
-  console.log(cartItems);
   return (
     <div className="flex flex-col items-center pb-16">
       <header className="w-full max-w-5xl border-b-2 border-indigo-400 mt-16 pt-8 pb-5 px-5">
@@ -237,7 +283,8 @@ function ShoppingCart() {
         </p>
         <button
           onClick={handleSubmit}
-          className="bg-indigo-500 hover:bg-indigo-600 transition-colors h-11 rounded-md text-white font-medium text-base"
+          disabled={!per || per < 100}
+          className="disabled:bg-indigo-300 bg-indigo-500 hover:bg-indigo-600 transition-colors h-11 rounded-md text-white font-medium text-base"
         >
           Finalizar compra
         </button>
