@@ -2,11 +2,12 @@ import { Helmet } from "react-helmet-async";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { messageSettings } from "../../utils/messageSettings";
+import { messageSettings, defaultError } from "../../utils/messageSettings";
 import Product from "../../components/cards/product";
 import SelectCustom from "../../components/form/SelectCustom";
 import { OptionsFilterPrice } from "../../Structures/shopFilters";
 import SwitchFormInputs from "../../components/form/SwitchFormInputs";
+import { Link } from 'react-router-dom';
 
 function Shop() {
   const [search, setSearch] = useState({});
@@ -14,6 +15,23 @@ function Shop() {
   const [products, setProducts] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [admin, setAdmin] = useState(true);
+
+  const handleDelete = (id) => {
+    axios.delete(`http://localhost:1234/api/delete_product/${id}`, { withCredentials: true })
+      .then(() => {
+        toast.success("Producto eliminado exitosamente", messageSettings);
+        const parsedProducts = JSON.parse(products);
+        setProducts(JSON.stringify(parsedProducts.filter((product) => product.id !== id)));
+      })
+      .catch((error) => {
+        const errorMessage =
+          error?.response?.data?.message ||
+          defaultError;
+        toast.error(errorMessage, messageSettings)
+      });
+  }
+
 
   useEffect(() => {
     // Request to get products
@@ -110,39 +128,50 @@ function Shop() {
         />
         <link rel="canonical" href="/shop" />
       </Helmet>
-      <section className="min-h-screen flex mt-16">
-        <div className="bg-indigo-50 h-screen w-64 fixed top-0 pt-24 px-5">
-          <h4 className="text-gray-600 font-semibold text-2xl mb-5">Filtros</h4>
-          <form onSubmit={handleSubmit}>
-            <SelectCustom
-              HandleChange={handleChangeSorting}
-              id="order-price"
-              label="Ordenar por"
-              options={OptionsFilterPrice}
-              required={false}
-            />
-            <h4 className="mt-4 mb-3 font-semibold">Categorías</h4>
-            <SwitchFormInputs
-              HandleChange={handleChangeCategories}
-              structureForm={Object.keys(categories).map((category) => ({
-                label: category,
-                type: "checkbox",
-                value: category,
-                checked: categories[category],
-              }))}
-            />
-            <h4 className="mt-4 mb-3 font-semibold">Productos</h4>
-            <input
-              onChange={handleChangeSearch}
-              type="text"
-              placeholder="Buscar"
-              id="search"
-              className="h-10 bg-gray-50 border border-indigo-300 text-gray-900 text-base rounded-xl focus:outline-none focus:ring-4 focus:border-indigo-400 focus:ring-indigo-100 block w-full px-2.5"
-            />
-            <button className="mt-3 bg-indigo-500 hover:bg-indigo-400 transition-colors py-1 font-medium text-white w-full text-base rounded-md">
-              Buscar
-            </button>
-          </form>
+      <section className="min-h-screen flex mt-16 ">
+        <div className="bg-indigo-50 h-screen w-64 fixed top-0 pt-24 pb-6 px-5 flex flex-col justify-between">
+          <div>
+            <h4 className="text-gray-600 font-semibold text-2xl mb-5">Filtros</h4>
+            <form onSubmit={handleSubmit}>
+              <SelectCustom
+                HandleChange={handleChangeSorting}
+                id="order-price"
+                label="Ordenar por"
+                options={OptionsFilterPrice}
+                required={false}
+              />
+              <h4 className="mt-4 mb-3 font-semibold">Categorías</h4>
+              <SwitchFormInputs
+                HandleChange={handleChangeCategories}
+                structureForm={Object.keys(categories).map((category) => ({
+                  label: category,
+                  type: "checkbox",
+                  value: category,
+                  checked: categories[category],
+                }))}
+              />
+              <h4 className="mt-4 mb-3 font-semibold">Productos</h4>
+              <input
+                onChange={handleChangeSearch}
+                type="text"
+                placeholder="Buscar"
+                id="search"
+                className="h-10 bg-gray-50 border border-indigo-300 text-gray-900 text-base rounded-xl focus:outline-none focus:ring-4 focus:border-indigo-400 focus:ring-indigo-100 block w-full px-2.5"
+              />
+              <button className="mt-3 bg-indigo-500 hover:bg-indigo-400 transition-colors py-1 font-medium text-white w-full text-base rounded-md">
+                Buscar
+              </button>
+            </form>
+          </div>
+          {
+            admin && (
+              <Link to="/add_product">
+                <button className="mt-3 bg-emerald-500 hover:bg-emerald-400 transition-colors py-1 font-medium text-white w-full text-base rounded-md">
+                  Añadir producto
+                </button>
+              </Link>
+            )
+          }
         </div>
         <div className="w-full py-10 px-5 sm:px-10 md:px-20 ml-64">
           <header className="flex justify-between items-center">
@@ -165,6 +194,8 @@ function Shop() {
                       available={available}
                       name={name}
                       key={id}
+                      admin={admin}
+                      deleteProduct={handleDelete}
                     />
                   );
                 }
