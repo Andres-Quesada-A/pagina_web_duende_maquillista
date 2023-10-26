@@ -6,7 +6,7 @@ import ImageCard from "../../components/cards/ImageCard";
 import ImageCardDuende from "../../components/cards/ImageCardDuende";
 import axios from 'axios';
 import { toast } from 'react-toastify'
-import { messageSettings } from '../../utils/messageSettings'
+import { messageSettings, defaultError } from '../../utils/messageSettings'
 import { getKeysCheckbox } from "../../utils/getkeysCheckbox";
 
 
@@ -37,7 +37,18 @@ function Gallery() {
     //logic for deleting images. requires ImageCardDuende
     //its use is only in ImageCardDuende
     //
-    console.log(id);
+    const apiDeleteImageUrl = "http://localhost:1234/api/delete_image"
+
+    axios.delete(`${apiDeleteImageUrl}/${id}`, { withCredentials: true })
+      .then(() => {
+        toast.success("Imagen eliminada", messageSettings)
+      })
+      .catch((error) => {
+        const errorMessage =
+          error?.response?.data?.message ||
+          defaultError;
+        toast.error(errorMessage, messageSettings)
+      });
   }
 
   useEffect(() => {
@@ -91,8 +102,7 @@ function Gallery() {
     label: item.category
   }));
   const subcategoryOptions = getSubcategories();
-  console.log(filters)
-  console.log(Subcategoryfilters)
+
   return (
     <>
       <Helmet>
@@ -126,22 +136,22 @@ function Gallery() {
           </form>
         </div>
         <div className="w-full ml-64">
-          <div className="w-full h-16 flex items-center justify-end gap-4 pr-10 bg-indigo-200">
-            <a href = "/gallery/add_image">
+          {admin && (
+            <div className="w-full h-16 flex items-center justify-end gap-4 pr-10 bg-indigo-200">
+            <a href="/gallery/add_image">
               <div className="w-60 text-center px-5 py-2 text-white font-medium rounded-lg bg-indigo-400">
                 Subir Imagen
               </div>
             </a>
-
-            <a href = "/configure_category">
+            <a href="/configure_category">
               <div className="w-60 text-center px-5 py-2 text-white font-medium rounded-lg bg-indigo-400">
                 Configurar Categorias
               </div>
             </a>
-
           </div>
+          )}
+          
           <div className="w-full py-10 px-5 sm:px-10 md:px-20">
-
             <header className="flex justify-between items-center">
               <h1 className="text-4xl font-semibold text-indigo-500">
                 Galería
