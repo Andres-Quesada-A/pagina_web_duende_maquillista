@@ -12,6 +12,7 @@ import { ImageController } from "./ImageController";
 import { ProductController } from "./ProductController";
 import { OrderController } from "./OrderController";
 import ConnectionDAO from "../DAOS/ConnectionDAO";
+import { EmailController } from "./EmailController";
 
 export class MasterController {
     constructor() {
@@ -70,6 +71,15 @@ export class MasterController {
             const token = response.token;
             delete response.token;
             res.cookie("token", token, { httpOnly: true });
+            if (response?.loggedIn && response?.user?.email) {
+                const EmailControllerObject = new EmailController();
+                /*EmailControllerObject.sendEmail(
+                    [""],
+                    "Nuevo inicio de sesión",
+                    `<p>Se ha iniciado sesión en su cuenta.</p>`,
+                    null
+                );*/
+            }
             return res.status(200).json(response);
         } catch (error: any) {
             console.log(error);

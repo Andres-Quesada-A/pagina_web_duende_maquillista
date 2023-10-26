@@ -14,5 +14,6 @@ ImageRouter.get(`/get_image/:id`, MasterControllerObject.getImage)
 ImageRouter.post(`/create_image`, MasterControllerObject.createImage)
 ImageRouter.put(`/edit_image`, MasterControllerObject.editImage)
 ImageRouter.delete(`/delete_image/:id`, MasterControllerObject.deleteImage)
+//ImageRouter.post(`/request_service/:id`, MasterControllerObject.requestService);
 
 export default ImageRouter
