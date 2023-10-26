@@ -32,7 +32,7 @@ export const AuthContextProvider = ({ children }) => {
     return state.currentUser?.user?.userType
   }
   const getLoginStatus = () => {
-    return state.currentUser.loggedIn || false
+    return state.currentUser?.loggedIn || false
   }
   return (
     <AuthContext.Provider value={{ LogOut, GetUserID, dispatch, getUserType, getLoginStatus }}>
