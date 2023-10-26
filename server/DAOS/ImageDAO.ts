@@ -208,6 +208,7 @@ export class ImageDAO {
         description: string,
         tags: string,
         imageUrl: string): Promise<Image | undefined> {
+            
         const SQL = ConnectionDAO.getInstance();
 
         const damage: { customError: string | undefined }[] = [];
@@ -232,17 +233,18 @@ export class ImageDAO {
                     })
                     .then((result) => {
                         //query was successful
-                        ;
+                        
                         const image: any = result?.recordset[0];
+                        console.log(result)
                         const imageObj = new Image(
-                            image.id,
-                            image.name,
-                            image.date,
-                            image.description,
-                            image.imageCategory,
-                            image.imageSubcategory,
-                            image.tags,
-                            image.imageUrl
+                                image.ImageID,
+                                image.Name,
+                                image.Date,
+                                image.Description,
+                                image.Category,
+                                image.Subcategory,
+                                image.Tags,
+                                image.URL
                         );
                         resolve(imageObj);
 
