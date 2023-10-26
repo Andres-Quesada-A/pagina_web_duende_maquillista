@@ -1,8 +1,9 @@
-import { Cart, UserIcon } from "./Icons";
+import { Cart, CloseIcon, MenuIcon, UserIcon } from "./Icons";
 import Logo from "../images/logo.png";
 import { useShoppingCart } from "../context/ShoppingCartContext";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
+import { useState } from "react";
 
 const OPTIONS = {
   client: [
@@ -21,9 +22,9 @@ const OPTIONS = {
     {
       name: "Tienda de Duende",
       link: "/shop",
-    }
+    },
   ],
-  admin:[
+  admin: [
     {
       name: "Agenda",
       link: "/",
@@ -35,61 +36,79 @@ const OPTIONS = {
     {
       name: "Tienda",
       link: "/shop",
-    }
-  ]
-}
-;
-
+    },
+  ],
+};
 function NavBar() {
-  const {cartQuantity} = useShoppingCart()
-  const {getLoginStatus, getUserType} = useAuthContext()
+  const { cartQuantity } = useShoppingCart();
+  const { getLoginStatus, getUserType } = useAuthContext();
   const navigate = useNavigate();
-  const LoginStatus = getLoginStatus()
+  const LoginStatus = getLoginStatus();
+  const [open, setOpen] = useState(false);
 
-  const TypeUser = getUserType()
+  const TypeUser = getUserType();
   return (
     <nav className="h-16 w-full bg-gray-800 z-50 fixed top-0">
-      <div className="flex flex-nowrap h-16 w-full max-w-5xl justify-between items-center px-5 mx-auto">
+      <div className="flex flex-nowrap h-16 w-full max-w-5xl justify-between items-center px-5 mx-auto ">
         <img src={Logo} className="h-12" />
-        <div className="flex flex-nowrap gap-8 items-center">
-          {TypeUser && OPTIONS.admin.map(({ name, link }, index) => (
-            <a
-              key={index}
-              href={link}
-              className="text-white hover:text-indigo-400 transition-colors uppercase"
-            >
-              {name}
-            </a>
-          ))}
-          {!TypeUser && OPTIONS.client.map(({ name, link }, index) => (
-            <a
-              key={index}
-              href={link}
-              className="text-white hover:text-indigo-400 transition-colors uppercase"
-            >
-              {name}
-            </a>
-          ))}
+          <div onClick={() => setOpen(!open)} className="cursor-pointer flex lg:hidden">
           {
-            LoginStatus ? (
-              <a
+            open ? <CloseIcon className="w-10 h-10 text-white"/>
+            : <MenuIcon className="w-10 h-10 text-white"/>
+          }
+        </div>
+        <div className={`transition-all fixed top-16 lg:top-0 -pt-16 bg-white/90 w-full ${open ? "right-0" : "right-full"} lg:right-0 lg:bg-transparent h-screen lg:h-16 flex-col lg:flex-row justify-center lg:justify-end flex flex-nowrap gap-8 items-center px-3`}>
+          {TypeUser
+            ? OPTIONS.admin.map(({ name, link }, index) => (
+                <a
+                  key={index}
+                  href={link}
+                  onClick={() => setOpen(!open)}
+                  className="font-medium lg:font-normal text-xl lg:text-lg text-black lg:text-white hover:text-indigo-400 transition-colors uppercase"
+                >
+                  {name}
+                </a>
+              ))
+            : OPTIONS.client.map(({ name, link }, index) => (
+                <a
+                  key={index}
+                  href={link}
+                  onClick={() => setOpen(!open)}
+                  className="font-medium lg:font-normal text-xl lg:text-lg text-black lg:text-white hover:text-indigo-400 transition-colors uppercase"
+                >
+                  {name}
+                </a>
+              ))}
+          {LoginStatus ? (
+            <a
               href="/profile"
-              className="text-white hover:text-indigo-400 transition-colors uppercase"
+              onClick={() => setOpen(!open)}
+              className="text-black lg:text-white hover:text-indigo-400 transition-colors uppercase"
             >
               <UserIcon className="w-10 h-10 text-indigo-400 hover:text-indigo-500 transition-colors" />
             </a>
-            ): (
-              <a
+          ) : (
+            <a
               href="/login"
-              className="text-white hover:text-indigo-400 transition-colors uppercase"
+              onClick={() => setOpen(!open)}
+              className="font-medium lg:font-normal text-xl lg:text-lg text-black lg:text-white hover:text-indigo-400 transition-colors uppercase"
             >
               Iniciar sesión
             </a>
-            )
-          }
-          <div className="relative cursor-pointer" onClick={()=> navigate("/shoppingCart")}>
+          )}
+          <div
+            className="relative cursor-pointer"
+            onClick={() => {
+              navigate("/shoppingCart");
+              setOpen(!open);
+            }}
+          >
             <Cart className="text-indigo-400 hover:text-indigo-500 transition-colors" />
-            {cartQuantity != 0 && <div className=" -bottom-1 left-0 absolute w-5 h-5 text-white text-xs font-medium rounded-full bg-green-500 flex justify-center items-center">{cartQuantity}</div>}
+            {cartQuantity != 0 && (
+              <div className=" -bottom-1 left-0 absolute w-5 h-5 text-white text-xs font-medium rounded-full bg-green-500 flex justify-center items-center">
+                {cartQuantity}
+              </div>
+            )}
           </div>
         </div>
       </div>
