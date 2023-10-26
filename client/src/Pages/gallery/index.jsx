@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import SelectCustom from "../../components/form/SelectCustom";
 import SwitchFormInputs from "../../components/form/SwitchFormInputs";
 import ImageCard from "../../components/cards/ImageCard";
+import ImageCardDuende from "../../components/cards/ImageCardDuende";
 import axios from 'axios';
 import { toast } from 'react-toastify'
 import { messageSettings } from '../../utils/messageSettings'
@@ -16,6 +17,7 @@ function Gallery() {
   const [data, setData] = useState([]);
   const [imageFiltered, setImageFiltered] = useState([]);
   const [category, setCategory] = useState([]);
+  const [admin, setAdmin] = useState(true)
 
   function getSubcategories() {
     const selectedCategoryObject = category.find(item => item.category === filters.category);
@@ -31,9 +33,17 @@ function Gallery() {
     }
   }
 
+  function deleteImage(id) {
+    //logic for deleting images. requires ImageCardDuende
+    //its use is only in ImageCardDuende
+    //
+    console.log(id);
+  }
+
   useEffect(() => {
     const apiImageURL = 'http://localhost:1234/api/get_image_list'
     const apiCategoryURL = 'http://localhost:1234/api/get_category'
+    //setAdmin(false)
 
     axios.get(apiImageURL, { withCredentials: true }).then((response) => {
       const dataImage = response.data
@@ -107,6 +117,7 @@ function Gallery() {
             <h4 className="mt-4 mb-3 font-semibold">Sub categorias</h4>
             <SwitchFormInputs
               HandleChange={handleChangeSubcategoryFilters}
+              data= {Subcategoryfilters}
               structureForm={subcategoryOptions}
             />
             <button className="mt-3 bg-indigo-500 hover:bg-indigo-400 transition-colors py-1 font-medium text-white w-full text-lg rounded-md">
@@ -121,15 +132,18 @@ function Gallery() {
             </h1>
           </header>
           <div className="mt-14 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5">
-            {imageFiltered && imageFiltered.length === 0 ? (
+            {imageFiltered && imageFiltered.length === 0 &&
               <h2>No hay productos</h2>
-            ) : (
-              imageFiltered.map((item) => {
-                return (
+            }
+            {admin === false ? (
+              imageFiltered.map((item) => (
                   <ImageCard key={item.id} item={item} />
-                );
-              })
-            )}
+                )
+              )
+            ) : (imageFiltered.map((item) => (
+                <ImageCardDuende key={item.id} item={item} deleteImage={deleteImage}/>
+              )
+            ))}
           </div>
         </div>
       </section>
