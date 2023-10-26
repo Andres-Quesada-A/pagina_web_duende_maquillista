@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { useEffect, useState } from "react";
 import { storage } from "../../config/firebase";
@@ -16,6 +16,7 @@ function EditProduct() {
     const [previewURL, setPreviewURL] = useState("");
     const [per, setPerc] = useState(null);
     const [categories, setCategories] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const getData = async () => {
@@ -124,7 +125,8 @@ function EditProduct() {
                 available: data.available == "true",
                 id: parseInt(idProduct),
             }, { withCredentials: true });
-            toast.success("Producto modificado", messageSettings);
+            toast.success("Producto modificado exitosamente", messageSettings);
+            navigate("/shop");
         } catch (error) {
             const errorMessage = error?.response?.data?.message || defaultError;
             toast.error(errorMessage, messageSettings);
