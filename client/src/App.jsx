@@ -13,7 +13,7 @@ import ProductShop from "./Pages/shop/Product";
 import Gallery from "./Pages/gallery";
 import ImageGallery from "./Pages/gallery/Image";
 import EditImageGallery from "./Pages/gallery/EditImage";
-import AddImageGallery from "./Pages/gallery/AddImage";
+import AddImage from "./Pages/gallery/AddImage";
 import ShoppingCart from "./Pages/shoppingCart";
 import { ShoppingCartProvider } from "./context/ShoppingCartContext";
 import { ToastContainer } from "react-toastify";
@@ -50,7 +50,7 @@ function App() {
             <Route exact path="/gallery" element={<Gallery />} />
             <Route exact path="/gallery/:idImage" element={<ImageGallery />} />
             <Route exact path="/gallery/edit_image/:idImage" element={<EditImageGallery />} />
-            <Route exact path="/gallery/add_image" element={<AddImageGallery />} />
+            <Route exact path="/gallery/add_image" element={<AddImage />} />
             <Route
               exact
               path="/change-password"
