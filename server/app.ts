@@ -15,7 +15,7 @@ const app = express(); // crear una instancia de la aplicación Express
 app.use(json()); // usar middleware para manejar datos JSON
 app.use(cors({
   origin: ["http://localhost:5173", /http:\/\/localhost:5173\/.+/],
-  methods: ["GET", "POST", "PUT"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
 app.use(cookieParser());
