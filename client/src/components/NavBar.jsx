@@ -4,37 +4,64 @@ import { useShoppingCart } from "../context/ShoppingCartContext";
 import {useNavigate} from 'react-router-dom'
 import { useAuthContext } from "../context/AuthContext";
 
-const OPTIONS = [
-  {
-    name: "Inicio",
-    link: "/",
-  },
-  {
-    name: "Sobre mí",
-    link: "/about-us",
-  },
-  {
-    name: "Galería",
-    link: "/gallery",
-  },
-  {
-    name: "Tienda de Duende",
-    link: "/shop",
-  }
-];
+const OPTIONS = {
+  client: [
+    {
+      name: "Inicio",
+      link: "/",
+    },
+    {
+      name: "Sobre mí",
+      link: "/about-us",
+    },
+    {
+      name: "Galería",
+      link: "/gallery",
+    },
+    {
+      name: "Tienda de Duende",
+      link: "/shop",
+    }
+  ],
+  admin:[
+    {
+      name: "Agenda",
+      link: "/",
+    },
+    {
+      name: "Galería",
+      link: "/gallery",
+    },
+    {
+      name: "Tienda",
+      link: "/shop",
+    }
+  ]
+}
+;
 
 function NavBar() {
   const {cartQuantity} = useShoppingCart()
-  const {getLoginStatus} = useAuthContext()
+  const {getLoginStatus, getUserType} = useAuthContext()
   const navigate = useNavigate();
   const LoginStatus = getLoginStatus()
 
+  const TypeUser = getUserType()
   return (
     <nav className="h-16 w-full bg-gray-800 z-50 fixed top-0">
       <div className="flex flex-nowrap h-16 w-full max-w-5xl justify-between items-center px-5 mx-auto">
         <img src={Logo} className="h-12" />
         <div className="flex flex-nowrap gap-8 items-center">
-          {OPTIONS.map(({ name, link }, index) => (
+          {TypeUser && OPTIONS.admin.map(({ name, link }, index) => (
+            <a
+              key={index}
+              href={link}
+              className="text-white hover:text-indigo-400 transition-colors uppercase"
+            >
+              {name}
+            </a>
+          ))}
+          {!TypeUser && OPTIONS.client.map(({ name, link }, index) => (
             <a
               key={index}
               href={link}
