@@ -12,7 +12,7 @@ import Shop from "./Pages/shop/index";
 import ProductShop from "./Pages/shop/Product";
 import Gallery from "./Pages/gallery";
 import ImageGallery from "./Pages/gallery/Image";
-import EditImageGallery from "./Pages/gallery/EditImage";
+import EditImage from "./Pages/gallery/EditImage";
 import AddImage from "./Pages/gallery/AddImage";
 import ShoppingCart from "./Pages/shoppingCart";
 import { ShoppingCartProvider } from "./context/ShoppingCartContext";
@@ -49,7 +49,7 @@ function App() {
             <Route exact path="/forgot-password" element={<ForgotPassword />} />
             <Route exact path="/gallery" element={<Gallery />} />
             <Route exact path="/gallery/:idImage" element={<ImageGallery />} />
-            <Route exact path="/gallery/edit_image/:idImage" element={<EditImageGallery />} />
+            <Route exact path="/gallery/edit_image/:idImage" element={<EditImage />} />
             <Route exact path="/gallery/add_image" element={<AddImage />} />
             <Route
               exact
