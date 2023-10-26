@@ -16,7 +16,7 @@ function ConfirmationLink({ title, description, handleDelete }) {
 
   return (
     <>
-      <a href="javascript:void;" className="text-red-500" onClick={toggleModal}>Eliminar</a>
+      <a href="#" className="text-red-500" onClick={toggleModal}>Eliminar</a>
 
       <Confirmation
         title={title}
