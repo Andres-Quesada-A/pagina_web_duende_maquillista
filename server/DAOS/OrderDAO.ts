@@ -102,8 +102,8 @@ export class OrderDAO {
                     const client = new User(
                         order.UserID,
                         order.UserName,
-                        order.UserLastName1,
-                        order.UserLastName2,
+                        order.UserLastname1,
+                        order.UserLastname2,
                         order.UserEmail,
                         order.UserPassword,
                         order.UserToken
@@ -169,8 +169,8 @@ export class OrderDAO {
                         const client = new User(
                             order.UserID,
                             order.UserName,
-                            order.UserLastName1,
-                            order.UserLastName2,
+                            order.UserLastname1,
+                            order.UserLastname2,
                             order.UserEmail,
                             order.UserPassword,
                             order.UserToken
