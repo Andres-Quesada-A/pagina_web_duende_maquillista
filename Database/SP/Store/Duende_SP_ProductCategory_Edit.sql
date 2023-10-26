@@ -37,7 +37,7 @@ BEGIN
 
         IF EXISTS(SELECT 1
                   FROM  [dbo].[ProductCategories] PC
-                  WHERE PC.[description] = @IN_description
+                  WHERE PC.[description] = @IN_newDescription
                     AND PC.[deleted] = 0
                     AND PC.[id] != @categoryId)
         BEGIN
