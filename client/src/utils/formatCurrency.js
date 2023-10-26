@@ -1,10 +1,10 @@
-const CURRENCY_FORMATTER = new Intl.NumberFormat('en-US', {
+const CURRENCY_FORMATTER = new Intl.NumberFormat('es-CR', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'CRC',
     minimumFractionDigits: 0
   })
   
   export function formatCurrency (number) {
-    return CURRENCY_FORMATTER.format(number).replace('$', '₡')
+    return CURRENCY_FORMATTER.format(number)
     // return new Intl.NumberFormat().format(number);
   }

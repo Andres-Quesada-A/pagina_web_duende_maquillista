@@ -28,8 +28,7 @@ export class Image {
         this.category = category;
         this.subcategory = subcategory;
         var str: string = tags
-        str = "#" + str;
-        str = str.replace(/ /g," #");
+        str = str.replace(/ /g," ");
         this.tags = str
         //this.tags = tags
         this.imageUrl = imageUrl;

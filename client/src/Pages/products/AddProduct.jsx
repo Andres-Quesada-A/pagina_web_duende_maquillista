@@ -7,6 +7,7 @@ import ImagePlaceholder from "../../images/placeholderImage.jpeg";
 import SwitchFormInputs from "../../components/form/SwitchFormInputs";
 import { CreateProduct } from "../../Structures/addProduct";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function AddProduct() {
   const [file, setFile] = useState("");
@@ -14,6 +15,7 @@ function AddProduct() {
   const [previewURL, setPreviewURL] = useState("");
   const [per, setPerc] = useState(null);
   const [categories, setCategories] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getData = async () => {
@@ -80,7 +82,8 @@ function AddProduct() {
 
     try {
       await axios.post(APIURL, {...data,available: data.available == "true" }, { withCredentials: true });
-      toast.success("Producto creado", messageSettings);
+      toast.success("Producto creado exitosamente", messageSettings);
+      navigate("/shop");
     } catch (error) {
       const errorMessage =
           error?.response?.data?.message ||

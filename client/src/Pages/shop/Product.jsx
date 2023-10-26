@@ -7,6 +7,7 @@ import { messageSettings } from "../../utils/messageSettings";
 import SelectCustom from "../../components/form/SelectCustom";
 import { AmountOptions } from "../../Structures/shopFilters";
 import { useShoppingCart } from "../../context/ShoppingCartContext";
+import { formatCurrency } from '../../utils/formatCurrency';
 
 function ProductShop() {
   const { idProduct } = useParams();
@@ -66,7 +67,7 @@ function ProductShop() {
               <p>{product.description}</p>
               <p className="text-4xl text-gray-600 font-semibold flex justify-start gap-1">
                 <span className="text-xl">₡</span>
-                {product.price}
+                {formatCurrency(product.price).replace("₡", "")}
               </p>
               <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-5 items-end mt-5">
                 <SelectCustom

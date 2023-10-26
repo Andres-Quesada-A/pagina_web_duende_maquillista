@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import React from 'react';
 import ConfirmationLink from "../Modals/ConfirmationLink";
+import { formatCurrency } from "../../utils/formatCurrency";
 
 function Product({ id, imageUrl, name, description, available, price, admin, deleteProduct }) {
   const handleDelete = () => {
@@ -37,7 +38,7 @@ function Product({ id, imageUrl, name, description, available, price, admin, del
           }</p>
           <p className="text-2xl text-gray-600 font-semibold flex justify-end gap-1 leading-7">
             <span className="text-base">₡</span>
-            {price}
+            {formatCurrency(price).replace("₡", "")}
           </p>
         </div>
       </article>

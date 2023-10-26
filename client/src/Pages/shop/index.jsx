@@ -7,7 +7,7 @@ import Product from "../../components/cards/product";
 import SelectCustom from "../../components/form/SelectCustom";
 import { OptionsFilterPrice } from "../../Structures/shopFilters";
 import SwitchFormInputs from "../../components/form/SwitchFormInputs";
-import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 function Shop() {
   const [search, setSearch] = useState({});
@@ -16,6 +16,7 @@ function Shop() {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [admin, setAdmin] = useState(true);
+  const navigate = useNavigate();
 
   const handleDelete = (id) => {
     axios.delete(`http://localhost:1234/api/delete_product/${id}`, { withCredentials: true })
@@ -31,7 +32,6 @@ function Shop() {
         toast.error(errorMessage, messageSettings)
       });
   }
-
 
   useEffect(() => {
     // Request to get products
@@ -150,6 +150,10 @@ function Shop() {
                   checked: categories[category],
                 }))}
               />
+              <button className="mb-3 bg-indigo-500 hover:bg-indigo-400 transition-colors py-1 font-medium text-white w-full text-base rounded-md cursor-pointer"
+                  onClick={() => {navigate('/configure_category_product')}}>
+                Configurar categorías
+              </button>
               <h4 className="mt-4 mb-3 font-semibold">Productos</h4>
               <input
                 onChange={handleChangeSearch}
@@ -165,11 +169,10 @@ function Shop() {
           </div>
           {
             admin && (
-              <Link to="/add_product">
-                <button className="mt-3 bg-emerald-500 hover:bg-emerald-400 transition-colors py-1 font-medium text-white w-full text-base rounded-md">
-                  Añadir producto
-                </button>
-              </Link>
+              <button className="mt-3 bg-emerald-500 hover:bg-emerald-400 transition-colors py-1 font-medium text-white w-full text-base rounded-md cursor-pointer"
+                  onClick={() => {navigate('/add_product')}}>
+                Añadir producto
+              </button>
             )
           }
         </div>
