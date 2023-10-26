@@ -33,7 +33,7 @@ function AddImage() {
         setCategories([{ label: "Seleccione", value: "" ,subcategories:null}, ...Formated]);
         
       } catch (error) {
-        toast.info("No hay categorias", messageSettings);
+        toast.info("No hay categorías", messageSettings);
       }
     };
     getData();
@@ -109,7 +109,7 @@ function AddImage() {
     <div className="w-full min-h-screen flex flex-col items-center mt-16 py-14 px-5">
       <header className="w-full max-w-4xl">
         <h1 className="font-medium text-3xl text-indigo-500">
-          Añadir producto
+          Añadir imagen
         </h1>
         <hr className="border-indigo-500 border-1 mt-2"></hr>
       </header>
