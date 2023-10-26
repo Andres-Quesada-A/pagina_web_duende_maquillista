@@ -7,7 +7,7 @@
 CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_Users_EditToken]
     -- Parameters
     @IN_userId              INT,
-    @IN_token               VARCHAR(300)
+    @IN_token               VARCHAR(512)
 AS
 BEGIN
     SET NOCOUNT ON; -- No metadata returned

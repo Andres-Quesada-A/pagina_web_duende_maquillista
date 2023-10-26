@@ -2,6 +2,7 @@ import { GenerateToken } from "../Utils/GenerateToken";
 import ConnectionDAO from "./ConnectionDAO";
 import bcrypt from "bcrypt";
 import { User } from "../models/User";
+import jwt, { JwtPayload, VerifyErrors } from "jsonwebtoken";
 
 export class UserDAO {
     newPassword(password: string, confirmPassword: string): boolean {
@@ -138,6 +139,69 @@ export class UserDAO {
             } catch (error) {
                 reject();
             }
+        });
+    }
+
+    async requestPasswordReset(email: string, code: number, codeExpiry: number): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            const SQL = ConnectionDAO.getInstance();
+            const damage: { customError: string | undefined }[] = [];
+
+            SQL.query("Duende_SP_Users_Get_By_Email", { IN_email: email })
+                .then((result) => {
+                    if (result.recordset.length === 0) {
+                        damage.push({ customError: "El usuario no existe" });
+                        reject(damage);
+                    } else {
+                        const user = result.recordset[0];
+                        const token = user.token;
+
+                        if (!token) {
+                            reject(damage);
+                        }
+
+                        jwt.verify(
+                            token,
+                            "DuendeMaquillista",
+                            async (
+                                err: VerifyErrors | null,
+                                decoded: string | JwtPayload | undefined
+                            ) => {
+                                if (err) {
+                                    console.log(err);
+                                    reject(damage);
+                                } else {
+                                    const userData = decoded as JwtPayload;
+
+                                    if (!userData) {
+                                        reject(damage);
+                                    } else {
+                                        resolve(
+                                            await this.editToken(
+                                                user.id,
+                                                GenerateToken(
+                                                    user.id,
+                                                    user.name,
+                                                    user.lastName1 +
+                                                        " " +
+                                                        user.lastName2,
+                                                    user.email,
+                                                    user.administrator ? 1 : 0,
+                                                    code,
+                                                    codeExpiry
+                                                )
+                                            )
+                                        );
+                                    }
+                                }
+                            }
+                        );
+                    }
+                })
+                .catch((error) => {
+                    damage.push({ customError: error.customError });
+                    reject(damage);
+                });
         });
     }
 

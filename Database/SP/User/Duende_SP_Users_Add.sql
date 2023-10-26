@@ -10,7 +10,7 @@ CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_Users_Add]
     @IN_lastName2 VARCHAR(32),
     @IN_email VARCHAR(128),
     @IN_password VARCHAR(64),
-    @IN_token VARCHAR(300)
+    @IN_token VARCHAR(512)
 AS
 BEGIN
     SET NOCOUNT ON; -- No metadata returned

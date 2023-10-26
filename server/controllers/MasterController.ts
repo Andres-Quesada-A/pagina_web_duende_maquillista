@@ -99,6 +99,18 @@ export class MasterController {
         }
     }
 
+    // Method to request a code to reset the user's password
+    async requestPasswordReset(req: Request, res:Response): Promise<Response> {
+        try {
+            const UserControllerObject = new UserController();
+            const { email } = req.params;
+            const response = await UserControllerObject.requestPasswordReset(email);
+            return res.status(200).json({ message: "Ok" });
+        } catch (error: any) {
+            return res.status(400).json({ message: error[0] ? error[0].customError : undefined });
+        }
+    }
+
     // Method to get a list of products
     async getProductList(req: Request, res: Response): Promise<Response> {
         try {

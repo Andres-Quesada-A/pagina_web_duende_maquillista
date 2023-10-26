@@ -1,6 +1,6 @@
 import { sign } from "jsonwebtoken";
 
-export const GenerateToken = (id: number, name: string, lastName: string, email: string, userType: number) => {
+export const GenerateToken = (id: number, name: string, lastName: string, email: string, userType: number, code?: number, codeExpiry?: number) => {
     const currentDate = new Date();
     const year = currentDate.getFullYear();
     const month = String(currentDate.getMonth() + 1).padStart(2, "0");
@@ -15,6 +15,8 @@ export const GenerateToken = (id: number, name: string, lastName: string, email:
         lastName,
         userType,
         email,
+        code,
+        codeExpiry,
         creationDate: formattedDate,
       },
       "DuendeMaquillista"

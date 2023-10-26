@@ -1,5 +1,7 @@
 import { UserDAO } from "../DAOS/UserDAO";
 import jwt, { JwtPayload } from "jsonwebtoken";
+import { EmailController } from "./EmailController";
+import { DateFormatter } from "../Utils/DateFormatter";
 
 export class UserController {
     private UserDAO: UserDAO;
@@ -82,6 +84,34 @@ export class UserController {
         // Logic to edit user information
         // Returns true if the editing is successful, otherwise returns false
         return true; // Change this with real logic
+    }
+
+    // Method to request a password reset
+    async requestPasswordReset(email: string): Promise<boolean> {
+        // Logic to request a password reset
+        
+        // Generates a token containing a code to reset the password
+        const code = Math.floor(Math.random() * 900000) + 100000;
+        const currentDate = new DateFormatter();
+        if (await this.UserDAO.requestPasswordReset(email, code, currentDate.getTimestampForward(24))) {
+            const emailController = new EmailController();
+            currentDate.resetDate(currentDate.getTimestampForward(24));
+            const expirationDateTime = currentDate.localDateTimeText();
+
+            // This is done synchronously to make sure the email is sent
+            await emailController.sendEmail(
+                [email],
+                "Recuperación de contraseña",
+                `<p>Hola:</p>
+                <p>Se ha solicitado un código de recuperación de contraseña para su cuenta, que se muestra a continuación:</p>
+                <p id="resetCode">${code}</p>
+                <p>Este código expirará el ${expirationDateTime}</p>
+                <p class="bold">Si no fue usted quien solicitó este código, ignore este mensaje.</p>`,
+                null
+            );
+        };
+
+        return true;
     }
 
     // Method to change a user's password
