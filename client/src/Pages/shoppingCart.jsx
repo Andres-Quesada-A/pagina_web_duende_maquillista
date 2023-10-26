@@ -1,15 +1,15 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { location } from "../Structures/location";
 import PlaceholderImage from "../images/placeholderImage.jpeg";
 import { useShoppingCart } from "../context/ShoppingCartContext";
 import { formatCurrency } from "../utils/formatCurrency";
-import { AuthContext } from "../context/AuthContext";
+import { useAuthContext } from "../context/AuthContext";
 import { toast } from "react-toastify";
 import { messageSettings } from "../utils/messageSettings";
 
 function ShoppingCart() {
   const { cartItems, removeFromCart, increaseProductCart } = useShoppingCart();
-  const { GetUserID } = useContext(AuthContext);
+  const { GetUserID } = useAuthContext();
   const [file, setFile] = useState("");
   const [previewURL, setPreviewURL] = useState("");
   const [exactLocation, setExactLocation] = useState({

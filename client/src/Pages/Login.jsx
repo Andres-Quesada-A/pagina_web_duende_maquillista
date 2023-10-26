@@ -10,7 +10,7 @@ import {useNavigate} from 'react-router-dom'
 import {AuthContext} from "../context/AuthContext"
 
 function LoginPage() {
-  const [data, setData] = useState({email: "Andres@gmail.com", password: "1234Hello"});
+  const [data, setData] = useState({email: "", password: ""});
   const navigate = useNavigate();
   const { dispatch } = useContext(AuthContext)
 
@@ -22,7 +22,9 @@ function LoginPage() {
     e.preventDefault();
     try {
       //await axios.post(`http://localhost:1234/api/login/${data.email}/${data.password}`, undefined, { withCredentials: true })
-      const response = await axios.post(`http://localhost:1234/api/login/${data.email}/${data.password}`)
+      const response = await axios.post(`http://localhost:1234/api/login/${data.email}/${data.password}`, undefined, { withCredentials: true })
+      // const response = await axios.post(`http://localhost:1234/api/login/${data.email}/${data.password}`)
+      console.log(response)
       dispatch({ type: 'LOGIN', payload: response.data })
       navigate('/')
     } catch (error) {
