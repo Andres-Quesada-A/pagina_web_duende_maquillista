@@ -1,34 +1,16 @@
-import { useState } from "react";
 import { CloseIcon } from "../Icons";
 
-function Confirmation({ title, description, handleDelete }) {
-  const [modal, setModal] = useState(false);
-
-  const toggleModal = () => {
-    setModal(!modal);
-  };
-
-  const handleClick = () => {
-    handleDelete();
-    toggleModal();
-  };
+function Confirmation({ title, description, handleDelete, modal, toggleModal }) {
 
   return (
     <>
-      <button
-        className="flex justify-center items-center mx-auto text-white bg-indigo-500 hover:bg-indigo-400 transition-colors rounded-md w-full max-w-[280px] font-medium py-2"
-        onClick={toggleModal}
-      >
-        Eliminar
-      </button>
-
       {modal && (
         <div className="w-screen h-screen top-0 left-0 right-0 bottom-0 fixed z-[100]">
           <div
             onClick={toggleModal}
-            className="w-screen h-screen top-0 left-0 right-0 bottom-0 fixed z-[100] transparentBG"
+            className="w-screen h-screen top-0 left-0 right-0 bottom-0 fixed z-[100] bg-gray-800 opacity-60 cursor-default"
           />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white shadow-md rounded-md z-[102] w-full max-w-sm py-6 px-3 pt-8">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white shadow-md rounded-md z-[102] w-full max-w-sm py-6 px-3 pt-8" onClick={(e) => {e.preventDefault()}}>
             <div className="content">
               <h4 className="w-full text-center font-medium text-xl">
                 {title}
@@ -44,7 +26,7 @@ function Confirmation({ title, description, handleDelete }) {
               </button>
               <button
                 className="bg-red-500 hover:bg-red-400 py-2 px-4 text-base rounded-md cursor-pointer text-white transition-colors"
-                onClick={handleClick}
+                onClick={handleDelete}
               >
                 Eliminar
               </button>

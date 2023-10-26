@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { messageSettings, defaultError } from "../../utils/messageSettings";
-import Confirmation from "../Modals/Confirmation";
+import ConfirmationButton from "../Modals/ConfirmationButton";
 
 function DeleteCategory({ Categories, APIURL }) {
   const [data, setData] = useState({});
@@ -45,7 +45,7 @@ function DeleteCategory({ Categories, APIURL }) {
             ))}
         </select>
       </div>
-      <Confirmation
+      <ConfirmationButton
         title={"Confirmación"}
         description={
           "¿Está seguro de proceder con la eliminación? Esta acción no se puede deshacer."
