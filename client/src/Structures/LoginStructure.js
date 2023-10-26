@@ -70,10 +70,24 @@ export const ForgotPassword = [
 ];
 export const ChangePassword = [
   {
-    label: "Contraseña",
+    label: "Código de verificación",
+    type: "number",
+    id: "code",
+    placeholder: "######",
+    required: true,
+  },
+  {
+    label: "Digite su correo",
     type: "email",
     id: "email",
     placeholder: "example@gmail.com",
+    required: true,
+  },
+  {
+    label: "Contraseña",
+    type: "password",
+    id: "password",
+    placeholder: "Ingrese la contraseña",
     required: true,
   },
   {

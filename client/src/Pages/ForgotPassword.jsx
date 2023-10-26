@@ -2,16 +2,32 @@ import { useState } from "react";
 import SwitchFormInputs from "../components/form/SwitchFormInputs";
 import { ForgotPassword } from "../Structures/LoginStructure";
 import { Helmet } from "react-helmet-async";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import {toast} from 'react-toastify'
+import {messageSettings} from '../utils/messageSettings'
 
 function ForgotPasswordPage() {
   const [data, setData] = useState({});
+  const [disabled, setDisabled] = useState(true);
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.id]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      await axios.post(`http://localhost:1234/api/request_password_reset/${data.email}`)
+      toast.success("Código enviado al correo", messageSettings)
+      setDisabled(false)
+    } catch (error) {
+      console.log(error)
+      toast.error("Algo ha salido mal", messageSettings)
+    }
+    
   };
   return (
     <>
@@ -41,11 +57,9 @@ function ForgotPasswordPage() {
                 Enviar código
               </button>
             </form>
-            <a href="/change-password">
-              <div className="mt-5 w-full text-center rounded-lg bg-indigo-500 hover:bg-indigo-400 transition-colors text-white py-2 text-lg font-medium">
+              <button disabled={disabled} onClick={() => navigate("/change-password")} className="mt-5 w-full text-center rounded-lg bg-indigo-500 hover:bg-indigo-400 transition-colors text-white py-2 text-lg font-medium">
                 Siguiente paso
-              </div>
-            </a>
+              </button>
           </div>
         </div>
       </section>

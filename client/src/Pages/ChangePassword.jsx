@@ -2,6 +2,9 @@ import { useState } from "react";
 import SwitchFormInputs from "../components/form/SwitchFormInputs";
 import { ChangePassword } from "../Structures/LoginStructure";
 import { Helmet } from "react-helmet-async";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { messageSettings } from "../utils/messageSettings";
 
 function ChangePasswordPage() {
   const [data, setData] = useState({});
@@ -10,8 +13,16 @@ function ChangePasswordPage() {
     setData({ ...data, [e.target.id]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      console.log(data)
+      await axios.put(`http://localhost:1234/api/reset_password/${data.email}/${data.code}/${data.password}`)
+      toast.success("Contraseña actualizada", messageSettings)
+    } catch (error) {
+      console.log(error)
+      toast.error("Algo ha salido mal", messageSettings)
+    }
   };
   return (
     <>
@@ -29,7 +40,8 @@ function ChangePasswordPage() {
         </div>
         <div className="w-[400px] bg-white shadow-[0px_0px_10px_rgba(0,0,0,0.10)] px-5 sm:px-10 py-10 relative rounded-lg grid grid-cols-1">
           <div>
-            <h1 className="text-2xl text-indigo-500 font-bold text-center mb-8">
+            <a href="/login" className="text-gray-600 font-medium hover:underline">Volver</a>
+            <h1 className="text-2xl text-indigo-500 font-bold text-center mb-8 mt-3">
               Crear nueva contraseña
             </h1>
             <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-5">

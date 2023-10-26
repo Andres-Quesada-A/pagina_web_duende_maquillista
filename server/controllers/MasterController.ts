@@ -87,8 +87,10 @@ export class MasterController {
     // Method to reset the user's password
     async resetPassword(req: Request, res:Response): Promise<Response> {
         try {
+            console.log(req.params)
             const UserControllerObject = new UserController();
             const { email, code, password } = req.params;
+            console.log(email, password, code)
             const response = await UserControllerObject.resetPassword(email, parseInt(code), password);
             return res.status(200).json({ message: "Ok" });
         } catch (error: any) {

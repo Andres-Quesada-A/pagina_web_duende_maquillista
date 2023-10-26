@@ -27,6 +27,7 @@ import { AuthContextProvider } from "./context/AuthContext";
 import OrdersPage from "./Pages/orders";
 import OrderPage from "./Pages/orders/order";
 import AboutUs from "./Pages/AboutUs";
+import Profile from "./Pages/Profile";
 ;
 const noRequirement = [
   "/login",
@@ -80,6 +81,7 @@ function App() {
             />
             <Route exact path="/orders" element={<OrdersPage />} />
             <Route exact path="/order/:idOrder" element={<OrderPage />} />
+            <Route exact path="/profile" element={<Profile />} />
             <Route path="*" element={<Error404 />} />
           </Routes>
         </ScrollToTop>
