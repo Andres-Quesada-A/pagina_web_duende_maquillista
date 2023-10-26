@@ -96,6 +96,26 @@ BEGIN
         SELECT @ImageID, tags, 0
         FROM @IN_Tags;
 
+        SELECT 
+            I.ID AS 'ImageID',
+            C.Description AS 'Category',
+            S.Description AS 'Subcategory',
+            I.Name AS Name,
+            I.Description AS Description,
+            I.Date AS Date,
+            (
+                SELECT STRING_AGG(description, ' ')
+                FROM Tags
+                WHERE ImageId = I.id
+            ) AS Tags,
+            I.ImageURL AS URL
+        FROM 
+            Images I
+            JOIN ImageSubcategories S ON I.subcategoryId = S.ID
+            JOIN ImageCategories C ON S.categoryid = C.ID
+        WHERE I.Deleted = 0
+        AND I.ID = @ImageID;
+
         -- TRANSACTION COMMITTED
         IF @transactionBegun = 1
         BEGIN

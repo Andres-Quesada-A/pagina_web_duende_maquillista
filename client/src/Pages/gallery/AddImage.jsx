@@ -7,9 +7,11 @@ import { toast } from "react-toastify";
 import ImagePlaceholder from "../../images/placeholderImage.jpeg";
 import { CreateImage } from "../../Structures/addImage";
 import SwitchFormInputs from "../../components/form/SwitchFormInputs";
-
+import { useNavigate } from "react-router-dom";
 
 function AddImage() {
+  const navigate = useNavigate();
+
   const [file, setFile] = useState("");
   const [data, setData] = useState({});
   const [previewURL, setPreviewURL] = useState("");
@@ -82,16 +84,19 @@ function AddImage() {
   const handleChangeCategory = (e) => {
     const category = categories.find((item) => item.value === e.target.value);
     setCategorySelected(category);
-    setData({ ...data, [e.target.id]: e.target.value });
+    setData({ ...data, [e.target.id]: e.target.value, imageSubcategory:category.subcategories[0] });
     console.log(data)
   };
+
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     const APIURL = "http://localhost:1234/api/create_image";
 
     try {
-      await axios.post(APIURL, {...data,available: data.available == "true" }, { withCredentials: true });
+      await axios.post(APIURL, {...data}, { withCredentials: true });
       toast.success("Imagen creada", messageSettings);
+      navigate("/gallery");
     } catch (error) {
       const errorMessage =
           error?.response?.data?.message ||
@@ -114,7 +119,7 @@ function AddImage() {
       >
         <div className="grid grid-cols-1 gap-2">
           <h4 className="text-xl font-medium text-gray-700 w-full">
-            Datos del producto
+            Datos de la imagen
           </h4>
           <SwitchFormInputs
             HandleChange={handleChange}

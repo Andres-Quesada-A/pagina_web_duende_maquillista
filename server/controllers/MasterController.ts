@@ -436,9 +436,7 @@ export class MasterController {
                 tags, 
                 imageUrl
                 );
-                return response 
-                ? res.status(200).json({response: "Ok"}) 
-                : res.status(400).json({response:  undefined});
+                return res.json(response);
             } catch (error: any) {
                 return res.status(400).json({ message: error[0] ? error[0].customError : undefined } );
             } 
