@@ -26,6 +26,7 @@ import EditProduct from "./Pages/products/EditProduct";
 import { AuthContextProvider } from "./context/AuthContext";
 import OrdersPage from "./Pages/orders";
 import OrderPage from "./Pages/orders/order";
+import AboutUs from "./Pages/AboutUs";
 ;
 const noRequirement = [
   "/login",
@@ -44,6 +45,7 @@ function App() {
         <ScrollToTop>
           <Routes>
             <Route exact path="/" element={<Home />} />
+            <Route exact path="/about-us" element={<AboutUs />} />
             <Route exact path="/login" element={<Login />} />
             <Route exact path="/register" element={<Register />} />
             <Route exact path="/forgot-password" element={<ForgotPassword />} />
