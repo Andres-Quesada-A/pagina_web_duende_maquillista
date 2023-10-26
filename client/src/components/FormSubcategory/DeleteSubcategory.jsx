@@ -39,6 +39,16 @@ function DeleteSubcategory({ Raw, APIURL }) {
 
   const HandleSubmit = (e) => {
     e.preventDefault();
+
+    if (!selectedSubcategory.subcategory || selectedSubcategory.subcategory === "seleccione") {
+      toast.error("\"seleccione\" no es una opción valida", messageSettings)
+      return
+    }
+    if (!selectedCategory.category || selectedCategory.category === "seleccione") {
+      toast.error("Seleccione una Categoria", messageSettings)
+      return
+    }
+
     const fullData = {...selectedSubcategory, ...selectedCategory}
     console.log(fullData)
     console.log(APIURL)
@@ -88,7 +98,7 @@ function DeleteSubcategory({ Raw, APIURL }) {
     >
       {subcategories &&
         subcategories.map((item, index) => (
-          <option key={index} value={item.subcategory}>
+          <option key={index} value={item.subcategory} selected={item.subcategory === selectedSubcategory.subcategory}>
             {item.subcategory}
           </option>
         ))}

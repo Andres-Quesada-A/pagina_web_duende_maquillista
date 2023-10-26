@@ -42,9 +42,23 @@ function EditSubcategory({ Raw, APIURL }) {
 
   const HandleSubmit = (e) => {
     e.preventDefault();
+
+    if (!selectedSubcategory.subcategory || selectedSubcategory.subcategory === "seleccione") {
+      toast.error("Seleccione una Subcategoria", messageSettings)
+      return
+    }
+    if (!selectedCategory.category || selectedCategory.category === "seleccione") {
+      toast.error("Seleccione una Categoria", messageSettings)
+      return
+    }
+    if (!selectedNewSubcategory.newSubcategory || selectedNewSubcategory.newSubcategory === "seleccione") {
+      toast.error("\"Seleccione\" no es opción valida ", messageSettings)
+      return
+    }
+
     const fullData = {...selectedNewSubcategory, ...selectedSubcategory, ...selectedCategory}
-    //console.log(fullData)
-    //console.log(APIURL)
+    console.log(fullData)
+    console.log(APIURL)
     axios.put(APIURL, fullData)
       .then(() => {
         toast.success("Subcategoria modificada", messageSettings)
@@ -56,7 +70,7 @@ function EditSubcategory({ Raw, APIURL }) {
         toast.error(errorMessage, messageSettings)
       });
   };
-  //console.log([selectedCategory, selectedSubcategory, selectedNewSubcategory])
+  console.log([selectedCategory, selectedSubcategory, selectedNewSubcategory])
   return (
     <form className="flex flex-col gap-4" onSubmit={HandleSubmit}>
       <h4 className="text-xl font-medium">Modificar Subcategoria</h4>
@@ -91,7 +105,7 @@ function EditSubcategory({ Raw, APIURL }) {
     >
       {subcategories &&
         subcategories.map((item, index) => (
-          <option key={index} value={item.subcategory}>
+          <option key={index} value={item.subcategory} selected={item.subcategory === selectedSubcategory.subcategory} >
             {item.subcategory}
           </option>
         ))}
