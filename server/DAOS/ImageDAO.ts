@@ -22,11 +22,11 @@ export class ImageDAO {
                         const categories: [] = result.recordset.map((row: any) => {
                             // Split the subcategories string by the comma and create an array
                             var value;
-                            if (row.subcategories === "") {
-                                value = null;
+                            if (row.subcategories == null) {
+                                value = [];
                             }
                             else {
-                                value = row.subcategories.split(',').map((subcategory: string) => subcategory.trim());
+                                value = JSON.parse(row.subcategories).map((subcategory: any) => subcategory.subcategory.trim());
                             }
                             return {
                                 category: row.category,
