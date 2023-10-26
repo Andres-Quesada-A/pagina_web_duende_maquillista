@@ -58,4 +58,9 @@ export class DateFormatter {
     getTimestampForward(hours: number): number {
         return Math.round(this.currentDate.getTime() / 1000) + (hours + currentTimezone - timezone) * 60 * 60;
     }
+
+    getCurrentTimestamp(): number {
+        return this.currentDate.getTime() -
+        (timezone - currentTimezone) * 60 * 60 * 1000;
+    }
 };

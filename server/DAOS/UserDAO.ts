@@ -205,12 +205,79 @@ export class UserDAO {
         });
     }
 
-    confirmCode(code: string): boolean {
-        return true;
-    }
+    async getUserByEmail(email: string): Promise<User> {
+        return new Promise((resolve, reject) => {
+            const SQL = ConnectionDAO.getInstance();
+            const damage: { customError: string | undefined }[] = [];
 
-    sendCode(email: string): void {
-        // Aquí puedes implementar la lógica para enviar un código de confirmación por correo electrónico.
-        return;
+            SQL.query("Duende_SP_Users_Get_By_Email", { IN_email: email })
+                .then((result) => {
+                    if (result.recordset.length === 0) {
+                        damage.push({ customError: "El usuario no existe" });
+                        reject(damage);
+                    } else {
+                        const user = result.recordset[0];
+                        resolve(
+                            new User (
+                                user.id,
+                                user.name,
+                                user.lastName1,
+                                user.lastName2,
+                                user.email,
+                                user.password,
+                                user.token
+                            )
+                        );
+                    }
+                })
+                .catch((error) => {
+                    damage.push({ customError: error.customError });
+                    reject(damage);
+                });
+        });
+    };
+
+    async resetPassword(id: number, newPassword: string): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            const SQL = ConnectionDAO.getInstance();
+            const damage: { customError: string | undefined }[] = [];
+
+            bcrypt
+                .hash(newPassword, 10)
+                .then((hashedPassword) => {
+                    try {
+                        SQL.query("Duende_SP_Users_EditPassword", { IN_userID: id, IN_password: hashedPassword })
+                            .then(async (result) => {
+                                if (result.rowsAffected === 0) {
+                                    damage.push({ customError: "El usuario no existe" });
+                                    reject(damage);
+                                } else {
+                                    const user = result.recordset[0];
+                                    this.editToken(
+                                        user.id,
+                                        GenerateToken(
+                                            user.id,
+                                            user.name,
+                                            user.lastName1 +
+                                                " " +
+                                                user.lastName2,
+                                            user.email,
+                                            user.administrator ? 1 : 0
+                                        )
+                                    );
+                                    resolve(true);
+                                }
+                            })
+                            .catch((error) => {
+                                damage.push({ customError: error.customError });
+                                reject(damage);
+                            });
+                    } catch (error) {
+                        // any errors that occur during the process
+                        reject();
+                    }
+                })
+                .catch((error) => {});
+        });
     }
 }

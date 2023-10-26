@@ -3,6 +3,8 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { EmailController } from "./EmailController";
 import { DateFormatter } from "../Utils/DateFormatter";
 
+const PASSWORD_RESET_CODE_EXPIRY = 1/4; // In hours
+
 export class UserController {
     private UserDAO: UserDAO;
     constructor() {
@@ -93,9 +95,9 @@ export class UserController {
         // Generates a token containing a code to reset the password
         const code = Math.floor(Math.random() * 900000) + 100000;
         const currentDate = new DateFormatter();
-        if (await this.UserDAO.requestPasswordReset(email, code, currentDate.getTimestampForward(24))) {
+        if (await this.UserDAO.requestPasswordReset(email, code, currentDate.getTimestampForward(PASSWORD_RESET_CODE_EXPIRY))) {
             const emailController = new EmailController();
-            currentDate.resetDate(currentDate.getTimestampForward(24));
+            currentDate.resetDate(currentDate.getTimestampForward(PASSWORD_RESET_CODE_EXPIRY));
             const expirationDateTime = currentDate.localDateTimeText();
 
             // This is done synchronously to make sure the email is sent
@@ -115,9 +117,48 @@ export class UserController {
     }
 
     // Method to change a user's password
-    newPassword(password: string, confirmPassword: string): boolean {
-        // Logic to change the user's password
-        // Returns true if the password change is successful, otherwise returns false
-        return true; // Change this with real logic
+    async resetPassword(email: string, code: number, password: string): Promise<boolean> {
+        return new Promise(async (resolve, reject) => {
+            const damage: { customError: string | undefined }[] = [];
+            const user = await this.UserDAO.getUserByEmail(email);
+            if (user) {
+                jwt.verify(user.getToken(), 'DuendeMaquillista', async (err, decoded) => {
+                    if (err) {
+                        console.log(err);
+                        reject(damage);
+                    } else {
+                        const userData = decoded as JwtPayload;
+
+                        if (!userData) {
+                            reject(damage);
+                        } else if (!userData.code) {
+                            damage.push({ customError: "No se ha solicitado un código de recuperación de contraseña" });
+                            reject(damage);
+                        } else {
+                            if (userData.code == code) {
+                                if (userData.codeExpiry) {
+                                    const currentDate = new DateFormatter();
+                                    if (currentDate.getCurrentTimestamp() / 1000 < userData.codeExpiry) {
+                                        await this.UserDAO.resetPassword(user.getId(), password);
+                                        resolve(true);
+                                    } else {
+                                        damage.push({ customError: "El código ha expirado" });
+                                        reject(damage);
+                                    }
+                                } else {
+                                    reject(damage);
+                                }
+                            } else {
+                                damage.push({ customError: "El código no coincide" });
+                                reject(damage);
+                            }
+                        };
+                    }
+                    });
+            } else {
+                damage.push({ customError: "El usuario no existe" });
+                reject(damage);
+            }
+        });
     }
 }

@@ -1,17 +1,12 @@
 -- Autor:       Andres Quesada
 -- Fecha:       2023-10-14
--- Descripción: Procedimiento para editar un usuario
+-- Descripción: Procedimiento para editar la contraseña de un usuario
 --------------------------------------------------------------------------
 
-CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_Users_Edit]
+CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_Users_EditPassword]
     -- Parameters
     @IN_userID INT,
-    @IN_name VARCHAR(32),
-    @IN_lastName1 VARCHAR(32),
-    @IN_lastName2 VARCHAR(32),
-    @IN_email VARCHAR(128),
-    @IN_password VARCHAR(64),
-    @IN_token VARCHAR(300)
+    @IN_password VARCHAR(64)
 AS
 BEGIN
     SET NOCOUNT ON; -- No metadata returned
@@ -21,12 +16,6 @@ BEGIN
     DECLARE @transactionBegun BIT = 0;
 
     BEGIN TRY
-        -- VALIDATIONS
-        IF(LTRIM(RTRIM(@IN_name)) = '' OR LTRIM(RTRIM(@IN_lastName1)) = '' OR LTRIM(RTRIM(@IN_lastName2)) = '' OR LTRIM(RTRIM(@IN_email)) = '' OR LTRIM(RTRIM(@IN_password)) = '' OR LTRIM(RTRIM(@IN_token)) = '')
-        BEGIN
-            RAISERROR('Todos los campos son obligatorios. Por favor, complete la información.', 16, 1);
-        END;
-
         -- TRANSACTION BEGUN
         IF @@TRANCOUNT = 0
         BEGIN
@@ -34,15 +23,10 @@ BEGIN
             BEGIN TRANSACTION;
         END;
 
-        -- UPDATE USER
+        -- UPDATE USER PASSWORD
         UPDATE [dbo].[Users]
         SET
-            name = LTRIM(RTRIM(@IN_name)),
-            lastName1 = LTRIM(RTRIM(@IN_lastName1)),
-            lastName2 = LTRIM(RTRIM(@IN_lastName2)),
-            email = LTRIM(RTRIM(@IN_email)),
-            password = LTRIM(RTRIM(@IN_password)),
-            token = LTRIM(RTRIM(@IN_token))
+            password = LTRIM(RTRIM(@IN_password))
         WHERE
             id = @IN_userID;
 
@@ -51,6 +35,19 @@ BEGIN
         BEGIN
             COMMIT TRANSACTION;
         END;
+
+        SELECT  [id],
+                [name],
+                [lastName1],
+                [lastName2],
+                [email],
+                [password],
+                [token],
+                [administrator],
+                [deleted]
+        FROM [dbo].[Users]
+        WHERE [id] = @IN_userID;
+
     END TRY
     BEGIN CATCH
         SET @ErrorNumber = ERROR_NUMBER();
