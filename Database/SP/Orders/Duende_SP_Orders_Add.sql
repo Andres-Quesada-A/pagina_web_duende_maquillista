@@ -110,7 +110,7 @@ BEGIN
             @IN_UserID,
             @AddressID,
             @IN_VoucherUrl,
-            GETDATE(),
+            GETUTCDATE(),
             0
         );
 
