@@ -71,7 +71,7 @@ BEGIN
         END;
 
         -- Verify if voucher exists
-        IF LTRIM(RTRIM(@IN_VoucherUrl)) != ''
+        IF LTRIM(RTRIM(@IN_VoucherUrl)) = ''
         BEGIN
             RAISERROR('Voucher URL no valido', 16, 1);
         END;

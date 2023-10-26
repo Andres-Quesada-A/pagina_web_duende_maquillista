@@ -27,6 +27,7 @@ export class OrderDAO {
         tvpSchema.columns.add('productId', sqlcon.Int);
         tvpSchema.columns.add('quantity', sqlcon.Int);
 
+        console.log(products, "here")
         products.forEach((product) => {
             tvpSchema.rows.add(product.id, product.amount);
         });
@@ -38,19 +39,21 @@ export class OrderDAO {
                         'IN_Province': province,
                         'IN_Canton': canton,
                         'IN_District': district,
-                        'IN_SpecificAddress': specificAddress,
+                        'IN_Address': specificAddress,
                         'IN_ShippingFee': shippingFee,
-                        'IN_Cart': tvpSchema,
+                        'IN_Products': tvpSchema,
                         'IN_UserID': userId,
                         'IN_VoucherUrl': imageUrl
                     }).then((result) => {
                         resolve(true);
                     }).catch((error) => {
                         //fail in the execution of the query
+                        console.log(error, "catch query")
                         damage.push({ customError: error.customError });
                         reject(false);
                     })
             } catch (error) {
+                console.log(error, "try catch query")
                 // any errors that occur during the process
                 reject(damage)
             }
