@@ -8,6 +8,7 @@ import SelectCustom from "../../components/form/SelectCustom";
 import { OptionsFilterPrice } from "../../Structures/shopFilters";
 import SwitchFormInputs from "../../components/form/SwitchFormInputs";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../context/AuthContext";
 
 function Shop() {
   const [search, setSearch] = useState({});
@@ -15,7 +16,8 @@ function Shop() {
   const [products, setProducts] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [admin, setAdmin] = useState(true);
+  const { getLoginStatus, getUserType } = useAuthContext();
+  const [admin, setAdmin] = useState(getLoginStatus() && getUserType() == 1);
   const navigate = useNavigate();
 
   const handleDelete = (id) => {

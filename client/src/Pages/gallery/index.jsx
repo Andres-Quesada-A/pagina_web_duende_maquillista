@@ -8,7 +8,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify'
 import { messageSettings, defaultError } from '../../utils/messageSettings'
 import { getKeysCheckbox } from "../../utils/getkeysCheckbox";
-
+import { useAuthContext } from "../../context/AuthContext";
 
 function Gallery() {
   const [search, setSearch] = useState({});
@@ -17,7 +17,8 @@ function Gallery() {
   const [data, setData] = useState([]);
   const [imageFiltered, setImageFiltered] = useState([]);
   const [category, setCategory] = useState([]);
-  const [admin, setAdmin] = useState(true)
+  const { getLoginStatus, getUserType } = useAuthContext();
+  const [admin, setAdmin] = useState(getLoginStatus() && getUserType() == 1);
 
   function getSubcategories() {
     const selectedCategoryObject = category.find(item => item.category === filters.category);
