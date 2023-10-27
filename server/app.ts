@@ -1,6 +1,8 @@
 import express, {json} from 'express'; // importar express y otras dependencias
 import cors from 'cors'
 import cookieParser from 'cookie-parser';
+import { createServer } from "http";
+var debug = require("debug")("duendemaquillista:server");
 // import { corsMiddleware } from './middlewares/cors'; // importar el middleware de CORS
 
 // ROUTES
@@ -28,10 +30,79 @@ app.use('/api', ImageSubcategoryRouter);
 app.use('/api', ProductRouter)
 app.use('/api', ImageRouter);
 app.use('/api', OrderRouter);
-
-// const PORT: number = parseInt(process.env.PORT) || 1234; // obtener el puerto del entorno o utilizar el puerto 1234 por defecto
-const PORT: number = 1234; // obtener el puerto del entorno o utilizar el puerto 1234 por defecto
-
-app.listen(PORT, () => {
-  console.log(`Servidor escuchando en http://localhost:${PORT}`);
+app.get("/", (req, res) => {
+    res.json({ message: "DuendeMaquillista" });
 });
+
+var port = normalizePort(process.env.PORT || "1234");
+app.set("port", port);
+
+/**
+ * Create HTTP server.
+ */
+
+var server = createServer(app);
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on("error", onError);
+server.on("listening", onListening);
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val: string) {
+    var port = parseInt(val, 10);
+
+    if (isNaN(port)) {
+        // named pipe
+        return val;
+    }
+
+    if (port >= 0) {
+        // port number
+        return port;
+    }
+
+    return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error: any) {
+    if (error.syscall !== "listen") {
+        throw error;
+    }
+
+    var bind = typeof port === "string" ? "Pipe " + port : "Port " + port;
+
+    // handle specific listen errors with friendly messages
+    switch (error.code) {
+        case "EACCES":
+            console.error(bind + " requires elevated privileges");
+            process.exit(1);
+            break;
+        case "EADDRINUSE":
+            console.error(bind + " is already in use");
+            process.exit(1);
+            break;
+        default:
+            throw error;
+    }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+    var addr = server.address();
+    var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr?.port;
+    debug("Listening on " + bind);
+}
