@@ -20,7 +20,7 @@ function DeleteSubcategory({ Raw, APIURL }) {
       const subcategories = selectedObject.subcategory.map(item => ({
         subcategory: item,
       }));
-      return [{"subcategory" : "seleccione"}, ...subcategories ]
+      return [{"subcategory" : "Seleccione"}, ...subcategories ]
     } else {
       return [{}];
     }
@@ -40,12 +40,12 @@ function DeleteSubcategory({ Raw, APIURL }) {
   const HandleSubmit = (e) => {
     e.preventDefault();
 
-    if (!selectedSubcategory.subcategory || selectedSubcategory.subcategory === "seleccione") {
-      toast.error("\"seleccione\" no es una opción valida", messageSettings)
+    if (!selectedSubcategory.subcategory || selectedSubcategory.subcategory === "Seleccione") {
+      toast.error("\"Seleccione\" no es una opción valida.", messageSettings)
       return
     }
-    if (!selectedCategory.category || selectedCategory.category === "seleccione") {
-      toast.error("Seleccione una Categoria", messageSettings)
+    if (!selectedCategory.category || selectedCategory.category === "Seleccione") {
+      toast.error("Seleccione una categoría.", messageSettings)
       return
     }
 
@@ -54,7 +54,7 @@ function DeleteSubcategory({ Raw, APIURL }) {
     console.log(APIURL)
     axios.delete(`${APIURL}/${fullData.category}/${fullData.subcategory}`, { withCredentials: true })
       .then(() => {
-        toast.success("Subcategoria eliminada", messageSettings)
+        toast.success("Subcategoría eliminada.", messageSettings)
       })
       .catch((error) => {
         const errorMessage =
@@ -66,10 +66,10 @@ function DeleteSubcategory({ Raw, APIURL }) {
 
   return (
     <form className="flex flex-col gap-4" onSubmit={HandleSubmit}>
-      <h4 className="text-xl font-medium">Eliminar Subcategoria</h4>
+      <h4 className="text-xl font-medium">Eliminar subcategoría</h4>
       <div>
         <label className="block mb-2 text-base font-medium text-gray-900 ">
-          Categoria
+          Categoría
         </label>
         <select
           id="category"
@@ -88,7 +88,7 @@ function DeleteSubcategory({ Raw, APIURL }) {
       {subcategories && subcategories.length > 0 ? (
   <div>
     <label className="block mb-2 text-base font-medium text-gray-900">
-      Subcategoria
+      Subcategoría
     </label>
     <select
       id="subcategory"
@@ -105,10 +105,10 @@ function DeleteSubcategory({ Raw, APIURL }) {
     </select>
   </div>
 ) : (
-  // Render something else if subcategories is empy or null
+  // Render something else if subcategories is empty or null
   <div>
     <label className="block mb-2 text-base font-medium text-gray-900">
-      Subcategoria
+      Subcategoría
     </label>
     <select
       id="subcategory"
@@ -136,7 +136,7 @@ export default DeleteSubcategory;
 /*
 <div>
 <label className="block mb-2 text-base font-medium text-gray-900 ">
-  Subcategoria
+  Subcategoría
 </label>
 <select 
   id="subcategory"

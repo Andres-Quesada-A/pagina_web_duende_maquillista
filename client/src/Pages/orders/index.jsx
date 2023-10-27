@@ -18,7 +18,7 @@ function OrdersPage() {
             setData(dataOrders);
         }
         ).catch((error) => {
-            toast.error("Ocurrió un error al cargar las ordenes", messageSettings);
+            toast.error("Ocurrió un error al cargar las órdenes.", messageSettings);
         })
     }, []);
 
@@ -37,14 +37,14 @@ function OrdersPage() {
             <div className="w-full min-h-screen flex flex-col items-center mt-16 py-14 px-10">
                 <header className="w-full max-w-4x1">
                     <h1 className="font-medium text-3xl text-indigo-500">
-                        Ordenes
+                        Órdenes
                     </h1>
                     <hr className="border-indigo-500 border-1 mt-2"></hr>
                 </header>
                 <section className="w-full max-w-4x1 grid grid-cols-1 md:grid-cols-3 gap-5 mt-6">
                     {
                     (data && data.length === 0) ? (
-                        <h2>No hay ordenes</h2>
+                        <h2>No hay órdenes</h2>
                     ) : (data.map((objeto) => {
                         return (<Order key={objeto.id} id={objeto.id} timestamp={formatDate(objeto.timestamp)} address={objeto.address.specificAddress} />)
                     })

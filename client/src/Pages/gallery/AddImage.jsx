@@ -34,7 +34,7 @@ function AddImage() {
                 setCategories([{ label: "Seleccione", value: "", subcategories: null }, ...Formated]);
 
             } catch (error) {
-                toast.info("No hay categorías", messageSettings);
+                toast.info("No hay categorías.", messageSettings);
             }
         };
         getData();
@@ -53,7 +53,7 @@ function AddImage() {
                     setPerc(progress);
                 },
                 (error) => {
-                    toast.error("Ocurrió un error al subir la imagen", messageSettings);
+                    toast.error("Ocurrió un error al subir la imagen.", messageSettings);
                 },
                 () => {
                     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
@@ -96,7 +96,7 @@ function AddImage() {
 
         try {
             await axios.post(APIURL, { ...data }, { withCredentials: true });
-            toast.success("Imagen creada", messageSettings);
+            toast.success("Imagen creada.", messageSettings);
             navigate("/gallery");
         } catch (error) {
             const errorMessage =
@@ -129,7 +129,7 @@ function AddImage() {
                     />
                     <div>
                         <label className="block mb-2 text-base font-medium text-gray-900 ">
-                            Categoria
+                            Categoría
                         </label>
                         <select
                             id="imageCategory"
@@ -147,7 +147,7 @@ function AddImage() {
                     </div>
                     <div>
                         <label className="block mb-2 text-base font-medium text-gray-900 ">
-                            Subcategoria
+                            Subcategoría
                         </label>
                         <select
                             id="imageSubcategory"
@@ -190,7 +190,7 @@ function AddImage() {
                     />
                     <div className="relative w-48 text-center">
                         <label className="relative z-0 rounded-lg inline-block w-full bg-indigo-500 font-medium cursor-pointer text-white py-2 text-base">
-                            Subir Imagen
+                            Subir imagen
                         </label>
                         <input
                             className="opacity-0 cursor-pointer top-0 left-0 h-12 w-full z-10 absolute inline-block"

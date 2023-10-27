@@ -38,7 +38,7 @@ function EditImage() {
         categoryList.push(...Formated);
       } catch (error) {
         console.log("No se")
-        toast.info("Ocurrió un error al cargar las categorías", messageSettings);
+        toast.info("Ocurrió un error al cargar las categorías.", messageSettings);
       }
       try {
         const response = await axios.get(IMAGE_APIURL + idImage, { withCredentials: true });
@@ -132,7 +132,7 @@ function EditImage() {
 
     try {
       await axios.put(APIURL, { ...data, id:parseInt(idImage) }, { withCredentials: true });
-      toast.success("Imagen modificada exitosamente", messageSettings);
+      toast.success("Imagen modificada exitosamente.", messageSettings);
       navigate("/gallery");
     } catch (error) {
       const errorMessage =
@@ -165,7 +165,7 @@ function EditImage() {
           />
           <div>
             <label className="block mb-2 text-base font-medium text-gray-900 ">
-              Categoria
+              Categoría
             </label>
             <select
               id="imageCategory"
@@ -183,7 +183,7 @@ function EditImage() {
           </div>
           <div>
             <label className="block mb-2 text-base font-medium text-gray-900 ">
-              Subcategoria
+              Subcategoría
             </label>
             <select
               id="imageSubcategory"
@@ -226,7 +226,7 @@ function EditImage() {
           />
           <div className="relative w-48 text-center">
             <label className="relative z-0 rounded-lg inline-block w-full bg-indigo-500 font-medium cursor-pointer text-white py-2 text-base">
-              Subir Imagen
+              Subir imagen
             </label>
             <input
               className="opacity-0 cursor-pointer top-0 left-0 h-12 w-full z-10 absolute inline-block"

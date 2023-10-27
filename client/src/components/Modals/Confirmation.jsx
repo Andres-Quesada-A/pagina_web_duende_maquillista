@@ -28,7 +28,7 @@ function Confirmation({ title, description, handleDelete, modal, toggleModal }) 
                 className="bg-red-500 hover:bg-red-400 py-2 px-4 text-base rounded-md cursor-pointer text-white transition-colors"
                 onClick={handleDelete}
               >
-                Eliminar
+                Continuar
               </button>
             </div>
             <button

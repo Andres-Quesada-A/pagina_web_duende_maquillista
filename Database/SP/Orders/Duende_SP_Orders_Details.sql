@@ -22,7 +22,7 @@ BEGIN
                 AND deleted = 0
         )
         BEGIN 
-            RAISERROR('The indicated order does not exist %d.', 16, 1, @IN_OrderID)
+            RAISERROR('La orden no existe.', 16, 1)
         END
         
         -- Retrieve order with products

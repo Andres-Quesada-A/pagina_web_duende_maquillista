@@ -9,4 +9,4 @@ export const messageSettings = {
     theme: "light",
   };
 
-export const defaultError = "Algo ha salido mal";
+export const defaultError = "Algo ha salido mal.";

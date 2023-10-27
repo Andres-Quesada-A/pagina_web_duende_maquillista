@@ -28,7 +28,7 @@ BEGIN
                 AND I.Deleted = 0
         )
         BEGIN
-            RAISERROR('The indicated image does not exist %d.', 16, 1, @IN_ImageID)
+            RAISERROR('La imagen no existe.', 16, 1)
         END
 
         SELECT 

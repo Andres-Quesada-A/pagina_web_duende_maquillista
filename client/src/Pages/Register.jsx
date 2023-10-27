@@ -64,7 +64,7 @@ function RegisterPage() {
                 Registrarse
               </button>
               <div className="text-base flex gap-5 items-center flex-nowrap mt-7">
-                <p>¿Ya tienes una cuenta?</p>
+                <p>¿Ya tiene una cuenta?</p>
                 <a
                   href="/login"
                   className="cursor-pointer text-indigo-500 hover:text-indigo-400 transition-colors  font-medium text-lg text-medium"

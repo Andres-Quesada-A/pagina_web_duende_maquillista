@@ -29,7 +29,7 @@ BEGIN
         --validacion de categoria
         IF(LTRIM(RTRIM(@IN_imageCategory)) = '')
 	        BEGIN
-	        	RAISERROR('No se ingreso texto de la Categoria', 16, 1)
+	        	RAISERROR('No se ingresó texto de la categoría.', 16, 1)
 	        END;
 
         SELECT @UsecategoryId = C.id 
@@ -40,13 +40,13 @@ BEGIN
         --validacion de existencia previa
         IF (@UsecategoryId IS NULL)
             BEGIN
-                RAISERROR('la Categoria no existe', 16, 1)
+                RAISERROR('La categoría no existe.', 16, 1)
             END;
 
         --validacion de subcategoria
         IF(LTRIM(RTRIM(@IN_imageSubcategory)) = '')
 	        BEGIN
-	        	RAISERROR('No se ingreso texto de la Subcategoria a modificar', 16, 1)
+	        	RAISERROR('No se ingresó texto de la subcategoría por modificar.', 16, 1)
 	        END;
 
         -- No se pueden borrar subcategorías con imágenes
@@ -55,7 +55,7 @@ BEGIN
                   WHERE I.[subcategoryId] = @UseIdSubcategory
                     AND I.[deleted] = 0)
         BEGIN
-            RAISERROR('No se puede eliminar la subcategoría "%s" porque tiene imágenes asociadas', 16, 1, @IN_imageSubcategory);
+            RAISERROR('No se puede eliminar la subcategoría "%s" porque tiene imágenes asociadas.', 16, 1, @IN_imageSubcategory);
         END;
 
         SELECT @UseIdSubcategory = Sc.id
@@ -67,7 +67,7 @@ BEGIN
         --validacion de existencia previa de subcategoria
         IF (@UseIdSubcategory IS NULL) 
             BEGIN
-                RAISERROR('la Subcategoria no existe', 16, 1)
+                RAISERROR('La subcategoría no existe.', 16, 1)
             END;
 
 		-- INICIO DE LA TRANSACCI�N

@@ -38,7 +38,7 @@ function ShoppingCart() {
         },
         (error) => {
           console.log(error);
-          toast.error("Ocurrió un error al subir la imagen", messageSettings);
+          toast.error("Ocurrió un error al subir la imagen.", messageSettings);
         },
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
@@ -109,7 +109,7 @@ function ShoppingCart() {
         imageUrl: data.img,
       };
       await axios.post('http://localhost:1234/api/create_order', RequestData)
-      toast.success("Orden realizada", messageSettings);
+      toast.success("Orden realizada.", messageSettings);
       removeCart()
     } catch (error) {
       const errorMessage =
@@ -268,7 +268,7 @@ function ShoppingCart() {
         <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 ">
           <div className="relative w-full text-center">
             <label className="relative z-0 rounded-lg inline-block w-full bg-indigo-500 hover:bg-indigo-600 transition-colors font-medium cursor-pointer text-white py-2 text-base">
-              Subir Imagen
+              Subir imagen
             </label>
             <input
               className="opacity-0 cursor-pointer top-0 left-0 h-12 w-full z-10 absolute inline-block"

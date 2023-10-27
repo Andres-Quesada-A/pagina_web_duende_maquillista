@@ -21,7 +21,7 @@ function ForgotPasswordPage() {
     e.preventDefault();
     try {
       await axios.post(`http://localhost:1234/api/request_password_reset/${data.email}`)
-      toast.success("Código enviado al correo", messageSettings)
+      toast.success("Código enviado al correo.", messageSettings)
       setDisabled(false)
     } catch (error) {
       console.log(error)
@@ -38,7 +38,7 @@ function ForgotPasswordPage() {
         <title>Recuperar contraseña</title>
         <meta
           name="description"
-          content="Proceso para la recuperacion de contrasena"
+          content="Proceso para la recuperación de contraseña"
         />
         <link rel="canonical" href="/forgot-password" />
       </Helmet>

@@ -28,12 +28,12 @@ BEGIN
                   WHERE PC.[description] = @IN_description
                     AND PC.[deleted] = 0)
         BEGIN
-            RAISERROR('Ya existe la categoría "%s"', 16, 1, @IN_description);
+            RAISERROR('Ya existe la categoría "%s".', 16, 1, @IN_description);
         END;
 
         IF @IN_description = ''
         BEGIN
-            RAISERROR('Debe proporcionar una descripción', 16, 1);
+            RAISERROR('Debe proporcionar una descripción.', 16, 1);
         END;
 
         -- TRANSACTION BEGUN

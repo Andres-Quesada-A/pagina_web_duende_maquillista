@@ -25,7 +25,7 @@ function UploadImage() {
         },
         (error) => {
           console.log(error)
-          toast.error("Ocurrió un error al subir la imagen", messageSettings);
+          toast.error("Ocurrió un error al subir la imagen.", messageSettings);
         },
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
@@ -59,7 +59,7 @@ function UploadImage() {
       />
       <div className="relative w-48 text-center">
         <label className="relative z-0 rounded-lg inline-block w-full bg-indigo-500 font-medium cursor-pointer text-white py-2 text-base">
-          Elegir Imagen
+          Elegir imagen
         </label>
         <input
           className="opacity-0 cursor-pointer top-0 left-0 h-12 w-full z-10 absolute inline-block"

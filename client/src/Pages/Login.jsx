@@ -38,10 +38,10 @@ function LoginPage() {
   return (
     <>
       <Helmet>
-        <title>Iniciar Sesion</title>
+        <title>Iniciar sesión</title>
         <meta
           name="description"
-          content="Inicie sesion en nuestro sistema y tenga acceso a nuestros productos y servicios"
+          content="Inicie sesión en nuestro sistema y tenga acceso a nuestros productos y servicios"
         />
         <link rel="canonical" href="/login" />
       </Helmet>
@@ -55,7 +55,7 @@ function LoginPage() {
           </picture>
           <div>
             <h1 className="text-4xl text-indigo-500 font-bold text-center mb-8">
-              Iniciar Sesión
+              Iniciar sesión
             </h1>
             <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-5">
               <SwitchFormInputs
@@ -69,10 +69,10 @@ function LoginPage() {
                 ¿Olvidó la contraseña?
               </a>
               <button className="w-full text-center rounded-lg bg-indigo-500 hover:bg-indigo-400 transition-colors text-white py-2 text-lg font-medium">
-                Iniciar Sesión
+                Iniciar sesión
               </button>
               <div className="text-base flex gap-5 items-center flex-nowrap mt-7">
-                <p>¿No tienes una cuenta?</p>
+                <p>¿No tiene una cuenta?</p>
                 <a
                   href="/register"
                   className="cursor-pointer text-indigo-500 hover:text-indigo-400 transition-colors  font-medium text-lg text-medium"

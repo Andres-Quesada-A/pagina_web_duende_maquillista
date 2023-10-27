@@ -38,7 +38,7 @@ BEGIN
         AND I.Deleted = 0
                 )
         BEGIN
-        RAISERROR('The indicated image does not exist %d.', 16, 1, @IN_ImageID)
+        RAISERROR('La imagen no existe.', 16, 1)
     END
 
         -- Category 
@@ -50,7 +50,7 @@ BEGIN
 
         IF @Category IS NULL
         BEGIN
-        RAISERROR('No valid category was provided', 16, 1);
+        RAISERROR('La categoría no existe.', 16, 1);
     END;
 
         -- Subcategory 
@@ -64,25 +64,25 @@ BEGIN
 
         IF @Subcategory IS NULL
         BEGIN
-        RAISERROR('No valid subcategory was provided', 16, 1);
+        RAISERROR('La categoría no existe.', 16, 1);
     END;
 
         -- Name
         IF LTRIM(RTRIM(@IN_Name)) = ''
         BEGIN
-        RAISERROR('No name was provided', 16, 1);
+        RAISERROR('No se proporcionó un nombre.', 16, 1);
     END;
 
         -- Description
         IF LTRIM(RTRIM(@IN_Description)) = ''
         BEGIN
-        RAISERROR('No description was provided', 16, 1);
+        RAISERROR('No se proporcinó una descripción.', 16, 1);
     END;
 
         -- URL
         IF LTRIM(RTRIM(@IN_ImageUrl)) = ''
         BEGIN
-        RAISERROR('No URL was provided', 16, 1);
+        RAISERROR('No se proporcionó el URL de una imagen.', 16, 1);
     END;
 
         -- TRANSACTION BEGUN

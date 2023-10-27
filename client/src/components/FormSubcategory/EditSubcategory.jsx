@@ -19,7 +19,7 @@ function EditSubcategory({ Raw, APIURL }) {
       const subcategories = selectedObject.subcategory.map(item => ({
         subcategory: item,
       }));
-      return [{"subcategory": "seleccione"}, ...subcategories ]
+      return [{"subcategory": "Seleccione"}, ...subcategories ]
     } else {
       return {};
     }
@@ -43,16 +43,16 @@ function EditSubcategory({ Raw, APIURL }) {
   const HandleSubmit = (e) => {
     e.preventDefault();
 
-    if (!selectedSubcategory.subcategory || selectedSubcategory.subcategory === "seleccione") {
-      toast.error("Seleccione una Subcategoria", messageSettings)
+    if (!selectedSubcategory.subcategory || selectedSubcategory.subcategory === "Seleccione") {
+      toast.error("Seleccione una subcategoría.", messageSettings)
       return
     }
-    if (!selectedCategory.category || selectedCategory.category === "seleccione") {
-      toast.error("Seleccione una Categoria", messageSettings)
+    if (!selectedCategory.category || selectedCategory.category === "Seleccione") {
+      toast.error("Seleccione una categoría.", messageSettings)
       return
     }
-    if (!selectedNewSubcategory.newSubcategory || selectedNewSubcategory.newSubcategory === "seleccione") {
-      toast.error("\"Seleccione\" no es opción valida ", messageSettings)
+    if (!selectedNewSubcategory.newSubcategory || selectedNewSubcategory.newSubcategory === "Seleccione") {
+      toast.error("\"Seleccione\" no es opción valida .", messageSettings)
       return
     }
 
@@ -61,7 +61,7 @@ function EditSubcategory({ Raw, APIURL }) {
     console.log(APIURL)
     axios.put(APIURL, fullData)
       .then(() => {
-        toast.success("Subcategoria modificada", messageSettings)
+        toast.success("Subcategoría modificada.", messageSettings)
       })
       .catch((error) => {
         const errorMessage =
@@ -73,10 +73,10 @@ function EditSubcategory({ Raw, APIURL }) {
   console.log([selectedCategory, selectedSubcategory, selectedNewSubcategory])
   return (
     <form className="flex flex-col gap-4" onSubmit={HandleSubmit}>
-      <h4 className="text-xl font-medium">Modificar Subcategoria</h4>
+      <h4 className="text-xl font-medium">Modificar subcategoría</h4>
       <div>
         <label className="block mb-2 text-base font-medium text-gray-900 ">
-          Categoria
+          Categoría
         </label>
         <select
           id="category"
@@ -95,7 +95,7 @@ function EditSubcategory({ Raw, APIURL }) {
       {subcategories && subcategories.length > 0 ? (
   <div>
     <label className="block mb-2 text-base font-medium text-gray-900">
-      Subcategoria
+      Subcategoría
     </label>
     <select
       id="subcategory"
@@ -115,7 +115,7 @@ function EditSubcategory({ Raw, APIURL }) {
   // Render something else if subcategories is empy or null
   <div>
     <label className="block mb-2 text-base font-medium text-gray-900">
-      Subcategoria
+      Subcategoría
     </label>
     <select
       id="subcategory"

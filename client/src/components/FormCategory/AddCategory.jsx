@@ -15,7 +15,7 @@ function AddCategory({ APIURL }) {
     e.preventDefault();
     axios.post(APIURL, data, { withCredentials: true })
       .then(() => {
-        toast.success("Categoria agregada", messageSettings)
+        toast.success("Categoría agregada.", messageSettings)
       })
       .catch((error) => {
         const errorMessage =

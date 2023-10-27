@@ -24,10 +24,10 @@ BEGIN
 
 		--validacion de Administradora(necesaria?)
 
-        --validacion de categoria a modificar
+        --validacion de categoria por modificar
         IF(LTRIM(RTRIM(@IN_imageCategory)) = '')
 	        BEGIN
-	        	RAISERROR('No se ingreso texto de la Categoria a modificar', 16, 1)
+	        	RAISERROR('No se ingresó texto de la categoría por modificar.', 16, 1)
 	        END;
 
         SELECT @UseIdImageCategory = C.id 
@@ -38,7 +38,7 @@ BEGIN
         --validacion de existencia previa
         IF (@UseIdImageCategory IS NULL)
             BEGIN
-                RAISERROR('la Categoria "%s" no existe', 16, 1,@IN_imageCategory)
+                RAISERROR('La categoría "%s" no existe.', 16, 1,@IN_imageCategory)
             END;
 
 
@@ -51,7 +51,7 @@ BEGIN
                     AND Sc.deleted = 0
                     )
             BEGIN
-                RAISERROR('la Categoria "%s" aun tiene subcategorias asociadas', 16, 1,@IN_imageCategory)
+                RAISERROR('La categoría "%s" aun tiene subcategorías asociadas.', 16, 1,@IN_imageCategory)
             END;
 
 		-- INICIO DE LA TRANSACCI�N

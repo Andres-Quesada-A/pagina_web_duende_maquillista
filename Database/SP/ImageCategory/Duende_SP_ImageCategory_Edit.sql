@@ -28,32 +28,32 @@ BEGIN
         --new value
         IF(LTRIM(RTRIM(@IN_newImageCategory)) = '')
 	        BEGIN
-	        	RAISERROR('No se ingreso texto para modificar la Categoria', 16, 1)
+	        	RAISERROR('No se ingresó texto para modificar la categoría.', 16, 1)
 	        END;
 
         --palabras reservadas
         IF(LTRIM(RTRIM(@IN_newImageCategory)) = 'seleccione')
 	        BEGIN
-	        	RAISERROR('La Categoria "%s" es invalida', 16, 1,@IN_newImageCategory)
+	        	RAISERROR('La categoría "%s" es inválida.', 16, 1,@IN_newImageCategory)
 	        END;
         
         --palabras reservadas
         IF ( LTRIM(RTRIM(@IN_newImageCategory)) LIKE '%,%')
 	        BEGIN
-	        	RAISERROR('La Categoria "%s" no puede tener ","', 16, 1,@IN_newImageCategory)
+	        	RAISERROR('La categoría "%s" no puede tener ",".', 16, 1,@IN_newImageCategory)
 	        END;
         
 
         --previous existence
         IF EXISTS (SELECT 1 FROM [dbo].ImageCategories C WHERE LTRIM(RTRIM(C.description)) = LTRIM(RTRIM(@IN_newImageCategory)) AND C.deleted = 0)
             BEGIN
-                RAISERROR('la Categoria "%s" ya existe', 16, 1,@IN_imageCategory)
+                RAISERROR('La categoría "%s" ya existe.', 16, 1,@IN_imageCategory)
             END;
 
         --Imagecategory value
         IF(LTRIM(RTRIM(@IN_imageCategory)) = '')
 	        BEGIN
-	        	RAISERROR('No se ingreso texto de la Categoria a modificar', 16, 1)
+	        	RAISERROR('No se ingresó texto de la categoría por modificar.', 16, 1)
 	        END;
 
         SELECT @UseIdImageCategory = C.id 
@@ -64,7 +64,7 @@ BEGIN
         --previous existence
         IF (@UseIdImageCategory IS NULL)
             BEGIN
-                RAISERROR('la Categoria "%s" no existe', 16, 1,@IN_imageCategory)
+                RAISERROR('La categoría "%s" no existe.', 16, 1,@IN_imageCategory)
             END;
 
 

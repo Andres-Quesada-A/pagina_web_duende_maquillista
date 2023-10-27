@@ -22,7 +22,7 @@ function AddSubcategory({ Categories, APIURL}) {
     console.log(fullData)
     axios.post(APIURL, fullData, { withCredentials: true })
       .then(() => {
-        toast.success("Subcategoria añadida", messageSettings)
+        toast.success("Subcategoría añadida.", messageSettings)
       })
       .catch((error) => {
         const errorMessage =
@@ -33,10 +33,10 @@ function AddSubcategory({ Categories, APIURL}) {
   };
   return (
     <form className="flex flex-col gap-4" onSubmit={HandleSubmit}>
-      <h4 className="text-xl font-medium">Agregar Subcategoria</h4>
+      <h4 className="text-xl font-medium">Agregar subcategoría</h4>
       <div>
         <label className="block mb-2 text-base font-medium text-gray-900 ">
-          Categoria
+          Categoría
         </label>
         <select
           id="category"
@@ -55,7 +55,7 @@ function AddSubcategory({ Categories, APIURL}) {
       <InputCustom
         HandleChange={HandleChange}
         id="subcategory"
-        label="Subcategoria"
+        label="Subcategoría"
         required={true}
         type="text"
         placeholder=""

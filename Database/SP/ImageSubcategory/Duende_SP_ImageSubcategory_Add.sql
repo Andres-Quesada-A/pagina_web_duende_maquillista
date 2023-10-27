@@ -29,7 +29,7 @@ BEGIN
         --validacion de categoria
         IF(LTRIM(RTRIM(@IN_imageCategory)) = '')
 	        BEGIN
-	        	RAISERROR('No se ingreso texto de la Categoria', 16, 1)
+	        	RAISERROR('No se ingresó texto de la categoría.', 16, 1)
 	        END;
 
         SELECT @UsecategoryId = C.id 
@@ -40,25 +40,25 @@ BEGIN
         --validacion de existencia previa
         IF (@UsecategoryId IS NULL)
             BEGIN
-                RAISERROR('La Categoria "%s" no existe', 16, 1,@IN_imageCategory)
+                RAISERROR('La categoría "%s" no existe.', 16, 1,@IN_imageCategory)
             END;
 
         --validacion de subcategoria
         IF(LTRIM(RTRIM(@IN_imageSubcategory)) = '')
 	        BEGIN
-	        	RAISERROR('No se ingreso texto de la Subcategoria a agregar', 16, 1)
+	        	RAISERROR('No se ingresó texto de la subcategoría por agregar.', 16, 1)
 	        END;
 
         --palabras reservadas
         IF(LTRIM(RTRIM(@IN_imageSubcategory)) = 'seleccione')
 	        BEGIN
-	        	RAISERROR('La Subcategoria "%s" es invalida', 16, 1,@IN_imageSubcategory)
+	        	RAISERROR('La subcategoría "%s" es inválida.', 16, 1,@IN_imageSubcategory)
 	        END;
         
         --palabras reservadas
         IF ( LTRIM(RTRIM(@IN_imageSubcategory)) LIKE '%,%')
 	        BEGIN
-	        	RAISERROR('La Subcategoria "%s" no puede tener ","', 16, 1,@IN_imageSubcategory)
+	        	RAISERROR('La subcategoría "%s" no puede tener ",".', 16, 1,@IN_imageSubcategory)
 	        END;
 
 
@@ -70,7 +70,7 @@ BEGIN
                     AND LTRIM(RTRIM(Sc.description)) = LTRIM(RTRIM(@IN_imageSubcategory))
                     ) 
             BEGIN
-                RAISERROR('la Subcategoria "%s" ya existe', 16, 1,@IN_imageSubcategory)
+                RAISERROR('La subcategoría "%s" ya existe.', 16, 1,@IN_imageSubcategory)
             END;
 
 

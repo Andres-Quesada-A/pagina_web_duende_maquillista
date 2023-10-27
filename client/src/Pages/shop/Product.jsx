@@ -43,7 +43,7 @@ function ProductShop() {
         <title>Tienda de Duende</title>
         <meta
           name="description"
-          content="Visita nuestra tienda y descubre todos nuestros productos disponibles"
+          content="Visite nuestra tienda y descubra todos nuestros productos disponibles"
         />
         <link rel="canonical" href="/shop" />
       </Helmet>

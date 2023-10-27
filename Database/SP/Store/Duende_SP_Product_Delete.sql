@@ -23,7 +23,7 @@ BEGIN
                       WHERE   P.[id] = @IN_id
                           AND P.[deleted] = 0)
         BEGIN
-            RAISERROR('No existe el producto', 16, 1);
+            RAISERROR('No existe el producto.', 16, 1);
         END;
 
         -- TRANSACTION BEGUN

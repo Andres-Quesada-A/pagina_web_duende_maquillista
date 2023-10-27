@@ -32,7 +32,7 @@ function Profile() {
         </section>
         <Confirmation
         title={"Cerrar sesión"}
-        description={"¿Estás seguro que desea cerrar sesión de la página duende maquillista?"}
+        description={"¿Está seguro que desea cerrar sesión de la página duende maquillista?"}
         handleDelete={handleClick}
         modal={modal}
         toggleModal={toggleModal}

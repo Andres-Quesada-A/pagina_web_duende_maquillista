@@ -24,10 +24,10 @@ function ConfigureCategory() {
     put: 'http://localhost:1234/api/edit_subcategory', //:category/:subcategory/:new_subcategory
     delete: 'http://localhost:1234/api/delete_subcategory'// :category/:subcategory
   }
-  const preSelectionValue = { value: "seleccione", subcategory: null }
+  const preSelectionValue = { value: "Seleccione", subcategory: null }
 
   useEffect(() => {
-    // Aqui se deben recuperar las categorias y subcategorias
+    // Aqui se deben recuperar las categorías y subcategorías
 
     axios.get(apiCategoryURL.get, { withCredentials: true }).then((response) => {
       const rawdata = response.data
@@ -36,7 +36,7 @@ function ConfigureCategory() {
       setFormatData([ preSelectionValue ,...rawdata.map(item => ({"value": item.category, "subcategory": item.subcategory}))]);
       setCategories([ preSelectionValue ,...rawdata.map(item => ({"value": item.category}))])
     }).catch((error) => {
-      toast.error("Ocurrió un error al cargar las categorías", messageSettings);
+      toast.error("Ocurrió un error al cargar las categorías.", messageSettings);
     })
 
   }, []);

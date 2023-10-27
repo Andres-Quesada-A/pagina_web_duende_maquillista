@@ -41,10 +41,10 @@ function ImageGallery() {
   return (
     <>
       <Helmet>
-        <title>Galeria del duende</title>
+        <title>Galería de Duende</title>
         <meta
           name="description"
-          content="Visita nuestra tienda y descubre todos nuestros productos disponibles"
+          content="Visite nuestra galería y descubra todos nuestros servicios disponibles"
         />
         <link rel="canonical" href="/shop" />
       </Helmet>
@@ -62,8 +62,8 @@ function ImageGallery() {
                 {imageData.name}
               </h1>
               <p><span>Descripción:</span> {imageData.description}</p>
-              <p><span>Categoria:</span> {imageData.category}</p>
-              <p><span>Sub categoria:</span> {imageData.subcategory}</p>
+              <p><span>Categoría:</span> {imageData.category}</p>
+              <p><span>Subcategoría:</span> {imageData.subcategory}</p>
               <p><span>Etiquetas:</span></p>
               <p className="text-indigo-500 -mt-4">{imageData.tags}</p>
               <button onClick={handlerbutton} className="h-11 w-full sm:w-auto rounded-lg px-5 text-white font-medium text-lg bg-indigo-500 hover:bg-indigo-400 transition-colors">

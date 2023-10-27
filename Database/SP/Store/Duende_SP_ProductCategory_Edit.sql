@@ -32,7 +32,7 @@ BEGIN
 
         IF @categoryId IS NULL
         BEGIN
-            RAISERROR('No existe la categoría "%s"', 16, 1, @IN_description);
+            RAISERROR('No existe la categoría "%s".', 16, 1, @IN_description);
         END;
 
         IF EXISTS(SELECT 1
@@ -41,12 +41,12 @@ BEGIN
                     AND PC.[deleted] = 0
                     AND PC.[id] != @categoryId)
         BEGIN
-            RAISERROR('Ya existe la categoría "%s"', 16, 1, @IN_newDescription);
+            RAISERROR('Ya existe la categoría "%s".', 16, 1, @IN_newDescription);
         END;
 
         IF @IN_newDescription = ''
         BEGIN
-            RAISERROR('La categoría no puede estar vacía', 16, 1);
+            RAISERROR('La categoría no puede estar vacía.', 16, 1);
         END;
 
         -- TRANSACTION BEGUN

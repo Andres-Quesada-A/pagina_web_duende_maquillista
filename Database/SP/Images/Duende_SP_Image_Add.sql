@@ -40,7 +40,7 @@ BEGIN
 
         IF @CategoryID IS NULL
         BEGIN
-        RAISERROR('Invalid Category', 16, 1);
+        RAISERROR('Categoría inválida.', 16, 1);
     END;
 
         SET @SubcategoryID = 
@@ -54,25 +54,25 @@ BEGIN
         -- Verify if Subcategory exists
         IF @SubcategoryID IS NULL
     BEGIN
-        RAISERROR('Invalid Subcategory ID', 16, 1);
+        RAISERROR('Subcategoría inválida.', 16, 1);
     END;
 
         -- Verify Name is provided
         IF LTRIM(RTRIM(@IN_Name)) = ''
         BEGIN
-        RAISERROR('No name was provided', 16, 1);
+        RAISERROR('No se proporcionó un nombre.', 16, 1);
     END;
 
         -- Verify Description is provided
         IF LTRIM(RTRIM(@IN_Description)) = ''
         BEGIN
-        RAISERROR('No description was provided', 16, 1);
+        RAISERROR('No se proporcionó una descripción.', 16, 1);
     END;
 
         -- Verify ImageUrl is provided
         IF LTRIM(RTRIM(@IN_ImageUrl)) = ''
         BEGIN
-        RAISERROR('No image URL was provided', 16, 1);
+        RAISERROR('No se proporcionó el URL de una imagen.', 16, 1);
     END;
 
         -- TRANSACTION BEGUN

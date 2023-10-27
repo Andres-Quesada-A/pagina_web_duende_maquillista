@@ -42,7 +42,7 @@ function Gallery() {
 
     axios.delete(`${apiDeleteImageUrl}/${id}`, { withCredentials: true })
       .then(() => {
-        toast.success("Imagen eliminada", messageSettings)
+        toast.success("Imagen eliminada.", messageSettings)
       })
       .catch((error) => {
         const errorMessage =
@@ -63,7 +63,7 @@ function Gallery() {
       console.log(response)
       setData(dataImage);
     }).catch((error) => {
-      toast.error("Ocurrió un error al cargar las imágenes", messageSettings);
+      toast.error("Ocurrió un error al cargar las imágenes.", messageSettings);
     })
 
     axios.get(apiCategoryURL, { withCredentials: true }).then((response) => {
@@ -71,7 +71,7 @@ function Gallery() {
       console.log(response)
       setCategory(dataCategories);
     }).catch((error) => {
-      toast.error("Ocurrió un error al cargar las categorías", messageSettings);
+      toast.error("Ocurrió un error al cargar las categorías.", messageSettings);
     })
   }, []);
 
@@ -107,10 +107,10 @@ function Gallery() {
   return (
     <>
       <Helmet>
-        <title>Galeria del duende</title>
+        <title>Galería de Duende</title>
         <meta
           name="description"
-          content="Visita nuestra tienda y descubre todos nuestros productos disponibles"
+          content="Visite nuestra galería y descubra todos nuestros servicios disponibles"
         />
         <link rel="canonical" href="/shop" />
       </Helmet>
@@ -122,10 +122,10 @@ function Gallery() {
               HandleChange={handleChangeFilters}
               id="category"
               label="Seleccione una categoría"
-              options={[{ value: "", label: "seleccione" }, ...categoryOptions]}
+              options={[{ value: "", label: "Seleccione" }, ...categoryOptions]}
               required={false}
             />
-            <h4 className="mt-4 mb-3 font-semibold">Sub categorias</h4>
+            <h4 className="mt-4 mb-3 font-semibold">Subcategorías</h4>
             <SwitchFormInputs
               HandleChange={handleChangeSubcategoryFilters}
               data={Subcategoryfilters}
@@ -141,12 +141,12 @@ function Gallery() {
             <div className="w-full h-16 flex items-center justify-end gap-4 pr-10 bg-indigo-200">
             <a href="/gallery/add_image">
               <div className="w-60 text-center px-5 py-2 text-white font-medium rounded-lg bg-indigo-400">
-                Subir Imagen
+                Subir imagen
               </div>
             </a>
             <a href="/configure_category">
               <div className="w-60 text-center px-5 py-2 text-white font-medium rounded-lg bg-indigo-400">
-                Configurar Categorias
+                Configurar categorías
               </div>
             </a>
           </div>
@@ -160,7 +160,7 @@ function Gallery() {
             </header>
             <div className="mt-14 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5">
               {imageFiltered && imageFiltered.length === 0 &&
-                <h2>No hay productos</h2>
+                <h2>No hay imágenes</h2>
               }
               {admin === false ? (
                 imageFiltered.map((item) => (

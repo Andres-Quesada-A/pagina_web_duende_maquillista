@@ -23,7 +23,7 @@ function Shop() {
   const handleDelete = (id) => {
     axios.delete(`http://localhost:1234/api/delete_product/${id}`, { withCredentials: true })
       .then(() => {
-        toast.success("Producto eliminado exitosamente", messageSettings);
+        toast.success("Producto eliminado exitosamente.", messageSettings);
         const parsedProducts = JSON.parse(products);
         setProducts(JSON.stringify(parsedProducts.filter((product) => product.id !== id)));
       })
@@ -43,7 +43,7 @@ function Shop() {
         setProducts(JSON.stringify(res.data));
       })
       .catch((error) => {
-        toast.error("Ocurrió un error al cargar las categorías", messageSettings);
+        toast.error("Ocurrió un error al cargar las categorías.", messageSettings);
       });
 
     // Request to get the categories
@@ -58,7 +58,7 @@ function Shop() {
         console.log(newCategories);
       })
       .catch((error) => {
-        toast.error("Ocurrió un error al cargar los productos", messageSettings);
+        toast.error("Ocurrió un error al cargar los productos.", messageSettings);
       });
   }, []);
 
@@ -126,7 +126,7 @@ function Shop() {
         <title>Tienda de Duende</title>
         <meta
           name="description"
-          content="Visita nuestra tienda y descubre todos nuestros productos disponibles"
+          content="Visite nuestra tienda y descubra todos nuestros productos disponibles"
         />
         <link rel="canonical" href="/shop" />
       </Helmet>

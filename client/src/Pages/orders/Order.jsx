@@ -28,7 +28,7 @@ function OrderPage() {
             setStatus(dataOrders.status);
         }
         ).catch((error) => {
-            toast.error("Ocurrió un error al cargar la orden", messageSettings);
+            toast.error("Ocurrió un error al cargar la orden.", messageSettings);
         })
     }, []);
 
@@ -62,11 +62,11 @@ function OrderPage() {
 
         console.log({ id: parseInt(idOrder), status: status })
         axios.put(apiOrders, { id: parseInt(idOrder), status: status }).then((response) => {
-            toast.success("Orden actualizada", messageSettings);
+            toast.success("Orden actualizada.", messageSettings);
             navigate(-1);
         }
         ).catch((error) => {
-            toast.error("Ocurrió un error al actualizar la orden", messageSettings);
+            toast.error("Ocurrió un error al actualizar la orden.", messageSettings);
         })
     };
 

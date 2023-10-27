@@ -18,7 +18,7 @@ function ChangePasswordPage() {
     try {
       console.log(data)
       await axios.put(`http://localhost:1234/api/reset_password/${data.email}/${data.code}/${data.password}`)
-      toast.success("Contraseña actualizada", messageSettings)
+      toast.success("Contraseña actualizada.", messageSettings)
     } catch (error) {
       const errorMessage =
           error?.response?.data?.message ||
@@ -32,7 +32,7 @@ function ChangePasswordPage() {
         <title>Recuperar contraseña</title>
         <meta
           name="description"
-          content="Proceso para la recuperacion de contrasena"
+          content="Proceso para la recuperación de contraseña"
         />
         <link rel="canonical" href="/forgot-password" />
       </Helmet>

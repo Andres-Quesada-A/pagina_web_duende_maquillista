@@ -14,7 +14,7 @@ function DeleteCategory({ Categories, APIURL }) {
     console.log(`${APIURL}/${data.category}`)
     axios.delete(`${APIURL}/${data.category}`, { withCredentials: true })
       .then(() => {
-        toast.success("Categoria eliminada", messageSettings)
+        toast.success("Categoría eliminada.", messageSettings)
       })
       .catch((error) => {
         const errorMessage =
@@ -26,10 +26,10 @@ function DeleteCategory({ Categories, APIURL }) {
 
   return (
     <section className="flex flex-col gap-4">
-      <h4 className="text-xl font-medium">Eliminar Categoria</h4>
+      <h4 className="text-xl font-medium">Eliminar categoría</h4>
       <div>
         <label className="block mb-2 text-base font-medium text-gray-900 ">
-          Categoria
+          Categoría
         </label>
         <select
           id="category"

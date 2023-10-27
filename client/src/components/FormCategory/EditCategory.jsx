@@ -22,7 +22,7 @@ function EditCategory({ Categories, APIURL}) {
     console.log(fullData)
     axios.put(APIURL, fullData, { withCredentials: true })
       .then(() => {
-        toast.success("Categoria actualizada", messageSettings)
+        toast.success("Categoría actualizada.", messageSettings)
       })
       .catch((error) => {
         const errorMessage =
@@ -33,10 +33,10 @@ function EditCategory({ Categories, APIURL}) {
   };
   return (
     <form className="flex flex-col gap-4" onSubmit={HandleSubmit}>
-      <h4 className="text-xl font-medium">Modificar Categoria</h4>
+      <h4 className="text-xl font-medium">Modificar categoría</h4>
       <div>
         <label className="block mb-2 text-base font-medium text-gray-900 ">
-          Categoria
+          Categoría
         </label>
         <select
           id="description"

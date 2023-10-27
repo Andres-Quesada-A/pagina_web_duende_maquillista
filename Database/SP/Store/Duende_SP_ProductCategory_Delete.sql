@@ -30,7 +30,7 @@ BEGIN
 
         IF @categoryId IS NULL
         BEGIN
-            RAISERROR('No existe la categoría "%s"', 16, 1, @IN_description);
+            RAISERROR('No existe la categoría "%s".', 16, 1, @IN_description);
         END;
 
         IF EXISTS(SELECT 1
@@ -38,7 +38,7 @@ BEGIN
                   WHERE   P.[categoryId] = @categoryId
                       AND P.[deleted] = 0)
         BEGIN
-            RAISERROR('No se puede eliminar la categoría "%s" porque tiene productos asociados', 16, 1, @IN_description);
+            RAISERROR('No se puede eliminar la categoría "%s" porque tiene productos asociados.', 16, 1, @IN_description);
         END;
 
         -- TRANSACTION BEGUN

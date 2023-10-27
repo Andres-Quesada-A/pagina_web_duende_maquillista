@@ -32,31 +32,31 @@ BEGIN
         -- Verify if province is valid
         IF LTRIM(RTRIM(@IN_Province)) = ''
         BEGIN
-            RAISERROR('Provincia no valida', 16, 1);
+            RAISERROR('Provincia inválida.', 16, 1);
         END;
 
         -- Verify if canton is valid
         if LTRIM(RTRIM(@IN_Canton)) = ''
         BEGIN
-            RAISERROR('Canton no valido', 16, 1);
+            RAISERROR('Cantón inválido.', 16, 1);
         END;
 
         -- Verify if district is valid
         if LTRIM(RTRIM(@IN_District)) = ''
         BEGIN
-            RAISERROR('Distrito no valido', 16, 1);
+            RAISERROR('Distrito inválido.', 16, 1);
         END;
 
         -- Verify if address is valid
         if LTRIM(RTRIM(@IN_Address)) = ''
         BEGIN
-            RAISERROR('Direccion no valida', 16, 1);
+            RAISERROR('Dirección inválida.', 16, 1);
         END;
 
         -- Verify if shipping fee is valid
         IF @IN_ShippingFee < 0
         BEGIN
-            RAISERROR('Costo de envío no valido', 16, 1);
+            RAISERROR('Costo de envío inválido.', 16, 1);
         END;
 
         -- Verify if user exists
@@ -67,13 +67,13 @@ BEGIN
                 AND Deleted = 0
         )
         BEGIN
-            RAISERROR('Usuario no valido', 16, 1);
+            RAISERROR('Usuario inválido.', 16, 1);
         END;
 
         -- Verify if voucher exists
         IF LTRIM(RTRIM(@IN_VoucherUrl)) = ''
         BEGIN
-            RAISERROR('Voucher URL no valido', 16, 1);
+            RAISERROR('No se proporcionó el URL de una imagen del comprobante.', 16, 1);
         END;
 
         -- Verify if products are provided
@@ -81,7 +81,7 @@ BEGIN
             SELECT 1 FROM @IN_Products
         )
         BEGIN
-            RAISERROR('No hay productos en el carrito', 16, 1);
+            RAISERROR('No hay productos en el carrito.', 16, 1);
         END;
 
         -- TRANSACTION BEGUN

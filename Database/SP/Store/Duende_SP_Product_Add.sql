@@ -41,25 +41,25 @@ BEGIN
 
         IF @categoryId IS NULL
         BEGIN
-            RAISERROR('No existe la categoría "%s"', 16, 1, @IN_category);
+            RAISERROR('No existe la categoría "%s".', 16, 1, @IN_category);
         END;
 
         -- Name
         IF @IN_name = ''
         BEGIN
-            RAISERROR('Debe proporcionar un nombre', 16, 1);
+            RAISERROR('Debe proporcionar un nombre.', 16, 1);
         END;
 
         -- Description
         IF @IN_description = ''
         BEGIN
-            RAISERROR('Debe proporcionar una descripción', 16, 1);
+            RAISERROR('Debe proporcionar una descripción.', 16, 1);
         END;
 
         -- Image URL
         IF @IN_imageUrl = ''
         BEGIN
-            RAISERROR('Debe proporcionar una imagen', 16, 1);
+            RAISERROR('Debe proporcionar una imagen.', 16, 1);
         END;
 
         -- TRANSACTION BEGUN

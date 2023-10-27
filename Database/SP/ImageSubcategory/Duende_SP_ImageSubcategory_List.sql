@@ -27,7 +27,7 @@ BEGIN
         --validacion de categoria
         IF(LTRIM(RTRIM(@IN_imageCategory)) = '')
 	        BEGIN
-	        	RAISERROR('No se ingreso texto de la Categoria', 16, 1)
+	        	RAISERROR('No se ingresó texto de la categoría.', 16, 1)
 	        END;
 
         SELECT @UsecategoryId = C.id 
@@ -38,7 +38,7 @@ BEGIN
         --validacion de existencia previa
         IF (@UsecategoryId IS NULL)
             BEGIN
-                RAISERROR('la Categoria "%s" no existe', 16, 1, @IN_imageCategory)
+                RAISERROR('La categoría "%s" no existe.', 16, 1, @IN_imageCategory)
             END;
 
 		-- consulta

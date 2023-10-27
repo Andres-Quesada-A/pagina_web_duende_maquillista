@@ -35,7 +35,7 @@ function EditProduct() {
                     ...Formated,
                 ]);
             } catch (error) {
-                toast.error("Ocurrió un error al cargar las categorías", messageSettings);
+                toast.error("Ocurrió un error al cargar las categorías.", messageSettings);
             }
             try {
                 const response = await axios.get(GET_PRODUCT_API_URL + idProduct, { withCredentials: true });
@@ -125,7 +125,7 @@ function EditProduct() {
                 available: data.available == "true",
                 id: parseInt(idProduct),
             }, { withCredentials: true });
-            toast.success("Producto modificado exitosamente", messageSettings);
+            toast.success("Producto modificado exitosamente.", messageSettings);
             navigate("/shop");
         } catch (error) {
             const errorMessage = error?.response?.data?.message || defaultError;

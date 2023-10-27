@@ -19,7 +19,7 @@ function ConfigureCategoryProduct() {
         }))
         setCategories([{label: "Seleccione", value:""}, ...Formated])
       } catch (error) {
-        toast.info('No hay categorias', messageSettings)
+        toast.info('No hay categorías.', messageSettings)
       }
     }
     getData()
