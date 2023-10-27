@@ -41,7 +41,7 @@ function DeleteSubcategory({ Raw, APIURL }) {
     e.preventDefault();
 
     if (!selectedSubcategory.subcategory || selectedSubcategory.subcategory === "Seleccione") {
-      toast.error("\"Seleccione\" no es una opción valida.", messageSettings)
+      toast.error("\"Seleccione\" no es una opción válida.", messageSettings)
       return
     }
     if (!selectedCategory.category || selectedCategory.category === "Seleccione") {

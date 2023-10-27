@@ -91,7 +91,7 @@ function ShoppingCart() {
     const userId = GetUserID();
     if (!userId) {
       toast.error(
-        "Ha ocurrido un error, Inicie sesión nuevamente",
+        "Ha ocurrido un error, Inicie sesión nuevamente.",
         messageSettings
       );
     }
@@ -109,7 +109,7 @@ function ShoppingCart() {
         imageUrl: data.img,
       };
       await axios.post('http://localhost:1234/api/create_order', RequestData)
-      toast.success("Orden realizada.", messageSettings);
+      toast.success("Orden hecha exitosamente.", messageSettings);
       removeCart()
     } catch (error) {
       const errorMessage =

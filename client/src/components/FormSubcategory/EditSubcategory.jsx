@@ -52,7 +52,7 @@ function EditSubcategory({ Raw, APIURL }) {
       return
     }
     if (!selectedNewSubcategory.newSubcategory || selectedNewSubcategory.newSubcategory === "Seleccione") {
-      toast.error("\"Seleccione\" no es opción valida .", messageSettings)
+      toast.error("\"Seleccione\" no es opción válida .", messageSettings)
       return
     }
 
