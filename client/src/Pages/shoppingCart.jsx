@@ -11,7 +11,7 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import axios from 'axios'
 
 function ShoppingCart() {
-  const { cartItems, getCartItems, removeFromCart, increaseProductCart, removeCart } = useShoppingCart();
+  const { cartItems, getCartItems, removeFromCart, increaseProductCart, removeCart, getFee } = useShoppingCart();
   const { GetUserID } = useAuthContext();
   const [file, setFile] = useState("");
   const [previewURL, setPreviewURL] = useState("");
@@ -22,6 +22,7 @@ function ShoppingCart() {
     selectedCanton: "",
     selectedDistrict: "",
   });
+  const shippingFee = getFee()
 
   useEffect(() => {
     const uploadFile = () => {
@@ -102,7 +103,7 @@ function ShoppingCart() {
         canton: exactLocation.selectedCanton,
         district: exactLocation.selectedDistrict,
         specificAddress: exactLocation.exact,
-        shippingFee: 0,
+        shippingFee: shippingFee,
         products: getCartItems(),
         userId,
         imageUrl: data.img,
@@ -250,6 +251,11 @@ function ShoppingCart() {
             required={true}
             onChange={handleLocationChange}
           />
+        </div>
+        <div>
+          <h4 className="mt-6">Costo de envío</h4>
+          <p className="text-gray-600 text-2xl">{exactLocation.selectedDistrict != "" ? formatCurrency(shippingFee): "₡0,00"}</p>
+          <p>(seleccione un distrito antes)</p>
         </div>
       </section>
       <section className="px-5 max-w-5xl w-full mt-5">
