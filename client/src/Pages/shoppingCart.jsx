@@ -5,7 +5,7 @@ import { useShoppingCart } from "../context/ShoppingCartContext";
 import { formatCurrency } from "../utils/formatCurrency";
 import { useAuthContext } from "../context/AuthContext";
 import { toast } from "react-toastify";
-import { messageSettings } from "../utils/messageSettings";
+import { messageSettings, defaultError } from "../utils/messageSettings";
 import { storage } from "../config/firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import axios from 'axios'
@@ -112,7 +112,10 @@ function ShoppingCart() {
       toast.success("Orden realizada", messageSettings);
       removeCart()
     } catch (error) {
-      toast.error("Algo ha salido mal", messageSettings);
+      const errorMessage =
+          error?.response?.data?.message ||
+          defaultError;
+      toast.error(errorMessage, messageSettings);
     }
   };
   return (

@@ -5,7 +5,7 @@ import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {toast} from 'react-toastify'
-import {messageSettings} from '../utils/messageSettings'
+import {messageSettings, defaultError} from '../utils/messageSettings'
 
 function ForgotPasswordPage() {
   const [data, setData] = useState({});
@@ -25,7 +25,10 @@ function ForgotPasswordPage() {
       setDisabled(false)
     } catch (error) {
       console.log(error)
-      toast.error("Algo ha salido mal", messageSettings)
+      const errorMessage =
+          error?.response?.data?.message ||
+          defaultError;
+      toast.error(errorMessage, messageSettings);
     }
     
   };

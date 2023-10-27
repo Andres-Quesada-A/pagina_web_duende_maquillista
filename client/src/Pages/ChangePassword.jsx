@@ -4,7 +4,7 @@ import { ChangePassword } from "../Structures/LoginStructure";
 import { Helmet } from "react-helmet-async";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { messageSettings } from "../utils/messageSettings";
+import { messageSettings, defaultError } from "../utils/messageSettings";
 
 function ChangePasswordPage() {
   const [data, setData] = useState({});
@@ -20,8 +20,10 @@ function ChangePasswordPage() {
       await axios.put(`http://localhost:1234/api/reset_password/${data.email}/${data.code}/${data.password}`)
       toast.success("Contraseña actualizada", messageSettings)
     } catch (error) {
-      console.log(error)
-      toast.error("Algo ha salido mal", messageSettings)
+      const errorMessage =
+          error?.response?.data?.message ||
+          defaultError;
+      toast.error(errorMessage, messageSettings);
     }
   };
   return (
