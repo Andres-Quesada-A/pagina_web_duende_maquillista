@@ -26,8 +26,8 @@ const OPTIONS = {
   ],
   admin: [
     {
-      name: "Agenda",
-      link: "/",
+      name: "Órdenes",
+      link: "/orders",
     },
     {
       name: "Galería",
