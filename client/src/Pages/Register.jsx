@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import SwitchFormInputs from "../components/form/SwitchFormInputs";
 import Image from "../images/imageLogin.png";
 import { Register } from "../Structures/LoginStructure";
@@ -7,10 +7,24 @@ import axios from "axios"
 import { toast } from "react-toastify";
 import { messageSettings, defaultError } from "../utils/messageSettings";
 import { useNavigate } from "react-router-dom";
+import {AuthContext} from "../context/AuthContext"
 
 function RegisterPage() {
   const [data, setData] = useState({});
+  const queryParams = new URLSearchParams(location.search);
+  const afterUrl = queryParams.get('afterUrl') || '/';
+  const { getLoginStatus } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  const redirect = () => {
+    navigate(afterUrl);
+  }
+
+  useEffect(() => {
+    if (getLoginStatus()) {
+      redirect();
+    }
+  }, []);
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.id]: e.target.value });

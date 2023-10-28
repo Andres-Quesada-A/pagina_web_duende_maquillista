@@ -89,7 +89,7 @@ function NavBar() {
             </a>
           ) : (
             <a
-              href="/login"
+              href={`/login?afterUrl=${encodeURIComponent(window.location.pathname)}`}
               onClick={() => setOpen(!open)}
               className="font-medium lg:font-normal text-xl lg:text-lg text-black lg:text-white hover:text-indigo-400 transition-colors uppercase"
             >

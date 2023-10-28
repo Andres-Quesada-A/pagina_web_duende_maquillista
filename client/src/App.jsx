@@ -40,7 +40,8 @@ function App() {
   const { currentUser } = useAuthContext();
 
   const RequiredAuth = ({ children }) => {
-    return currentUser ? children : <Navigate to="/login" />;
+    const currentPath = encodeURIComponent(window.location.pathname);
+    return currentUser ? children : <Navigate to={`/login?afterUrl=${currentPath}`} />;
   };
 
   return (
@@ -58,18 +59,14 @@ function App() {
               exact
               path="/gallery"
               element={
-                <RequiredAuth>
-                  <Gallery />
-                </RequiredAuth>
+                <Gallery />
               }
             />
             <Route
               exact
               path="/gallery/:idImage"
               element={
-                <RequiredAuth>
-                  <ImageGallery />
-                </RequiredAuth>
+                <ImageGallery />
               }
             />
             <Route
@@ -99,27 +96,21 @@ function App() {
               exact
               path="/shop"
               element={
-                <RequiredAuth>
-                  <Shop />
-                </RequiredAuth>
+                <Shop />
               }
             />
             <Route
               exact
               path="/shop/:idProduct"
               element={
-                <RequiredAuth>
-                  <ProductShop />
-                </RequiredAuth>
+                <ProductShop />
               }
             />
             <Route
               exact
               path="/shoppingCart"
               element={
-                <RequiredAuth>
-                  <ShoppingCart />
-                </RequiredAuth>
+                <ShoppingCart />
               }
             />
             <Route

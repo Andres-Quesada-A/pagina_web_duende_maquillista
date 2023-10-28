@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import SwitchFormInputs from "../components/form/SwitchFormInputs";
 import Image from "../images/imageLogin.png";
 import { Login } from "../Structures/LoginStructure";
@@ -10,9 +10,22 @@ import {useNavigate} from 'react-router-dom'
 import {AuthContext} from "../context/AuthContext"
 
 function LoginPage() {
+  const queryParams = new URLSearchParams(location.search);
+  const afterUrl = queryParams.get('afterUrl') || '/';
+  const encodedAfterUrl = encodeURIComponent(afterUrl);
   const [data, setData] = useState({email: "", password: ""});
+  const { getLoginStatus, dispatch } = useContext(AuthContext);
   const navigate = useNavigate();
-  const { dispatch } = useContext(AuthContext)
+
+  const redirect = () => {
+    navigate(afterUrl);
+  }
+
+  useEffect(() => {
+    if (getLoginStatus()) {
+      redirect();
+    }
+  }, []);
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.id]: e.target.value });
@@ -26,7 +39,7 @@ function LoginPage() {
       // const response = await axios.post(`/api/login/${data.email}/${data.password}`)
       console.log(response, "response")
       dispatch({ type: 'LOGIN', payload: response.data })
-      navigate('/')
+      redirect();
     } catch (error) {
       console.log(error?.response?.data?.message);
       const errorMessage =
@@ -63,7 +76,7 @@ function LoginPage() {
                 structureForm={Login}
               />
               <a
-                href="/forgot-password"
+                href={`/forgot-password?afterUrl=${encodedAfterUrl}`}
                 className="cursor-pointer text-lg font-medium text-gray-600 hover:text-indigo-500 transition-colors"
               >
                 ¿Olvidó la contraseña?
@@ -74,7 +87,7 @@ function LoginPage() {
               <div className="text-base flex gap-5 items-center flex-nowrap mt-7">
                 <p>¿No tiene una cuenta?</p>
                 <a
-                  href="/register"
+                  href={`/register?afterUrl=${encodedAfterUrl}`}
                   className="cursor-pointer text-indigo-500 hover:text-indigo-400 transition-colors  font-medium text-lg text-medium"
                 >
                   Registrarse

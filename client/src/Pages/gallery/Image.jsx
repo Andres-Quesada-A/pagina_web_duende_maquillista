@@ -37,6 +37,14 @@ function ImageGallery() {
 
 
   const toggleModal = () => {
+    const userId = getUserEmail();
+    if (!userId) {
+      toast.info(
+        "Debe iniciar sesión en el sistema para solicitar un servicio.",
+        messageSettings
+      );
+      navigate(`/login?afterUrl=${encodeURIComponent(window.location.pathname)}`);
+    }
     setShow(!show)
   };
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import SwitchFormInputs from "../components/form/SwitchFormInputs";
 import { ForgotPassword } from "../Structures/LoginStructure";
 import { Helmet } from "react-helmet-async";
@@ -6,11 +6,26 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {toast} from 'react-toastify'
 import {messageSettings, defaultError} from '../utils/messageSettings'
+import {AuthContext} from "../context/AuthContext"
 
 function ForgotPasswordPage() {
   const [data, setData] = useState({});
   const [disabled, setDisabled] = useState(true);
-  const navigate = useNavigate()
+  const queryParams = new URLSearchParams(location.search);
+  const afterUrl = queryParams.get('afterUrl') || '/';
+  const encodedAfterUrl = encodeURIComponent(afterUrl);
+  const { getLoginStatus } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const redirect = () => {
+    navigate(afterUrl);
+  }
+
+  useEffect(() => {
+    if (getLoginStatus()) {
+      redirect();
+    }
+  }, []);
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.id]: e.target.value });
@@ -60,7 +75,7 @@ function ForgotPasswordPage() {
                 Enviar código
               </button>
             </form>
-              <button disabled={disabled} onClick={() => navigate("/change-password")} className="mt-5 w-full text-center rounded-lg bg-indigo-500 hover:bg-indigo-400 transition-colors text-white py-2 text-lg font-medium">
+              <button disabled={disabled} onClick={() => navigate(`/change-password?afterUrl=${encodedAfterUrl}`)} className="mt-5 w-full text-center rounded-lg bg-indigo-500 hover:bg-indigo-400 transition-colors text-white py-2 text-lg font-medium">
                 Siguiente paso
               </button>
           </div>
