@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import axios from 'axios';
 import { useAuthContext } from "../../context/AuthContext";
 import SubmitRequestForm from "../../components/Modals/SubmitRequestForm";
-import { messageSettings } from "../../utils/messageSettings";
+import { messageSettings, defaultError } from "../../utils/messageSettings";
 import { toast } from "react-toastify";
 
 
@@ -14,12 +14,11 @@ function ImageGallery() {
   const [message, setMessage] = useState("")
   const [show, setShow] = useState(false)
   const {getUserEmail} = useAuthContext()
-
   
   async function handlerbutton(){
     const email = getUserEmail();
     if (email == "") {
-      toast.error("Ha ocurrido un error. Inicie sesión nuevamente", messageSettings)
+      toast.error("Debe iniciar sesión para enviar una solicitud.", messageSettings)
       return
     }
     const APIURL = '/api/request_service'
@@ -27,9 +26,12 @@ function ImageGallery() {
       await axios.post(APIURL, {
         imageId: parseInt(idImage), email: email , message
       })
-      toast.success("Solicitud enviada", messageSettings)
+      toast.success("Solicitud enviada.", messageSettings)
     } catch (error) {
-      toast.error("Algo ha salido mal", messageSettings)
+      const errorMessage =
+          error?.response?.data?.message ||
+          defaultError;
+      toast.error(errorMessage, messageSettings);
     }
   }
 
