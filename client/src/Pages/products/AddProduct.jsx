@@ -19,7 +19,7 @@ function AddProduct() {
 
   useEffect(() => {
     const getData = async () => {
-      const APIURL = "http://localhost:1234/api/get_product_category_list";
+      const APIURL = "/api/get_product_category_list";
       try {
         const response = await axios.get(APIURL, { withCredentials: true });
         const TempCategories = response.data;
@@ -78,7 +78,7 @@ function AddProduct() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const APIURL = "http://localhost:1234/api/create_product";
+    const APIURL = "/api/create_product";
 
     try {
       await axios.post(APIURL, {...data,available: data.available == "true" }, { withCredentials: true });

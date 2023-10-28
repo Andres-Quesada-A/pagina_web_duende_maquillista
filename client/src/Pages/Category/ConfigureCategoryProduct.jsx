@@ -11,7 +11,7 @@ function ConfigureCategoryProduct() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await axios.get('http://localhost:1234/api/get_product_category_list', { withCredentials: true })
+        const response = await axios.get('/api/get_product_category_list', { withCredentials: true })
         const TempCategories = response.data
         const Formated = TempCategories.map(item => ({
           value: item.description,
@@ -33,9 +33,9 @@ function ConfigureCategoryProduct() {
         <hr className="border-indigo-500 border-1 mt-2"></hr>
       </header>
       <section className="grid grid-cols-1 gap-10 w-1/4 max-w-4xl mt-10 ">
-        <AddCategory APIURL={"http://localhost:1234/api/create_product_category"}/>
-        <EditCategory Categories={categories} APIURL={"http://localhost:1234/api/edit_product_category"}/>
-        <DeleteCategory Categories={categories} APIURL={"http://localhost:1234/api/delete_product_category"}/>
+        <AddCategory APIURL={"/api/create_product_category"}/>
+        <EditCategory Categories={categories} APIURL={"/api/edit_product_category"}/>
+        <DeleteCategory Categories={categories} APIURL={"/api/delete_product_category"}/>
       </section>
       <button
         className=" flex justify-center items-center mx-auto text-lg w-full max-w-[280px] mt-10 py-2 rounded-md text-indigo-500 bg-transparent hover:bg-indigo-500 hover:text-white border-2 border-indigo-500 transition-colors"

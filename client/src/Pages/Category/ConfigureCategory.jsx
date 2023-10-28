@@ -14,15 +14,15 @@ function ConfigureCategory() {
   const [formatData, setFormatData] = useState([]);
   const [categories, setCategories] = useState([]);
   const apiCategoryURL = {
-    get:'http://localhost:1234/api/get_category',
-    post:'http://localhost:1234/api/create_category',// :category
-    put:'http://localhost:1234/api/edit_category',// :category/:new_category
-    delete:'http://localhost:1234/api/delete_category'// :category
+    get:'/api/get_category',
+    post:'/api/create_category',// :category
+    put:'/api/edit_category',// :category/:new_category
+    delete:'/api/delete_category'// :category
   }
   const apiSubcategoryURL = {
-    post: 'http://localhost:1234/api/create_subcategory', // :category/:subcategory
-    put: 'http://localhost:1234/api/edit_subcategory', //:category/:subcategory/:new_subcategory
-    delete: 'http://localhost:1234/api/delete_subcategory'// :category/:subcategory
+    post: '/api/create_subcategory', // :category/:subcategory
+    put: '/api/edit_subcategory', //:category/:subcategory/:new_subcategory
+    delete: '/api/delete_subcategory'// :category/:subcategory
   }
   const preSelectionValue = { value: "Seleccione", subcategory: null }
 

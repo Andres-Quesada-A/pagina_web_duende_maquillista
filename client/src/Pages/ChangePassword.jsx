@@ -17,7 +17,7 @@ function ChangePasswordPage() {
     e.preventDefault();
     try {
       console.log(data)
-      await axios.put(`http://localhost:1234/api/reset_password/${data.email}/${data.code}/${data.password}`)
+      await axios.put(`/api/reset_password/${data.email}/${data.code}/${data.password}`)
       toast.success("Contraseña actualizada.", messageSettings)
     } catch (error) {
       const errorMessage =

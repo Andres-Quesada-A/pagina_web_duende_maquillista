@@ -23,7 +23,7 @@ function RegisterPage() {
       return
     }
     try {
-      const response = await axios.post(`http://localhost:1234/api/register_user`, data)
+      const response = await axios.post(`/api/register_user`, data)
       toast.success("Cuenta creada exitosamente. Ahora puede iniciar sesión.", messageSettings);
       navigate('/login');
     } catch (error) {

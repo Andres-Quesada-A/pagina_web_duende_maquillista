@@ -24,7 +24,7 @@ function ProductShop() {
   };
   useEffect(() => {
     axios
-      .get(`http://localhost:1234/api/get_product/` + parseInt(idProduct), { withCredentials: true })
+      .get(`/api/get_product/` + parseInt(idProduct), { withCredentials: true })
       .then((res) => {
         setProduct(res.data);
       })

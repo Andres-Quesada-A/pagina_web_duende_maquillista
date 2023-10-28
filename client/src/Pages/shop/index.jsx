@@ -22,7 +22,7 @@ function Shop() {
 
   const handleDelete = (id) => {
     axios
-      .delete(`http://localhost:1234/api/delete_product/${id}`, {
+      .delete(`/api/delete_product/${id}`, {
         withCredentials: true,
       })
       .then(() => {
@@ -41,7 +41,7 @@ function Shop() {
   useEffect(() => {
     // Request to get products
     axios
-      .get(`http://localhost:1234/api/get_product_list`, {
+      .get(`/api/get_product_list`, {
         withCredentials: true,
       })
       .then((res) => {
@@ -56,7 +56,7 @@ function Shop() {
 
     // Request to get the categories
     axios
-      .get(`http://localhost:1234/api/get_product_category_list`)
+      .get(`/api/get_product_category_list`)
       .then((res) => {
         let newCategories = {};
         res.data.forEach((category) => {

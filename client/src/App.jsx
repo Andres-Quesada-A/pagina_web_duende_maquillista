@@ -25,7 +25,7 @@ import ConfigureCategoryProduct from "./Pages/Category/ConfigureCategoryProduct"
 import EditProduct from "./Pages/products/EditProduct";
 import { AuthContextProvider } from "./context/AuthContext";
 import OrdersPage from "./Pages/orders";
-import OrderPage from "./Pages/orders/order";
+import OrderPage from "./Pages/orders/Order";
 import AboutUs from "./Pages/AboutUs";
 import Profile from "./Pages/Profile";
 const noRequirement = [

@@ -38,7 +38,7 @@ function Gallery() {
     //logic for deleting images. requires ImageCardDuende
     //its use is only in ImageCardDuende
     //
-    const apiDeleteImageUrl = "http://localhost:1234/api/delete_image"
+    const apiDeleteImageUrl = "/api/delete_image"
 
     axios.delete(`${apiDeleteImageUrl}/${id}`, { withCredentials: true })
       .then(() => {
@@ -53,8 +53,8 @@ function Gallery() {
   }
 
   useEffect(() => {
-    const apiImageURL = 'http://localhost:1234/api/get_image_list'
-    const apiCategoryURL = 'http://localhost:1234/api/get_category'
+    const apiImageURL = '/api/get_image_list'
+    const apiCategoryURL = '/api/get_category'
     //setAdmin(false)
 
     axios.get(apiImageURL, { withCredentials: true }).then((response) => {

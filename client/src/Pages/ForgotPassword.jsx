@@ -20,7 +20,7 @@ function ForgotPasswordPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`http://localhost:1234/api/request_password_reset/${data.email}`)
+      await axios.post(`/api/request_password_reset/${data.email}`)
       toast.success("Código enviado al correo.", messageSettings)
       setDisabled(false)
     } catch (error) {

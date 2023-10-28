@@ -23,8 +23,8 @@ function EditImage() {
 
 
     const getData = async () => {
-      const APIURL = "http://localhost:1234/api/get_category";
-      const IMAGE_APIURL = "http://localhost:1234/api/get_image/";
+      const APIURL = "/api/get_category";
+      const IMAGE_APIURL = "/api/get_image/";
       const categoryList = [];
       try {
         const response = await axios.get(APIURL, { withCredentials: true });
@@ -128,7 +128,7 @@ function EditImage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const APIURL = "http://localhost:1234/api/edit_image";
+    const APIURL = "/api/edit_image";
 
     try {
       await axios.put(APIURL, { ...data, id:parseInt(idImage) }, { withCredentials: true });

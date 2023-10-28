@@ -6,7 +6,7 @@
   "scripts": {
     "tsc": "tsc",
     "dev": "ts-node-dev server/app.ts",
-    "build": "npx tsc",
+    "build": "cd client && npm install && npm run build && cd .. && npx tsc",
     "start": "node dist/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

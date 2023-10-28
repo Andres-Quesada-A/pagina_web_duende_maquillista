@@ -21,7 +21,7 @@ function AddImage() {
 
     useEffect(() => {
         const getData = async () => {
-            const APIURL = "http://localhost:1234/api/get_category";
+            const APIURL = "/api/get_category";
             try {
                 const response = await axios.get(APIURL, { withCredentials: true });
                 const TempCategories = response.data;
@@ -92,7 +92,7 @@ function AddImage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const APIURL = "http://localhost:1234/api/create_image";
+        const APIURL = "/api/create_image";
 
         try {
             await axios.post(APIURL, { ...data }, { withCredentials: true });

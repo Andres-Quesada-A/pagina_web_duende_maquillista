@@ -108,7 +108,7 @@ function ShoppingCart() {
         userId,
         imageUrl: data.img,
       };
-      await axios.post('http://localhost:1234/api/create_order', RequestData)
+      await axios.post('/api/create_order', RequestData)
       toast.success("Orden hecha exitosamente.", messageSettings);
       removeCart()
     } catch (error) {

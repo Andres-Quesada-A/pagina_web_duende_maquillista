@@ -21,8 +21,8 @@ function EditProduct() {
     useEffect(() => {
         const getData = async () => {
             const CATEGORY_API_URL =
-                "http://localhost:1234/api/get_product_category_list";
-            const GET_PRODUCT_API_URL = "http://localhost:1234/api/get_product/";
+                "/api/get_product_category_list";
+            const GET_PRODUCT_API_URL = "/api/get_product/";
             try {
                 const response = await axios.get(CATEGORY_API_URL, { withCredentials: true });
                 const TempCategories = response.data;
@@ -117,7 +117,7 @@ function EditProduct() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const EDIT_PRODUCT_API = "http://localhost:1234/api/edit_product";
+        const EDIT_PRODUCT_API = "/api/edit_product";
 
         try {
             await axios.put(EDIT_PRODUCT_API, {

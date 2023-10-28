@@ -2,8 +2,11 @@ import express, {json} from 'express'; // importar express y otras dependencias
 import cors from 'cors'
 import cookieParser from 'cookie-parser';
 import { createServer } from "http";
+import path from 'path';
 var debug = require("debug")("duendemaquillista:server");
-// import { corsMiddleware } from './middlewares/cors'; // importar el middleware de CORS
+
+// CLIENT FILES
+const CLIENT_FILES = path.join(__dirname, '../client/dist/');
 
 // ROUTES
 import UserRouter from './routes/User.routes'
@@ -16,11 +19,12 @@ import OrderRouter from './routes/Order.routes';
 const app = express(); // crear una instancia de la aplicación Express
 app.use(json()); // usar middleware para manejar datos JSON
 app.use(cors({
-  origin: ["http://localhost:5173", /http:\/\/localhost:5173\/.+/],
+  origin: ["https://duendemaquillista.azurewebsites.net", /https:\/\/duendemaquillista.azurewebsites.net\/.+/],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
 app.use(cookieParser());
+app.use(express.static(CLIENT_FILES))
 // app.use(corsMiddleware()); // usar middleware de CORS
 app.disable('x-powered-by'); // desactivar el encabezado "x-powered-by"
 
@@ -30,8 +34,8 @@ app.use('/api', ImageSubcategoryRouter);
 app.use('/api', ProductRouter)
 app.use('/api', ImageRouter);
 app.use('/api', OrderRouter);
-app.get("/", (req, res) => {
-    res.json({ message: "DuendeMaquillista" });
+app.get("*", (req, res) => {
+    res.sendFile(path.join(CLIENT_FILES, 'index.html'));
 });
 
 var port = normalizePort(process.env.PORT || "1234");

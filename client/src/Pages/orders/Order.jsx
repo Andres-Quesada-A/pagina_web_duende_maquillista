@@ -19,7 +19,7 @@ function OrderPage() {
     const options = [{ label: "Pendiente", value: "PENDING" }, { label: "Aceptado", value: "ACCEPTED" }, { label: "Rechazado", value: "REJECTED" }]
 
     useEffect(() => {
-        const apiOrders = 'http://localhost:1234/api/get_order/' + parseInt(idOrder);
+        const apiOrders = '/api/get_order/' + parseInt(idOrder);
 
         axios.get(apiOrders).then((response) => {
             const dataOrders = response.data;
@@ -58,7 +58,7 @@ function OrderPage() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const apiOrders = 'http://localhost:1234/api/edit_order/';
+        const apiOrders = '/api/edit_order/';
 
         console.log({ id: parseInt(idOrder), status: status })
         axios.put(apiOrders, { id: parseInt(idOrder), status: status }).then((response) => {

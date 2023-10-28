@@ -21,9 +21,9 @@ function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      //await axios.post(`http://localhost:1234/api/login/${data.email}/${data.password}`, undefined, { withCredentials: true })
-      const response = await axios.post(`http://localhost:1234/api/login/${data.email}/${data.password}`, undefined, { withCredentials: true })
-      // const response = await axios.post(`http://localhost:1234/api/login/${data.email}/${data.password}`)
+      //await axios.post(`/api/login/${data.email}/${data.password}`, undefined, { withCredentials: true })
+      const response = await axios.post(`/api/login/${data.email}/${data.password}`, undefined, { withCredentials: true })
+      // const response = await axios.post(`/api/login/${data.email}/${data.password}`)
       console.log(response, "response")
       dispatch({ type: 'LOGIN', payload: response.data })
       navigate('/')

@@ -22,7 +22,7 @@ function ImageGallery() {
       toast.error("Ha ocurrido un error. Inicie sesión nuevamente", messageSettings)
       return
     }
-    const APIURL = 'http://localhost:1234/api/request_service'
+    const APIURL = '/api/request_service'
     try {
       await axios.post(APIURL, {
         imageId: parseInt(idImage), email: email , message
@@ -40,7 +40,7 @@ function ImageGallery() {
 
   useEffect(() => {
     
-    const apiImageURL = 'http://localhost:1234/api/get_image_list'
+    const apiImageURL = '/api/get_image_list'
 
     axios.get(apiImageURL, { withCredentials: true }).then((response) => {
       const dataImage = response.data;

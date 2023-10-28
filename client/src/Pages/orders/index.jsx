@@ -10,7 +10,7 @@ function OrdersPage() {
 
 
     useEffect(() => {
-        const apiOrders = 'http://localhost:1234/api/get_order_list'
+        const apiOrders = '/api/get_order_list'
 
         axios.get(apiOrders).then((response) => {
             const dataOrders = response.data
