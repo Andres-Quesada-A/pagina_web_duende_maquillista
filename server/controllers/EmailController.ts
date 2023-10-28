@@ -81,7 +81,7 @@ export class EmailController {
                 (error, info) => {
                     if (error) {
                         console.log("Error while sending email: ", error);
-                        reject([{ customError: "Ocurrió un error al enviar el correo electrónico" }]);
+                        reject([{ customError: "Ocurrió un error al enviar el correo electrónico." }]);
                     } else {
                         console.log("Email sent: ", info.response);
                         resolve();
