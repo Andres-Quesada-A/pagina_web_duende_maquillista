@@ -2,23 +2,40 @@ import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useEffect, useState } from "react";
 import axios from 'axios';
+import { useAuthContext } from "../../context/AuthContext";
+import SubmitRequestForm from "../../components/Modals/SubmitRequestForm";
+import { messageSettings } from "../../utils/messageSettings";
+import { toast } from "react-toastify";
 
 
 function ImageGallery() {
   const { idImage } = useParams();
   const [imageData, setImageData] = useState({});
+  const [message, setMessage] = useState("")
+  const [show, setShow] = useState(false)
+  const {getUserEmail} = useAuthContext()
 
   
-  function handlerbutton(){
-    const email = "duendemaquillista@gmail.com";
-    const password = "xxx-yyy-zzz"
-
-    // whatever is need it so send the email goes here
+  async function handlerbutton(){
+    const email = getUserEmail();
+    if (email == "") {
+      toast.error("Ha ocurrido un error. Inicie sesión nuevamente", messageSettings)
+      return
+    }
+    const APIURL = 'http://localhost:1234/api/request_service'
+    try {
+      await axios.post(APIURL, {
+        imageId: parseInt(idImage), email: email , message
+      })
+      toast.success("Solicitud enviada", messageSettings)
+    } catch (error) {
+      toast.error("Algo ha salido mal", messageSettings)
+    }
   }
 
 
-  const HandleChange = (e) => {
-    //vacio por el momento
+  const toggleModal = () => {
+    setShow(!show)
   };
 
   useEffect(() => {
@@ -37,7 +54,6 @@ function ImageGallery() {
     
   }, [idImage]);
 
-  console.log(imageData);
   return (
     <>
       <Helmet>
@@ -67,13 +83,14 @@ function ImageGallery() {
               <p><span>Etiquetas:</span></p>
               {imageData.tags ? <p className="text-indigo-500 -mt-4">{imageData.tags}</p>
                 : <p className="text-gray-500 -mt-4 italic">No hay etiquetas</p>}
-              <button onClick={handlerbutton} className="h-11 w-full sm:w-auto rounded-lg px-5 text-white font-medium text-lg bg-indigo-500 hover:bg-indigo-400 transition-colors">
+              <button onClick={toggleModal} className="h-11 w-full sm:w-auto rounded-lg px-5 text-white font-medium text-lg bg-indigo-500 hover:bg-indigo-400 transition-colors">
                 Enviar solicitud de servicio
               </button>
             </div>
           </div>
         )}
       </section>
+      <SubmitRequestForm handleClick={handlerbutton} modal={show} toggleModal={toggleModal} setMessage={setMessage}/>
     </>
   );
 }

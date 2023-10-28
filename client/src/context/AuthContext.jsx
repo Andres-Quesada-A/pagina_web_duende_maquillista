@@ -37,8 +37,11 @@ export const AuthContextProvider = ({ children }) => {
   const getUser = () => {
     return state.currentUser?.user || {}
   }
+  const getUserEmail = () => {
+    return state.currentUser?.user?.email || ""
+  }
   return (
-    <AuthContext.Provider value={{ LogOut, GetUserID, dispatch, getUserType, getLoginStatus, getUser }}>
+    <AuthContext.Provider value={{ LogOut, GetUserID, dispatch, getUserType, getLoginStatus, getUser, getUserEmail }}>
       {children}
     </AuthContext.Provider>
   )
