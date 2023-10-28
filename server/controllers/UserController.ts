@@ -132,7 +132,7 @@ export class UserController {
                         if (!userData) {
                             reject(damage);
                         } else if (!userData.code) {
-                            damage.push({ customError: "No se ha solicitado un código de recuperación de contraseña" });
+                            damage.push({ customError: "No se ha solicitado un código de recuperación de contraseña." });
                             reject(damage);
                         } else {
                             if (userData.code == code) {
@@ -142,21 +142,21 @@ export class UserController {
                                         await this.UserDAO.resetPassword(user.getId(), password);
                                         resolve(true);
                                     } else {
-                                        damage.push({ customError: "El código ha expirado" });
+                                        damage.push({ customError: "El código ha expirado." });
                                         reject(damage);
                                     }
                                 } else {
                                     reject(damage);
                                 }
                             } else {
-                                damage.push({ customError: "El código no coincide" });
+                                damage.push({ customError: "El código no coincide." });
                                 reject(damage);
                             }
                         };
                     }
                     });
             } else {
-                damage.push({ customError: "El usuario no existe" });
+                damage.push({ customError: "El usuario no existe." });
                 reject(damage);
             }
         });
@@ -182,7 +182,7 @@ export class UserController {
                     }
                     });
             } else {
-                damage.push({ customError: "El usuario no existe" });
+                damage.push({ customError: "El usuario no existe." });
                 reject(damage);
             }
         });

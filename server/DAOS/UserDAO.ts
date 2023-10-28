@@ -79,7 +79,7 @@ export class UserDAO {
             SQL.query("Duende_SP_Users_Get_By_Email", { IN_email: email })
                 .then((result) => {
                     if (result.recordset.length === 0) {
-                        damage.push({ customError: "El usuario no existe" });
+                        damage.push({ customError: "El usuario no existe." });
                         reject(damage);
                     } else {
                         const user = result.recordset[0];
@@ -105,7 +105,7 @@ export class UserDAO {
                                         reject(damage);
                                     }
                                 } else {
-                                    damage.push({ customError: "Contraseña incorrecta" });
+                                    damage.push({ customError: "Contraseña incorrecta." });
                                     reject(damage);
                                 }
                             })
@@ -150,7 +150,7 @@ export class UserDAO {
             SQL.query("Duende_SP_Users_Get_By_Email", { IN_email: email })
                 .then((result) => {
                     if (result.recordset.length === 0) {
-                        damage.push({ customError: "El usuario no existe" });
+                        damage.push({ customError: "El usuario no existe." });
                         reject(damage);
                     } else {
                         const user = result.recordset[0];
@@ -213,7 +213,7 @@ export class UserDAO {
             SQL.query("Duende_SP_Users_Get_By_Email", { IN_email: email })
                 .then((result) => {
                     if (result.recordset.length === 0) {
-                        damage.push({ customError: "El usuario no existe" });
+                        damage.push({ customError: "El usuario no existe." });
                         reject(damage);
                     } else {
                         const user = result.recordset[0];
@@ -249,7 +249,7 @@ export class UserDAO {
                         SQL.query("Duende_SP_Users_EditPassword", { IN_userID: id, IN_password: hashedPassword })
                             .then(async (result) => {
                                 if (result.rowsAffected === 0) {
-                                    damage.push({ customError: "El usuario no existe" });
+                                    damage.push({ customError: "El usuario no existe." });
                                     reject(damage);
                                 } else {
                                     const user = result.recordset[0];
