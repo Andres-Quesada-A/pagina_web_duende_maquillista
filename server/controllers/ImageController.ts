@@ -2,6 +2,8 @@ import { ImageDAO } from "../DAOS/ImageDAO";
 import { Image } from "../models/Image";
 import { ImageCategory } from "../models/ImageCategory";
 import { ImageSubcategory } from "../models/ImageSubcategory";
+import { UserController } from "./UserController";
+import { EmailController } from "./EmailController";
 
 export class ImageController {
     private ImageDAO: ImageDAO
@@ -107,6 +109,32 @@ export class ImageController {
     deleteImageSubcategory(category: string, subcategory: string): Promise<any> {
         const dao = new ImageDAO
         return dao.deleteImageSubcategory(category, subcategory)
+    }
+
+    async requestService(email: string, imageId: number, message: string): Promise<boolean> {
+        return new Promise(async (resolve, reject) => {
+            const UserControllerObject = new UserController();
+            const user = await UserControllerObject.getUser(email);
+            const image = await this.getImage(imageId);
+
+            if (!user || !image) {
+                reject([{ customError: "La información proporcionada no es válida." }]);
+            } else {
+                const EmailControllerObject = new EmailController();
+
+                EmailControllerObject.sendEmail(
+                    ["duendemaquillista@gmail.com"],
+                    "Solicitud de servicio",
+                    "<p>Se recibió la solicitud de un servicio. Este es el detalle:</p>",
+                    `https://duendemaquillista.azurewebsites.net/gallery/${image?.getId()}`,
+                    image?.getImageUrl(),
+                    message,
+                    user,
+                );
+
+                resolve(true);
+            }
+        });
     }
 
 }

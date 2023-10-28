@@ -80,4 +80,8 @@ export class User {
     setToken(token: string) {
       this.token = token;
     }
+
+    getFullName(): string {
+      return `${this.name} ${this.lastName1} ${this.lastName2}`.trim();
+    }
   }

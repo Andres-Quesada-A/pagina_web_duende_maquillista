@@ -404,5 +404,4 @@ export class ImageDAO {
             }
         });
     }
-
 }

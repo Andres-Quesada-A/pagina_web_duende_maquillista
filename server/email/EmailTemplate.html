@@ -7,6 +7,7 @@
             @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap");
             :root {
                 --radius: 10px;
+                --service-radius: 20px;
             }
             body {
                 font-family: "Poppins", sans-serif;
@@ -64,6 +65,55 @@
                 letter-spacing: 0.5rem;
                 font-weight: bold;
             }
+            .bold {
+                font-weight: bold;
+            }
+            table {
+                width: 75%;
+                max-width: 700px;
+                border-collapse: collapse;
+                margin: 15px auto;
+                border-radius: var(--service-radius);
+                background-color: rgb(163, 191, 250);
+                height: min-content;
+                min-height: 300px;
+            }
+            td {
+                padding: 10px;
+            }
+            td:nth-child(2) {
+                height: 0;
+                padding-bottom: 0px;
+            }
+            @media screen and (max-width: 600px) {
+                #serviceImage {
+                    max-width: 100%;
+                }
+            }
+            @media screen and (min-width: 600px) {
+                #serviceImage {
+                    max-width: 300px;
+                }
+            }
+            #serviceImage {
+                aspect-ratio: 1/1;
+                object-fit: cover;
+                border-radius: var(--service-radius);
+                box-shadow: 2px 2px 5px #ccc;
+            }
+            #serviceMessage {
+                border-radius: var(--service-radius);
+                background-color: rgb(235, 244, 255);
+                vertical-align: top;
+                text-align: justify;
+                hyphens: auto;
+                margin: 0 10px 10px 10px;
+                display: block;
+                height: calc(100% - 35px);
+            }
+            #serviceMessage > p {
+                margin: 0;
+            }
         </style>
     </head>
     <body>
@@ -75,6 +125,7 @@
                 <h1>{{title}}</h1>
                 {{content}}
             </div>
+            {{serviceInfo}}
             {{moreInfo}}
             <hr id="signatureBar" />
             <div id="signature">

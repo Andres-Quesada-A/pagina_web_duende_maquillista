@@ -2,6 +2,8 @@ import nodemailer from "nodemailer";
 import fs from "fs";
 import path from "path";
 import { DateFormatter } from "../Utils/DateFormatter";
+import { User } from "../models/User";
+import { Image } from "../models/Image";
 
 export class EmailController {
     private mail: string = "duendemaquillista@gmail.com";
@@ -21,7 +23,10 @@ export class EmailController {
         recipient: string[],
         title: string,
         htmlContent: string,
-        moreInfoLink: string | null
+        moreInfoLink?: string,
+        serviceImage?: string,
+        serviceMessage?: string,
+        serviceRequester?: User,
     ): Promise<void> {
         return new Promise((resolve, reject) => {
             // Read the email template
@@ -34,15 +39,37 @@ export class EmailController {
             const moreInfoButton = moreInfoLink
                 ? `<div id="moreInfo"><a href="${moreInfoLink}" target="_target">Ver más detalles</a></div>`
                 : "";
+            const serviceInfo = serviceImage && serviceMessage && serviceRequester
+                ? `
+            <table>
+                <tbody>
+                    <tr>
+                        <td rowspan="2">
+                            <img id="serviceImage" src="${serviceImage}" alt="Imagen de referencia" />
+                        </td>
+                        <td>
+                            <p>
+                                <span class="bold">${serviceRequester?.getFullName()}</span>
+                                <small>(<a href="mailto:${serviceRequester?.getEmail()}" target="_blank">${serviceRequester?.getEmail()}</a>)</small><span class="bold">:</span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="serviceMessage">
+                            <p>${serviceMessage}</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>` : "";
             const dateFormatter = new DateFormatter();
-
             const dateTimeText = dateFormatter.localDateTimeText();
 
             const html = template
                 .replace("{{title}}", title)
                 .replace("{{content}}", htmlContent)
                 .replace("{{moreInfo}}", moreInfoButton)
-                .replace("{{dateTime}}", dateTimeText);
+                .replace("{{dateTime}}", dateTimeText)
+                .replace("{{serviceInfo}}", serviceInfo);
 
             this.transporter.sendMail(
                 {

@@ -493,8 +493,19 @@ export class MasterController {
         } catch (error) {
             res.status(400).json({});
         }
-        
     }
+
+    // Method to request a service
+    async requestService(req: Request, res: Response): Promise<Response> {
+        try {
+            const { imageId, email, message } = req.body;
+            const ImageControllerObject = new ImageController();
+            const response = await ImageControllerObject.requestService(email, imageId, message);
+            return res.status(200).json({ message: "Ok" });
+        } catch (error: any) {
+            return res.status(400).json({ message: error[0] ? error[0].customError : undefined });
+        }
+    };
 
     // Method to create an order
     async createOrder(req:Request,res:Response): Promise<Response> {

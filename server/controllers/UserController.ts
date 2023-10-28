@@ -2,6 +2,7 @@ import { UserDAO } from "../DAOS/UserDAO";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { EmailController } from "./EmailController";
 import { DateFormatter } from "../Utils/DateFormatter";
+import { User } from "../models/User";
 
 const PASSWORD_RESET_CODE_EXPIRY = 1/4; // In hours
 
@@ -108,8 +109,7 @@ export class UserController {
                 <p>Se ha solicitado un código de recuperación de contraseña para su cuenta, que se muestra a continuación:</p>
                 <p id="resetCode">${code}</p>
                 <p>Este código expirará el ${expirationDateTime}</p>
-                <p class="bold">Si no fue usted quien solicitó este código, ignore este mensaje.</p>`,
-                null
+                <p class="bold">Si no fue usted quien solicitó este código, ignore este mensaje.</p>`
             );
         };
 
@@ -152,6 +152,32 @@ export class UserController {
                                 damage.push({ customError: "El código no coincide" });
                                 reject(damage);
                             }
+                        };
+                    }
+                    });
+            } else {
+                damage.push({ customError: "El usuario no existe" });
+                reject(damage);
+            }
+        });
+    }
+
+    async getUser(email: string): Promise<User> {
+        return new Promise(async (resolve, reject) => {
+            const damage: { customError: string | undefined }[] = [];
+            const user = await this.UserDAO.getUserByEmail(email);
+            if (user) {
+                jwt.verify(user.getToken(), 'DuendeMaquillista', async (err, decoded) => {
+                    if (err) {
+                        console.log(err);
+                        reject(damage);
+                    } else {
+                        const userData = decoded as JwtPayload;
+
+                        if (!userData) {
+                            reject(damage);
+                        } else {
+                            resolve(user);
                         };
                     }
                     });
