@@ -14,7 +14,7 @@ export const CreateImage = [
       required: true,
     },
     {
-      label: "Tags",
+      label: "Etiquetas",
       type: "text",
       id: "tags",
       placeholder: "#tag1 #tag2 #tag3...",

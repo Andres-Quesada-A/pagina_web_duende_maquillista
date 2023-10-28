@@ -65,7 +65,8 @@ function ImageGallery() {
               <p><span>Categoría:</span> {imageData.category}</p>
               <p><span>Subcategoría:</span> {imageData.subcategory}</p>
               <p><span>Etiquetas:</span></p>
-              <p className="text-indigo-500 -mt-4">{imageData.tags}</p>
+              {imageData.tags ? <p className="text-indigo-500 -mt-4">{imageData.tags}</p>
+                : <p className="text-gray-500 -mt-4 italic">No hay etiquetas</p>}
               <button onClick={handlerbutton} className="h-11 w-full sm:w-auto rounded-lg px-5 text-white font-medium text-lg bg-indigo-500 hover:bg-indigo-400 transition-colors">
                 Enviar solicitud de servicio
               </button>
