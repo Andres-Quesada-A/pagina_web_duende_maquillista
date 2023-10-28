@@ -28,7 +28,6 @@ import OrdersPage from "./Pages/orders";
 import OrderPage from "./Pages/orders/order";
 import AboutUs from "./Pages/AboutUs";
 import Profile from "./Pages/Profile";
-;
 const noRequirement = [
   "/login",
   "/register",

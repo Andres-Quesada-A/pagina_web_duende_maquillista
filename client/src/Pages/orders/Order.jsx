@@ -135,7 +135,7 @@ function OrderPage() {
                                     <img src={data.voucherImageUrl} className="max-w-xl" />
                                 </picture>
                             </div>
-                            <div className="mt-10">
+                            <div className="mt-10 w-72">
                                 <SelectCustom label="Estado de la orden"
                                     id="status"
                                     HandleChange={handleChange}

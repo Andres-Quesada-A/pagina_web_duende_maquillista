@@ -21,29 +21,37 @@ function Shop() {
   const navigate = useNavigate();
 
   const handleDelete = (id) => {
-    axios.delete(`http://localhost:1234/api/delete_product/${id}`, { withCredentials: true })
+    axios
+      .delete(`http://localhost:1234/api/delete_product/${id}`, {
+        withCredentials: true,
+      })
       .then(() => {
         toast.success("Producto eliminado exitosamente.", messageSettings);
         const parsedProducts = JSON.parse(products);
-        setProducts(JSON.stringify(parsedProducts.filter((product) => product.id !== id)));
+        setProducts(
+          JSON.stringify(parsedProducts.filter((product) => product.id !== id))
+        );
       })
       .catch((error) => {
-        const errorMessage =
-          error?.response?.data?.message ||
-          defaultError;
-        toast.error(errorMessage, messageSettings)
+        const errorMessage = error?.response?.data?.message || defaultError;
+        toast.error(errorMessage, messageSettings);
       });
-  }
+  };
 
   useEffect(() => {
     // Request to get products
     axios
-      .get(`http://localhost:1234/api/get_product_list`, { withCredentials: true })
+      .get(`http://localhost:1234/api/get_product_list`, {
+        withCredentials: true,
+      })
       .then((res) => {
         setProducts(JSON.stringify(res.data));
       })
       .catch((error) => {
-        toast.error("Ocurrió un error al cargar las categorías.", messageSettings);
+        toast.error(
+          "Ocurrió un error al cargar las categorías.",
+          messageSettings
+        );
       });
 
     // Request to get the categories
@@ -58,7 +66,10 @@ function Shop() {
         console.log(newCategories);
       })
       .catch((error) => {
-        toast.error("Ocurrió un error al cargar los productos.", messageSettings);
+        toast.error(
+          "Ocurrió un error al cargar los productos.",
+          messageSettings
+        );
       });
   }, []);
 
@@ -133,7 +144,9 @@ function Shop() {
       <section className="min-h-screen flex mt-16 ">
         <div className="bg-indigo-50 h-screen w-64 fixed top-0 pt-24 pb-6 px-5 flex flex-col justify-between">
           <div>
-            <h4 className="text-gray-600 font-semibold text-2xl mb-5">Filtros</h4>
+            <h4 className="text-gray-600 font-semibold text-2xl mb-5">
+              Filtros
+            </h4>
             <form onSubmit={handleSubmit}>
               <SelectCustom
                 HandleChange={handleChangeSorting}
@@ -152,10 +165,16 @@ function Shop() {
                   checked: categories[category],
                 }))}
               />
-              <button className="mb-3 bg-indigo-500 hover:bg-indigo-400 transition-colors py-1 font-medium text-white w-full text-base rounded-md cursor-pointer"
-                  onClick={() => {navigate('/configure_category_product')}}>
-                Configurar categorías
-              </button>
+              {admin && (
+                <button
+                  className="mb-3 bg-indigo-500 hover:bg-indigo-400 transition-colors py-1 font-medium text-white w-full text-base rounded-md cursor-pointer"
+                  onClick={() => {
+                    navigate("/configure_category_product");
+                  }}
+                >
+                  Configurar categorías
+                </button>
+              )}
               <h4 className="mt-4 mb-3 font-semibold">Productos</h4>
               <input
                 onChange={handleChangeSearch}
@@ -169,19 +188,21 @@ function Shop() {
               </button>
             </form>
           </div>
-          {
-            admin && (
-              <button className="mt-3 bg-emerald-500 hover:bg-emerald-400 transition-colors py-1 font-medium text-white w-full text-base rounded-md cursor-pointer"
-                  onClick={() => {navigate('/add_product')}}>
-                Añadir producto
-              </button>
-            )
-          }
+          {admin && (
+            <button
+              className="mt-3 bg-emerald-500 hover:bg-emerald-400 transition-colors py-1 font-medium text-white w-full text-base rounded-md cursor-pointer"
+              onClick={() => {
+                navigate("/add_product");
+              }}
+            >
+              Agregar producto
+            </button>
+          )}
         </div>
         <div className="w-full py-10 px-5 sm:px-10 md:px-20 ml-64">
           <header className="flex justify-between items-center">
             <h1 className="text-4xl font-semibold text-indigo-500">
-              Tienda de Duende
+              {admin ? "Tienda" : "Tienda de Duende"}
             </h1>
           </header>
           <div className="mt-14 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5">

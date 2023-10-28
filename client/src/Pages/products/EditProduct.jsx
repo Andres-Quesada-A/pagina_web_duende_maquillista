@@ -203,13 +203,13 @@ function EditProduct() {
                             type="submit"
                             disabled={per < 100 || !per}
                         >
-                            Guardar
+                            Guardar Cambios
                         </button>
                         <button
                             className="text-lg w-full py-2 rounded-md text-indigo-500 bg-transparent hover:bg-indigo-500 hover:text-white border-2 border-indigo-500 transition-colors"
                             onClick={() => history.back()}
                         >
-                            Cancelar
+                            Descartar
                         </button>
                     </div>
                 </div>
@@ -224,7 +224,7 @@ function EditProduct() {
                     />
                     <div className="relative w-48 text-center">
                         <label className="relative z-0 rounded-lg inline-block w-full bg-indigo-500 font-medium cursor-pointer text-white py-2 text-base">
-                            Subir imagen
+                            Reemplazar imagen
                         </label>
                         <input
                             className="opacity-0 cursor-pointer top-0 left-0 h-12 w-full z-10 absolute inline-block"
