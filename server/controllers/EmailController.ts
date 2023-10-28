@@ -31,7 +31,7 @@ export class EmailController {
         return new Promise((resolve, reject) => {
             // Read the email template
             const template = fs.readFileSync(
-                path.join(__dirname, "..", "email/EmailTemplate.html"),
+                path.join(__dirname, "..", "..", "email/EmailTemplate.html"),
                 "utf8"
             );
 
