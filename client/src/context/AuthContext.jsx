@@ -41,7 +41,7 @@ export const AuthContextProvider = ({ children }) => {
     return state.currentUser?.user?.email || ""
   }
   return (
-    <AuthContext.Provider value={{ LogOut, GetUserID, dispatch, getUserType, getLoginStatus, getUser, getUserEmail }}>
+    <AuthContext.Provider value={{ LogOut, GetUserID, dispatch, getUserType, getLoginStatus, getUser, getUserEmail, currentUser: state.currentUser }}>
       {children}
     </AuthContext.Provider>
   )
