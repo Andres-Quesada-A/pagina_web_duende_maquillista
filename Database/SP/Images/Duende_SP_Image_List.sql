@@ -22,11 +22,12 @@ BEGIN
             I.Name AS Name,
             I.Description AS Description,
             I.Date AS Date,
-            (
+            COALESCE((
                 SELECT STRING_AGG(description, ' ')
                 FROM Tags
                 WHERE ImageId = I.id
-            ) AS Tags,
+                AND Deleted = 0
+            ), '') AS Tags,
             I.ImageURL AS URL
         FROM 
             Images I

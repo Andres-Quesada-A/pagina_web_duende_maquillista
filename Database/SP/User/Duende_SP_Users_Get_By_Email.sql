@@ -20,8 +20,9 @@ BEGIN
         -- OBTENER USUARIO POR EMAIL
         SELECT TOP 1
         *
-    FROM [dbo].[Users]
-    WHERE email = LTRIM(RTRIM(@IN_email));
+        FROM [dbo].[Users]
+        WHERE email = LTRIM(RTRIM(@IN_email))
+            AND [deleted] = 0;
 
         -- COMMIT TRANSACTION (no es necesario para lectura)
     END TRY
