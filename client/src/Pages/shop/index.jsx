@@ -108,6 +108,12 @@ function Shop() {
           .normalize("NFD")
           .replace(/[\u0300-\u036f]/g, "")
           .includes(searchTerm)
+        ||
+        product.description
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .includes(searchTerm)
       );
     }
     if (sorting["order-price"] && sorting["order-price"] !== "") {
