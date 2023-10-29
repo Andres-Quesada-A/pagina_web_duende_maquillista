@@ -34,7 +34,7 @@ function Home() {
       </section>
       <section className="w-full grid gap-5 px-5 py-16 bg-gray-100 grid-cols-1">
         <h2 className="text-indigo-500 font-medium text-4xl mb-5 text-center w-full">
-          Tienda de duende
+          Tienda de Duende
         </h2>
         <div className="grid grid-cols-3 w-full max-w-4xl gap-5 mx-auto mb-10">
           <img src={Product1} className="aspect-square rounded-md object-cover shadow-md" />

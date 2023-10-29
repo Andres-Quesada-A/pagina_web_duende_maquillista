@@ -85,10 +85,10 @@ function OrderPage() {
                                     Orden #{idOrder}
                                 </h1>
                                 <p className="text-2x1 font-medium text-gray-600">
-                                    Creada el <b>{formatDateTime(data.timestamp)}</b>
+                                    Hecha el <b>{formatDateTime(data.timestamp)}</b>
                                 </p>
                                 <p className="text-2x1 font-medium text-gray-600">
-                                    Hecha por <b> {data.client.name} {data.client.lastName1} {data.client.lastName2} </b>
+                                    por <b> {data.client.name} {data.client.lastName1} {data.client.lastName2} </b>
                                 </p>
                                 {
                                     admin

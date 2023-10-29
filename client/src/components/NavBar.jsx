@@ -20,15 +20,15 @@ const OPTIONS = {
       link: "/gallery",
     },
     {
-      name: "Tienda",
+      name: "Tienda de Duende",
       link: "/shop",
-    },
-    {
-      name: "Mis órdenes",
-      link: "/orders",
     }
   ],
   admin: [
+    {
+      name: "Inicio",
+      link: "/",
+    },
     {
       name: "Órdenes",
       link: "/orders",

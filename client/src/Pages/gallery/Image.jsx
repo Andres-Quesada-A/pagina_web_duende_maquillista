@@ -80,7 +80,7 @@ function ImageGallery() {
             <picture>
               <img
                 src={imageData.imageUrl}
-                className="rounded-md aspect-ratio-1/1 object-cover w-full max-w-md max-h-[500px]"
+                className="rounded-2xl aspect-ratio-1/1 object-cover w-full max-w-md max-h-[500px]"
               />
             </picture>
             <div className="flex flex-col gap-4 [&>p>span]:font-medium">

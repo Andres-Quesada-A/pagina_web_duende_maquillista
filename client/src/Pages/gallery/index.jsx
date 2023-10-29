@@ -80,9 +80,13 @@ function Gallery() {
   };
 
   const handleChangeFilters = (e) => {
-
+    console.log(filters);
     setFilters({ ...filters, [e.target.id]: e.target.value });
     setSubcategoryfilters({});
+
+    setTimeout(() => {console.log(filters);
+      console.log(subcategoryOptions);
+      console.log(Subcategoryfilters);}, 100);
   };
 
   const handleChangeSubcategoryFilters = (e) => {
@@ -126,11 +130,19 @@ function Gallery() {
               required={false}
             />
             <h4 className="mt-4 mb-3 font-semibold">Subcategorías</h4>
-            <SwitchFormInputs
-              HandleChange={handleChangeSubcategoryFilters}
-              data={Subcategoryfilters}
-              structureForm={subcategoryOptions}
-            />
+            {
+              filters.category ? 
+                (
+                  subcategoryOptions.length > 0 ?
+                    <SwitchFormInputs
+                      HandleChange={handleChangeSubcategoryFilters}
+                      data={Subcategoryfilters}
+                      structureForm={subcategoryOptions}
+                    />
+                    : <><p class="italic text-sm">No hay subcategorías</p></>
+                )
+                : <><p class="italic text-sm">Seleccione una categoría primero</p></>
+            }
             <button className="mt-3 bg-indigo-500 hover:bg-indigo-400 transition-colors py-1 font-medium text-white w-full text-lg rounded-md">
               Buscar
             </button>

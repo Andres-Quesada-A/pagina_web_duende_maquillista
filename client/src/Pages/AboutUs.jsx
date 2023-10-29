@@ -5,8 +5,7 @@ function AboutUs() {
   return (
     <div className="w-full min-h-screen flex flex-col items-center mt-16 py-16 px-5">
       <header className="w-full max-w-4xl">
-        <h1 className="font-medium text-3xl text-indigo-500">Sobre mí</h1>
-        <hr className="border-indigo-500 border-1 mt-2"></hr>
+        <h1 className="text-4xl font-semibold text-indigo-500">Sobre mí</h1>
       </header>
       <section className="max-w-4xl w-full grid grid-cols-2 gap-7 mt-10">
         <p>

@@ -37,7 +37,7 @@ function ImageCardDuende({ item, deleteImage }) {
         onClick={handleClick}
         className="[&:hover>div]:opacity-100 relative rounded-md"
       >
-        <div className="w-full h-full  bg-black/20 backdrop-blur-sm opacity-0 transition-all absolute top-0 left-0">
+        <div className="w-full h-full  rounded-2xl  bg-black/20 backdrop-blur-sm opacity-0 transition-all absolute top-0 left-0">
           <div className="absolute bottom-3 right-3 flex flex-row gap-3 justify-end">
             <button
               onClick={handleClickPencil}
@@ -51,7 +51,7 @@ function ImageCardDuende({ item, deleteImage }) {
             </button>
           </div>
         </div>
-        <img src={item.imageUrl} className="aspect-square object-cover" />
+        <img src={item.imageUrl} className="aspect-square object-cover rounded-2xl" />
       </picture>
       <ConfirmationImageCard 
       title = {"Confirmación"} 
