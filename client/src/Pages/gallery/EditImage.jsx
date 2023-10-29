@@ -47,7 +47,7 @@ function EditImage() {
           description: response.data.description,
           imageCategory: response.data.category,
           imageSubcategory: response.data.subcategory,
-          tags: response.data.tags,
+          tags: response.data.tags.join(' '),
           imageUrl: response.data.imageUrl
         });
         setPerc(100);
@@ -131,7 +131,7 @@ function EditImage() {
     const APIURL = "/api/edit_image";
 
     try {
-      await axios.put(APIURL, { ...data, id:parseInt(idImage) }, { withCredentials: true });
+      await axios.put(APIURL, { ...data, id:parseInt(idImage), tags: data.tags.split(" ") }, { withCredentials: true });
       toast.success("Imagen modificada exitosamente.", messageSettings);
       navigate("/gallery");
     } catch (error) {

@@ -39,12 +39,13 @@ BEGIN
             C.Description AS Category,
             S.Description AS Subcategory,
             I.Date as Date,
-            COALESCE((
-                SELECT STRING_AGG(description, ' ')
+            (
+                SELECT [description]
                 FROM Tags
                 WHERE ImageId = I.id
                 AND Deleted = 0
-            ), '') AS Tags
+                FOR JSON PATH
+            ) AS Tags
         FROM Images I
         INNER JOIN ImageSubcategories S ON S.ID = I.SubcategoryID
         INNER JOIN ImageCategories C ON C.ID = S.CategoryID

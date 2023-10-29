@@ -206,7 +206,7 @@ export class ImageDAO {
         imageSubcategory: string,
         name: string,
         description: string,
-        tags: string,
+        tags: string[],
         imageUrl: string): Promise<Image | undefined> {
             
         const SQL = ConnectionDAO.getInstance();
@@ -217,8 +217,8 @@ export class ImageDAO {
         const tvpSchema = new sqlcon.Table('TagsTVP');
         tvpSchema.columns.add('tags', sqlcon.VarChar(32));
 
-        // Convert the string to an array of objects
-        tags.split(' ').forEach(item => tvpSchema.rows.add(item));
+        // Add tags to the TVP
+        tags.forEach(item => tvpSchema.rows.add(item));
 
         return new Promise((resolve, reject) => {
             try {
@@ -233,8 +233,8 @@ export class ImageDAO {
                     })
                     .then((result) => {
                         //query was successful
-                        
                         const image: any = result?.recordset[0];
+                        const tags = image.Tags ? JSON.parse(image.Tags).map((tag: any) => tag.description) : [];
                         console.log(result)
                         const imageObj = new Image(
                                 image.ImageID,
@@ -243,7 +243,7 @@ export class ImageDAO {
                                 image.Description,
                                 image.Category,
                                 image.Subcategory,
-                                image.Tags,
+                                tags,
                                 image.URL
                         );
                         resolve(imageObj);
@@ -267,7 +267,7 @@ export class ImageDAO {
         imageSubcategory: string,
         name: string,
         description: string,
-        tags: string,
+        tags: string[],
         imageUrl: string): Promise<boolean> {
         const SQL = ConnectionDAO.getInstance();
         const damage: { customError: string | undefined }[] = [];
@@ -276,8 +276,8 @@ export class ImageDAO {
         const tvpSchema = new sqlcon.Table('TagsTVP');
         tvpSchema.columns.add('tags', sqlcon.VarChar(32));
 
-        // Convert the string to an array of objects
-        tags.split(' ').forEach(item => tvpSchema.rows.add(item));
+        // Add tags to the TVP
+        tags.forEach(item => tvpSchema.rows.add(item));
 
         return new Promise((resolve, reject) => {
             try {
@@ -348,6 +348,7 @@ export class ImageDAO {
                     .then((result) => {
                         //query was successful
                         const image: any = result?.recordset[0];
+                        const tags = image.Tags ? JSON.parse(image.Tags).map((tag: any) => tag.description) : [];
                         const imageObj = new Image(
                             image.ImageID,
                             image.Name,
@@ -355,7 +356,7 @@ export class ImageDAO {
                             image.Description,
                             image.Category, // is wrong
                             image.Subcategory,
-                            image.Tags,
+                            tags,
                             image.URL
                         );
                         resolve(imageObj);
@@ -381,6 +382,7 @@ export class ImageDAO {
                     .then((result) => {
                         //query was successful
                         const images: Image[] = result?.recordset.map((row: any) => {
+                            const tags = row.Tags ? JSON.parse(row.Tags).map((tag: any) => tag.description) : [];
                             return new Image(
                                 row.ImageID,
                                 row.Name,
@@ -388,7 +390,7 @@ export class ImageDAO {
                                 row.Description,
                                 row.Category, // is wrong
                                 row.Subcategory,
-                                row.Tags,
+                                tags,
                                 row.URL
                             );
                         });

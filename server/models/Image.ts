@@ -8,7 +8,7 @@ export class Image {
     private description: string;
     private category: ImageCategory;
     private subcategory: ImageSubcategory;
-    private tags: string;
+    private tags: string[];
     private imageUrl: string;
 
     constructor(
@@ -18,7 +18,7 @@ export class Image {
         description: string,
         category: ImageCategory,
         subcategory: ImageSubcategory,
-        tags: string,
+        tags: string[],
         imageUrl: string
     ) {
         this.id = id;
@@ -27,10 +27,7 @@ export class Image {
         this.description = description;
         this.category = category;
         this.subcategory = subcategory;
-        var str: string = tags
-        str = str.replace(/ /g," ");
-        this.tags = str
-        //this.tags = tags
+        this.tags = tags;
         this.imageUrl = imageUrl;
     }
 
@@ -74,11 +71,11 @@ export class Image {
         this.subcategory = subcategory;
     }
 
-    getTags(): string {
+    getTags(): string[] {
         return this.tags;
     }
 
-    setTags(tags: string) {
+    setTags(tags: string[]) {
         this.tags = tags;
     }
 

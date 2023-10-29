@@ -23,7 +23,7 @@ export class ImageController {
         imageSubcategory: string, 
         name: string, 
         description: string, 
-        tags: string, 
+        tags: string[], 
         imageUrl: string): Promise<Image | undefined> {
 
         const response = await this.ImageDAO.createImage(
@@ -44,7 +44,7 @@ export class ImageController {
         imageSubcategory: string, 
         name: string, 
         description: string,
-        tags: string, 
+        tags: string[], 
         imageUrl: string) : Promise<boolean>{
         const response = await this.ImageDAO.editImage(
             id,

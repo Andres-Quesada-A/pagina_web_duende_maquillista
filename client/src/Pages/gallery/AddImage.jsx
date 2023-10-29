@@ -95,7 +95,7 @@ function AddImage() {
         const APIURL = "/api/create_image";
 
         try {
-            await axios.post(APIURL, { ...data }, { withCredentials: true });
+            await axios.post(APIURL, { ...data, tags: data.tags.split(" ") }, { withCredentials: true });
             toast.success("Imagen creada.", messageSettings);
             navigate("/gallery");
         } catch (error) {
