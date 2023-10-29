@@ -112,7 +112,11 @@ function Gallery() {
     const searchTags =
       search.search?.match(/#\S+/g)?.map((tag) => tag.replace("#", "").toLowerCase())
       || []; // Extracts all words/entities starting with # from search.search and puts them in an array
-    const searchTerm = search.search?.replace(/#\S+/g, "").trim().toLowerCase(); // Everything but the tags
+    const searchTerm = search.search?.replace(/#\S+/g, "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .trim()
+      .toLowerCase(); // Everything but the tags
 
     const filteredImages = data.filter(image =>
       (!filters.category || (image.category === filters.category &&
