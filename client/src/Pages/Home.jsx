@@ -71,7 +71,7 @@ function Home() {
         <h2 className="text-indigo-500 font-medium text-4xl mb-5 text-center w-full">
           Tienda de Duende
         </h2>
-        <div className={`grid grid-cols-${Math.min(3, products.length)} w-full max-w-4xl gap-5 mx-auto mb-10`}>
+        <div className={`grid grid-cols-3 w-full max-w-4xl gap-5 mx-auto mb-10`}>
           {
             products.length ?
             products.map((product) => 
@@ -99,7 +99,7 @@ function Home() {
         <h2 className="text-indigo-500 font-medium text-4xl mb-5 text-center w-full">
           Galería
         </h2>
-        <div className={`grid grid-cols-${Math.min(3, images.length)} w-full max-w-4xl gap-5 mx-auto mb-10`}>
+        <div className={`grid grid-cols-3 w-full max-w-4xl gap-5 mx-auto mb-10`}>
           {
             images.length ?
             images.map((image) => 
