@@ -3,6 +3,7 @@ import InputCustom from "../form/InputCustom";
 import {toast} from 'react-toastify'
 import { messageSettings, defaultError } from '../../utils/messageSettings'
 import axios from 'axios'
+import ConfirmationButton from "../Modals/ConfirmationButton";
 
 function DeleteSubcategory({ Raw, APIURL }) {
 
@@ -37,8 +38,8 @@ function DeleteSubcategory({ Raw, APIURL }) {
     setSelectedSubcategory({ ...selectedSubcategory, [e.target.id]: e.target.value });
   };
 
-  const HandleSubmit = (e) => {
-    e.preventDefault();
+  const HandleDelete = (e) => {
+    e?.preventDefault();
 
     if (!selectedSubcategory.subcategory || selectedSubcategory.subcategory === "Seleccione") {
       toast.error("\"Seleccione\" no es una opción válida.", messageSettings)
@@ -58,14 +59,14 @@ function DeleteSubcategory({ Raw, APIURL }) {
       })
       .catch((error) => {
         const errorMessage =
-          error?.response?.fullData?.message ||
+          error?.response?.data?.message ||
           defaultError;
         toast.error(errorMessage, messageSettings)
       });
   };
 
   return (
-    <form className="flex flex-col gap-4" onSubmit={HandleSubmit}>
+    <section className="flex flex-col gap-4">
       <h4 className="text-xl font-medium">Eliminar subcategoría</h4>
       <div>
         <label className="block mb-2 text-base font-medium text-gray-900 ">
@@ -125,10 +126,14 @@ function DeleteSubcategory({ Raw, APIURL }) {
     </select>
   </div>
 )}
-      <button className="flex justify-center items-center mx-auto text-white bg-indigo-500 hover:bg-indigo-400 transition-colors rounded-md w-full max-w-[280px] font-medium py-2">
-        Eliminar
-      </button>
-    </form>
+      <ConfirmationButton
+        title={"Confirmación"}
+        description={
+          "¿Está seguro de proceder con la eliminación? Esta acción no se puede deshacer."
+        }
+        handleDelete={HandleDelete}
+      />
+    </section>
   );
 }
 

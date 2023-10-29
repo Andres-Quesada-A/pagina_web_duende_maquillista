@@ -51,7 +51,7 @@ BEGIN
                     AND Sc.deleted = 0
                     )
             BEGIN
-                RAISERROR('La categoría "%s" aun tiene subcategorías asociadas.', 16, 1,@IN_imageCategory)
+                RAISERROR('La categoría "%s" aún tiene subcategorías asociadas.', 16, 1,@IN_imageCategory)
             END;
 
 		-- INICIO DE LA TRANSACCI�N

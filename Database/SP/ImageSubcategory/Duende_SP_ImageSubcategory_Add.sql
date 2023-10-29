@@ -54,13 +54,6 @@ BEGIN
 	        BEGIN
 	        	RAISERROR('La subcategoría "%s" es inválida.', 16, 1,@IN_imageSubcategory)
 	        END;
-        
-        --palabras reservadas
-        IF ( LTRIM(RTRIM(@IN_imageSubcategory)) LIKE '%,%')
-	        BEGIN
-	        	RAISERROR('La subcategoría "%s" no puede tener ",".', 16, 1,@IN_imageSubcategory)
-	        END;
-
 
         --validacion de existencia previa de subcategoria
         IF EXISTS ( SELECT 1
