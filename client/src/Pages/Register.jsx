@@ -17,7 +17,7 @@ function RegisterPage() {
   const navigate = useNavigate();
 
   const redirect = () => {
-    navigate(afterUrl);
+    window.location = afterUrl;
   }
 
   useEffect(() => {
