@@ -5,6 +5,7 @@
 --------------------------------------------------------------------------
 
 CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_Orders_List]
+    @IN_userEmail VARCHAR(128) = NULL
 AS
 BEGIN
     SET NOCOUNT ON;         -- No metadata returned
@@ -52,7 +53,8 @@ BEGIN
             INNER JOIN OrderStatuses OS ON O.orderStatusId = OS.id
             INNER JOIN Users U ON O.userId = U.id
             INNER JOIN Addresses A ON O.addressId = A.id
-            WHERE O.deleted = 0;
+            WHERE O.deleted = 0
+                AND (@IN_userEmail IS NULL OR U.email = LTRIM(RTRIM(@IN_userEmail)));
 
     END TRY
     BEGIN CATCH

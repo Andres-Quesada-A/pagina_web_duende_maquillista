@@ -20,9 +20,13 @@ const OPTIONS = {
       link: "/gallery",
     },
     {
-      name: "Tienda de Duende",
+      name: "Tienda",
       link: "/shop",
     },
+    {
+      name: "Mis órdenes",
+      link: "/orders",
+    }
   ],
   admin: [
     {

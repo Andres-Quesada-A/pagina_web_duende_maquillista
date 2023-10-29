@@ -3,14 +3,20 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { messageSettings } from '../../utils/messageSettings';
 import Order from "../../components/cards/order";
+import { useAuthContext } from "../../context/AuthContext";
 
 function OrdersPage() {
-
+    const { getUserEmail, getUserType } = useAuthContext();
     const [data, setData] = useState([]);
 
 
     useEffect(() => {
         const apiOrders = '/api/get_order_list'
+            + (
+                getUserType() === 1
+                    ? ''
+                    : `/?email=${encodeURIComponent(getUserEmail())}`
+            );
 
         axios.get(apiOrders).then((response) => {
             const dataOrders = response.data

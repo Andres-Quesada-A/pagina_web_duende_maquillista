@@ -15,8 +15,8 @@ export class OrderController {
     }
 
     // gets the list of orders
-    async getOrderList(): Promise<Order[]> {
-        const response = await this.OrderDAO.getOrderList();
+    async getOrderList(email?: string): Promise<Order[]> {
+        const response = await this.OrderDAO.getOrderList(email);
         return response;
     }
 

@@ -538,7 +538,8 @@ export class MasterController {
     async getOrderList(req: Request, res:Response): Promise<Response> {
         try{
             const OrderControllerObject = new OrderController();
-            const response = await OrderControllerObject.getOrderList();
+            const email = req.query.email ? String(req.query.email) : undefined;
+            const response = await OrderControllerObject.getOrderList(email);
             return res.json(response);
         } catch (error: any) {
             return res.status(400).json({ message: error[0] ? error[0].customError : undefined });

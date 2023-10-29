@@ -7,14 +7,15 @@ import { useNavigate } from "react-router-dom";
 import { formatCurrency } from '../../utils/formatCurrency';
 import { BackArrowIcon } from "../../components/Icons";
 import SelectCustom from "../../components/form/SelectCustom";
+import { useAuthContext } from "../../context/AuthContext";
 
 function OrderPage() {
-
+    const { getUserType } = useAuthContext();
     const navigate = useNavigate();
-
     const { idOrder } = useParams();
     const [data, setData] = useState([]);
     const [status, setStatus] = useState("");
+    const [admin, setAdmin] = useState(getUserType() == 1);
 
     const options = [{ label: "Pendiente", value: "PENDING" }, { label: "Aceptado", value: "ACCEPTED" }, { label: "Rechazado", value: "REJECTED" }]
 
@@ -87,8 +88,15 @@ function OrderPage() {
                                     Creada el <b>{formatDateTime(data.timestamp)}</b>
                                 </p>
                                 <p className="text-2x1 font-medium text-gray-600">
-                                    Por <b> {data.client.name} {data.client.lastName1} {data.client.lastName2} </b>
+                                    Hecha por <b> {data.client.name} {data.client.lastName1} {data.client.lastName2} </b>
                                 </p>
+                                {
+                                    admin
+                                        ?   <></>
+                                        :   <p className="text-2x1 font-medium text-gray-600">
+                                                Estado: <b> {options.find(option => option.value == status).label} </b>
+                                            </p>
+                                }
                             </div>
                             <div className="w-full flex flex-col mt-10">
                                 <h2 className="text-2xl font-medium text-gray-600">
@@ -130,23 +138,28 @@ function OrderPage() {
                                 </table>
                             </div>
                             <div className="mt-10 w-full">
-                                <h2 className="text-2xl font-medium text-gray-600 mb-10">Recibo</h2>
+                                <h2 className="text-2xl font-medium text-gray-600 mb-10">Comprobante</h2>
                                 <picture className="w-full flex justify-center">
                                     <img src={data.voucherImageUrl} className="max-w-xl" />
                                 </picture>
                             </div>
-                            <div className="mt-10 w-72">
-                                <SelectCustom label="Estado de la orden"
-                                    id="status"
-                                    HandleChange={handleChange}
-                                    required={true}
-                                    options={options}
-                                    value={{"status":status}}
-                                />
+                            {
+                                admin
+                                    ?
+                                    <div className="mt-10 w-72">
+                                        <SelectCustom label="Estado de la orden"
+                                            id="status"
+                                            HandleChange={handleChange}
+                                            required={true}
+                                            options={options}
+                                            value={{"status":status}}
+                                        />
 
-                                <button className="mt-3 bg-indigo-500 hover:bg-indigo-400 transition-colors py-1 font-medium text-white w-full text-lg rounded-md"
-                                    onClick={handleSubmit}>Aceptar</button>
-                            </div>
+                                        <button className="mt-3 bg-indigo-500 hover:bg-indigo-400 transition-colors py-1 font-medium text-white w-full text-lg rounded-md"
+                                            onClick={handleSubmit}>Aceptar</button>
+                                    </div>
+                                    : <></>
+                            }
 
                         </section>
                     )
