@@ -1,13 +1,48 @@
 import Image from "../images/frontPage.jpg";
 import AboutUsImage from "../images/305580296_623109456104601_3151715858796774218_n.jpg";
-import Image1 from "../images/119020012_3154192791374619_2266714460925129479_n.jpg";
-import Image2 from "../images/280264391_4921823831278164_7136736824666213806_n.jpg";
-import Image3 from "../images/305580296_623109456104601_3151715858796774218_n.jpg";
-import Product1 from "../images/164742965_3683075388486354_133783467351755060_n.jpg";
-import Product2 from "../images/164981336_3683075461819680_1648894253421397887_n.jpg";
-import Product3 from "../images/165280182_3683075525153007_549197379267545938_n.jpg";
+import ProductCard from "../components/cards/product";
+import ImageCard from "../components/cards/ImageCard";
+import axios from "axios";
+import { useEffect, useState } from "react";
+
+const IMAGE_AND_PRODUCT_LIMIT = 3;
 
 function Home() {
+  const [products, setProducts] = useState([]);
+  const [images, setImages] = useState([]);
+
+  // Retrieve images and products
+  useEffect(() => {
+    const apiImageURL = `/api/get_image_list?limit=${IMAGE_AND_PRODUCT_LIMIT}`;
+    const apiProductURL = `/api/get_product_list?limit=${IMAGE_AND_PRODUCT_LIMIT}`;
+
+    axios
+      .get(apiImageURL, { withCredentials: true })
+      .then((response) => {
+        setImages(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    axios
+      .get(apiProductURL, { withCredentials: true })
+      .then((response) => {
+        setProducts(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  useEffect(() => {
+    console.log(products);
+  }, [products]);
+
+  useEffect(() => {
+    console.log(images);
+  }, [images]);
+
   return (
     <div className="w-full min-h-screen flex flex-col items-center mt-16">
       <img src={Image} className="aspect-video object-cover" />
@@ -36,10 +71,23 @@ function Home() {
         <h2 className="text-indigo-500 font-medium text-4xl mb-5 text-center w-full">
           Tienda de Duende
         </h2>
-        <div className="grid grid-cols-3 w-full max-w-4xl gap-5 mx-auto mb-10">
-          <img src={Product1} className="aspect-square rounded-md object-cover shadow-md" />
-          <img src={Product2} className="aspect-square rounded-md object-cover shadow-md" />
-          <img src={Product3} className="aspect-square rounded-md object-cover shadow-md" />
+        <div className={`grid grid-cols-${Math.min(3, products.length)} w-full max-w-4xl gap-5 mx-auto mb-10`}>
+          {
+            products.length ?
+            products.map((product) => 
+              <ProductCard
+                id={product.id}
+                imageUrl={product.imageUrl}
+                name={product.name}
+                description={product.description}
+                available={product.available}
+                price={product.price}
+                admin={false}
+                deleteProduct={() => {}}
+              />
+            )
+            : <></>
+          }
         </div>
         <a href="/shop" className="w-60 flex mx-auto">
             <div className="w-60 bg-indigo-500 rounded-md text-white font-medium py-2 text-center">
@@ -51,10 +99,16 @@ function Home() {
         <h2 className="text-indigo-500 font-medium text-4xl mb-5 text-center w-full">
           Galería
         </h2>
-        <div className="grid grid-cols-3 w-full max-w-4xl gap-5 mx-auto mb-10">
-          <img src={Image1} className="aspect-square rounded-md object-cover " />
-          <img src={Image2} className="aspect-square rounded-md object-cover " />
-          <img src={Image3} className="aspect-square rounded-md object-cover " />
+        <div className={`grid grid-cols-${Math.min(3, images.length)} w-full max-w-4xl gap-5 mx-auto mb-10`}>
+          {
+            images.length ?
+            images.map((image) => 
+              <ImageCard
+                item={image}
+              />
+            )
+            : <></>
+          }
         </div>
         <a href="/gallery" className="w-60 flex mx-auto">
             <div className="w-60 bg-indigo-500 rounded-md text-white font-medium py-2 text-center">

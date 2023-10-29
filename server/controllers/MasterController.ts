@@ -101,8 +101,9 @@ export class MasterController {
     // Method to get a list of products
     async getProductList(req: Request, res: Response): Promise<Response> {
         try {
+            const limit = req.query.limit ? String(req.query.limit) : undefined;
             const ProductControllerObject = new ProductController();
-            const response = await ProductControllerObject.getProductList();
+            const response = await ProductControllerObject.getProductList(limit ? parseInt(limit) : undefined);
             return res.json(response);
         } catch (error: any) {
             return res.status(400).json({ message: error[0] ? error[0].customError : undefined } );
@@ -257,8 +258,9 @@ export class MasterController {
 
     async getImageList(req:Request, res: Response): Promise<Response> {
         try{
+            const limit = req.query.limit ? String(req.query.limit) : undefined;
             const ImageControllerObject = new ImageController();
-            const response = await ImageControllerObject.getImageList();
+            const response = await ImageControllerObject.getImageList(limit ? parseInt(limit) : undefined);
             return res.json(response);
         } catch (error: any) {
             return res.status(400).json({ message: error[0] ? error[0].customError : undefined });

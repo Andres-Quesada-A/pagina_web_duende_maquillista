@@ -373,12 +373,12 @@ export class ImageDAO {
         });
     }
 
-    async getImageList(): Promise<Image[]> {
+    async getImageList(limit?: number): Promise<Image[]> {
         const SQL = ConnectionDAO.getInstance();
         const damage: { customError: string | undefined }[] = [];
         return new Promise((resolve, reject) => {
             try {
-                SQL.query("Duende_SP_Image_List")
+                SQL.query("Duende_SP_Image_List", { "IN_limit": limit })
                     .then((result) => {
                         //query was successful
                         const images: Image[] = result?.recordset.map((row: any) => {

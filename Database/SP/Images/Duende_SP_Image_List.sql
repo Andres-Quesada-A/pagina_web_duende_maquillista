@@ -5,7 +5,7 @@
 --------------------------------------------------------------------------
 
 CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_Image_List]
-    
+    @IN_limit INT = NULL
 AS
 BEGIN
     SET NOCOUNT ON;         -- No metadata returned
@@ -15,28 +15,54 @@ BEGIN
 
     BEGIN TRY
         -- Retrieve the list of images
-        SELECT 
-            I.ID AS 'ImageID',
-            C.Description AS 'Category',
-            S.Description AS 'Subcategory',
-            I.Name AS Name,
-            I.Description AS Description,
-            I.Date AS Date,
-            (
-                SELECT [description]
-                FROM Tags
-                WHERE ImageId = I.id
-                AND Deleted = 0
-                FOR JSON PATH
-            ) AS Tags,
-            I.ImageURL AS URL
-        FROM 
-            Images I
-            JOIN ImageSubcategories S ON I.subcategoryId = S.ID
-            JOIN ImageCategories C ON S.categoryid = C.ID
-        WHERE
-            I.Deleted = 0
-
+        IF (@IN_limit IS NULL) OR (@IN_limit < 1)
+        BEGIN
+            SELECT 
+                I.ID AS 'ImageID',
+                C.Description AS 'Category',
+                S.Description AS 'Subcategory',
+                I.Name AS Name,
+                I.Description AS Description,
+                I.Date AS Date,
+                (
+                    SELECT [description]
+                    FROM Tags
+                    WHERE ImageId = I.id
+                    AND Deleted = 0
+                    FOR JSON PATH
+                ) AS Tags,
+                I.ImageURL AS URL
+            FROM 
+                Images I
+                JOIN ImageSubcategories S ON I.subcategoryId = S.ID
+                JOIN ImageCategories C ON S.categoryid = C.ID
+            WHERE
+                I.Deleted = 0
+        END
+        ELSE
+        BEGIN
+            SELECT  TOP (@IN_limit)
+                I.ID AS 'ImageID',
+                C.Description AS 'Category',
+                S.Description AS 'Subcategory',
+                I.Name AS Name,
+                I.Description AS Description,
+                I.Date AS Date,
+                (
+                    SELECT [description]
+                    FROM Tags
+                    WHERE ImageId = I.id
+                    AND Deleted = 0
+                    FOR JSON PATH
+                ) AS Tags,
+                I.ImageURL AS URL
+            FROM 
+                Images I
+                JOIN ImageSubcategories S ON I.subcategoryId = S.ID
+                JOIN ImageCategories C ON S.categoryid = C.ID
+            WHERE
+                I.Deleted = 0
+        END;
     END TRY
     BEGIN CATCH
 
