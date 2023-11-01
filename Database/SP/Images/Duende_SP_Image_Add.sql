@@ -93,8 +93,10 @@ BEGIN
         -- Insert tags from TVP into Tags table
         INSERT INTO Tags
         (imageId, description, deleted)
-        SELECT @ImageID, tags, 0
-        FROM @IN_Tags;
+        SELECT DISTINCT
+            @ImageID, LTRIM(RTRIM(tags)), 0
+        FROM @IN_Tags
+        WHERE LTRIM(RTRIM(tags)) != '';
 
         SELECT 
             I.ID AS 'ImageID',
