@@ -100,6 +100,15 @@ function OrderPage() {
                             </div>
                             <div className="w-full flex flex-col mt-10">
                                 <h2 className="text-2xl font-medium text-gray-600">
+                                    Ubicación
+                                </h2>
+                                <ul className="text-2x1 font-medium text-gray-600 list-disc list-inside ml-9 my-5">
+                                    <li><b>Provincia:</b> {data.address.province}</li>
+                                    <li><b>Cantón:</b> {data.address.canton}</li>
+                                    <li><b>Distrito:</b> {data.address.district}</li>
+                                    <li><b>Dirección exacta:</b> {data.address.specificAddress}</li>
+                                </ul>
+                                <h2 className="text-2xl font-medium text-gray-600">
                                     Productos
                                 </h2>
                                 <table className="w-full text-base text-left text-gray-500 mt-5 border-gray-200 border-2 table-fixed">

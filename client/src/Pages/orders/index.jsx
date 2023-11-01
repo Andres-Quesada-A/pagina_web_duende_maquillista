@@ -50,8 +50,15 @@ function OrdersPage() {
                     {
                     (data && data.length === 0) ? (
                         <h2>No hay órdenes</h2>
-                    ) : (data.map((objeto) => {
-                        return (<Order key={objeto.id} id={objeto.id} timestamp={formatDate(objeto.timestamp)} address={objeto.address.specificAddress} />)
+                    ) : (data.map((object) => {
+                        return (
+                            <Order
+                                key={object.id}
+                                id={object.id}
+                                timestamp={formatDate(object.timestamp)}
+                                administrativeAddress={`${object.address.district}, ${object.address.canton}, ${object.address.province}`}
+                                specificAddress={object.address.specificAddress}
+                            />)
                     })
                     )
 
