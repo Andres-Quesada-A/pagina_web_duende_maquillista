@@ -62,9 +62,9 @@ export class OrderController {
         const deliveryDateOffset = (
                 (
                 deliveryDays.filter((day) => day >= nextDayOfTheWeek)[0]
-                || (deliveryDays[0] + 1)
+                || deliveryDays[0]
             ) - currentTime.getUTCDay() + 7
-        ) % 7;
+        ) % 7 || 7; // If the day is the same as the current day, add 7 days, as the delivery service does not work on the same day
 
         // Calculate the delivery date
         const deliveryDateStart = new Date(Date.UTC(
