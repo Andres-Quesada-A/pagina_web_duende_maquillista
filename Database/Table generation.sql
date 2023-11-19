@@ -176,3 +176,57 @@ CREATE TABLE [dbo].[OrderProducts]
     -- Other fields
     [amount] INT NOT NULL
 );
+
+-- 5. Events
+
+CREATE TABLE [dbo].[EventCategories]
+(
+    -- Keys
+    [id] INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+
+    -- Other fields
+    [description] VARCHAR(32) NOT NULL,
+    [deleted] BIT NOT NULL
+);
+
+CREATE TABLE [dbo].[Events]
+(
+    -- Keys
+    [id] INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+    [categoryId] INT NOT NULL FOREIGN KEY REFERENCES [dbo].[EventCategories]([id]),
+    [orderId] INT NULL FOREIGN KEY REFERENCES [dbo].[Orders]([id]),
+
+    -- Other fields
+    [startTime] DATETIME NOT NULL,
+    [endTime] DATETIME NOT NULL,
+    [title] VARCHAR(64) NOT NULL,
+    [description] VARCHAR(256) NOT NULL,
+    [deleted] BIT NOT NULL
+);
+
+-- 6. Notifications
+
+CREATE TABLE [dbo].[NotificationCategories]
+(
+    -- Keys
+    [id] INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+
+    -- Other fields
+    [description] VARCHAR(32) NOT NULL,
+    [deleted] BIT NOT NULL
+);
+
+CREATE TABLE [dbo].[Notifications]
+(
+    -- Keys
+    [id] INT IDENTITY PRIMARY KEY,
+    [categoryId] INT NOT NULL FOREIGN KEY REFERENCES [dbo].[NotificationCategories]([id]),
+    [userId] INT NOT NULL FOREIGN KEY REFERENCES [dbo].[Users]([id]),
+
+    -- Other fields
+    [title] VARCHAR(32) NOT NULL,
+    [description] VARCHAR(128) NOT NULL,
+    [moreDetailsUrl] VARCHAR(128) NULL,
+    [timestamp] DATETIME NOT NULL,
+    [deleted] BIT NOT NULL
+);
