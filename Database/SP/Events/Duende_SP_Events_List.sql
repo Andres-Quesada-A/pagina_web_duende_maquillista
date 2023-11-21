@@ -24,11 +24,11 @@ BEGIN
     BEGIN TRY
         IF (@IN_endTime IS NOT NULL)
 		BEGIN
-			SET @endTime = CONVERT(DATE, @IN_endTime)
+			SET @endTime = @IN_endTime
 		END
 		IF (@IN_startTime IS NOT NULL)
 		BEGIN
-			SET @startTime = CONVERT(DATE, @IN_startTime)
+			SET @startTime = @IN_startTime
 		END
 
 		SELECT @option = CASE WHEN @IN_startTime IS NULL 
@@ -56,14 +56,14 @@ BEGIN
 		AND EC.deleted = 0
 		AND ( (@option = 0) -- selection of everything
 			  OR ( (@option = 1) 
-				   AND (CONVERT(DATE, E.startTime) <= @endTime )
+				   AND (E.startTime <= @endTime )
 				 ) -- selection of everything from start until the endTime
 			  OR ( (@option = 2)
-				   AND (CONVERT(DATE, E.startTime) >= @startTime )
+				   AND (E.startTime >= @startTime )
 				 ) -- selection of everything after the startTime
 			  OR ( (@option = 3) 
-				   AND (CONVERT(DATE, E.startTime) >= @startTime)
-				   AND (CONVERT(DATE, E.startTime) <= @endTime)
+				   AND (E.startTime >= @startTime)
+				   AND (E.startTime <= @endTime)
 				 )-- selection of everything in the given range
 			)
 
