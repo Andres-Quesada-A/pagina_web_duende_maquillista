@@ -37,15 +37,14 @@ BEGIN
 	        	RAISERROR('La categoría "%s" es inválida.', 16, 1,@IN_newImageCategory)
 	        END;
         
-        --palabras reservadas
-        IF ( LTRIM(RTRIM(@IN_newImageCategory)) LIKE '%,%')
-	        BEGIN
-	        	RAISERROR('La categoría "%s" no puede tener ",".', 16, 1,@IN_newImageCategory)
-	        END;
-        
+        SELECT @UseIdImageCategory = C.id 
+        FROM [dbo].ImageCategories C 
+        WHERE LTRIM(RTRIM(C.description)) = LTRIM(RTRIM(@IN_imageCategory))
+        AND C.deleted = 0
 
         --previous existence
-        IF EXISTS (SELECT 1 FROM [dbo].ImageCategories C WHERE LTRIM(RTRIM(C.description)) = LTRIM(RTRIM(@IN_newImageCategory)) AND C.deleted = 0)
+        IF EXISTS (SELECT 1 FROM [dbo].ImageCategories C WHERE LTRIM(RTRIM(C.description)) = LTRIM(RTRIM(@IN_newImageCategory)) AND C.deleted = 0
+         AND C.id <> @UseIdImageCategory)
             BEGIN
                 RAISERROR('La categoría "%s" ya existe.', 16, 1,@IN_imageCategory)
             END;
@@ -55,11 +54,7 @@ BEGIN
 	        BEGIN
 	        	RAISERROR('No se ingresó texto de la categoría por modificar.', 16, 1)
 	        END;
-
-        SELECT @UseIdImageCategory = C.id 
-        FROM [dbo].ImageCategories C 
-        WHERE LTRIM(RTRIM(C.description)) = LTRIM(RTRIM(@IN_imageCategory))
-        AND C.deleted = 0
+        
 
         --previous existence
         IF (@UseIdImageCategory IS NULL)

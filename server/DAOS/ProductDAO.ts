@@ -3,13 +3,13 @@ import { Product } from "../models/Product";
 import { ProductCategory } from "../models/ProductCategory";
 
 export class ProductDAO {
-    async getProductList(): Promise<Product[]> {
+    async getProductList(limit?: number): Promise<Product[]> {
         const SQL = ConnectionDAO.getInstance();
         const damage: { customError: string | undefined }[] = [];
 
         return new Promise((resolve, reject) => {
             try {
-                SQL.query("Duende_SP_Product_List", {})
+                SQL.query("Duende_SP_Product_List", { "IN_limit": limit })
                     .then((result) => {
                         const productList = result?.recordset.map(
                             (product: any) =>

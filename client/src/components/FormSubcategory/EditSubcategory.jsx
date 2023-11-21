@@ -65,7 +65,7 @@ function EditSubcategory({ Raw, APIURL }) {
       })
       .catch((error) => {
         const errorMessage =
-          error?.response?.fullData?.message ||
+          error?.response?.data?.message ||
           defaultError;
         toast.error(errorMessage, messageSettings)
       });

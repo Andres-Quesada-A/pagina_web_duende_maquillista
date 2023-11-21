@@ -14,10 +14,10 @@ export const CreateImage = [
       required: true,
     },
     {
-      label: "Etiquetas",
+      label: "Etiquetas (separadas por espacios)",
       type: "text",
       id: "tags",
-      placeholder: "#tag1 #tag2 #tag3...",
+      placeholder: "tag1 tag2 tag3...",
       required: true,
     }
   ];

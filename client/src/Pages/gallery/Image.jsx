@@ -50,16 +50,11 @@ function ImageGallery() {
 
   useEffect(() => {
     
-    const apiImageURL = '/api/get_image_list'
+    const apiImageURL = `/api/get_image/${idImage}`
 
     axios.get(apiImageURL, { withCredentials: true }).then((response) => {
-      const dataImage = response.data;
-    
-      //codigo no relevante
-      const foundImage = dataImage.find(
-        (image) => image.id === parseInt(idImage)
-      );
-      if (foundImage) setImageData(foundImage);
+      const imageData = response.data;
+      setImageData(imageData);
     });
     
   }, [idImage]);
@@ -80,7 +75,7 @@ function ImageGallery() {
             <picture>
               <img
                 src={imageData.imageUrl}
-                className="rounded-md aspect-ratio-1/1 object-cover w-full max-w-md max-h-[500px]"
+                className="rounded-2xl aspect-ratio-1/1 object-cover w-full max-w-md max-h-[500px]"
               />
             </picture>
             <div className="flex flex-col gap-4 [&>p>span]:font-medium">
@@ -91,7 +86,10 @@ function ImageGallery() {
               <p><span>Categoría:</span> {imageData.category}</p>
               <p><span>Subcategoría:</span> {imageData.subcategory}</p>
               <p><span>Etiquetas:</span></p>
-              {imageData.tags ? <p className="text-indigo-500 -mt-4">{imageData.tags}</p>
+              {imageData.tags?.length
+                ? <p className="text-indigo-500 -mt-4">
+                    {imageData.tags.map((tag) => <a href={`/gallery?search=${encodeURIComponent("#" + tag)}`}>{`#${tag}`} </a>)}
+                  </p>
                 : <p className="text-gray-500 -mt-4 italic">No hay etiquetas</p>}
               <button onClick={toggleModal} className="h-11 w-full sm:w-auto rounded-lg px-5 text-white font-medium text-lg bg-indigo-500 hover:bg-indigo-400 transition-colors">
                 Enviar solicitud de servicio

@@ -17,7 +17,7 @@ function ChangePasswordPage() {
   const navigate = useNavigate()
 
   const redirect = () => {
-    navigate(afterUrl);
+    navigate(`/login?afterUrl=${encodedAfterUrl}`);
   }
 
   useEffect(() => {

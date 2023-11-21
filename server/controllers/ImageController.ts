@@ -12,8 +12,8 @@ export class ImageController {
     }
 
     // Method to get a lis of images with an specific subcategory
-    async getImageList(): Promise<Image[]> {
-        const response = await this.ImageDAO.getImageList();
+    async getImageList(limit?: number): Promise<Image[]> {
+        const response = await this.ImageDAO.getImageList(limit);
         return response;
     }
 
@@ -23,7 +23,7 @@ export class ImageController {
         imageSubcategory: string, 
         name: string, 
         description: string, 
-        tags: string, 
+        tags: string[], 
         imageUrl: string): Promise<Image | undefined> {
 
         const response = await this.ImageDAO.createImage(
@@ -44,7 +44,7 @@ export class ImageController {
         imageSubcategory: string, 
         name: string, 
         description: string,
-        tags: string, 
+        tags: string[], 
         imageUrl: string) : Promise<boolean>{
         const response = await this.ImageDAO.editImage(
             id,

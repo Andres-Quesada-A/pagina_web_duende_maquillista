@@ -47,7 +47,7 @@ function EditImage() {
           description: response.data.description,
           imageCategory: response.data.category,
           imageSubcategory: response.data.subcategory,
-          tags: response.data.tags,
+          tags: response.data.tags.join(' '),
           imageUrl: response.data.imageUrl
         });
         setPerc(100);
@@ -131,7 +131,7 @@ function EditImage() {
     const APIURL = "/api/edit_image";
 
     try {
-      await axios.put(APIURL, { ...data, id:parseInt(idImage) }, { withCredentials: true });
+      await axios.put(APIURL, { ...data, id:parseInt(idImage), tags: data.tags.split(" ") }, { withCredentials: true });
       toast.success("Imagen modificada exitosamente.", messageSettings);
       navigate("/gallery");
     } catch (error) {
@@ -145,10 +145,9 @@ function EditImage() {
   return (
     <div className="w-full min-h-screen flex flex-col items-center mt-16 py-14 px-5">
       <header className="w-full max-w-4xl">
-        <h1 className="font-medium text-3xl text-indigo-500">
+        <h1 className="font-semibold text-4xl text-indigo-500">
           Editar imagen
         </h1>
-        <hr className="border-indigo-500 border-1 mt-2"></hr>
       </header>
       <form
         className="w-full max-w-4xl grid grid-cols-2 gap-10 mt-10 pb-10"

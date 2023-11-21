@@ -133,8 +133,8 @@ function ShoppingCart() {
   };
   return (
     <div className="flex flex-col items-center pb-16">
-      <header className="w-full max-w-5xl border-b-2 border-indigo-400 mt-16 pt-8 pb-5 px-5">
-        <h1 className="text-indigo-500 text-4xl font-medium">Carrito</h1>
+      <header className="w-full max-w-5xl mt-16 pt-8 px-5">
+        <h1 className="text-indigo-500 text-4xl font-semibold">Carrito</h1>
       </header>
       <section className=" w-full max-w-5xl px-5 overflow-x-auto mt-10">
         {cartItems.length > 0 ?

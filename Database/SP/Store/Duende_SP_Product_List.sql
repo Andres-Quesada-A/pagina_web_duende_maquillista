@@ -5,6 +5,7 @@
 --------------------------------------------------------------------------
 
 CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_Product_List]
+    @IN_limit INT = NULL
 AS
 BEGIN
     SET NOCOUNT ON;         -- No metadata returned
@@ -14,17 +15,35 @@ BEGIN
 
     BEGIN TRY
 
-        SELECT  P.[id],
-                PC.[description] AS 'category',
-                P.[name],
-                P.[description],
-                P.[imageUrl],
-                P.[price],
-                P.[available]
-        FROM    [dbo].[Products] P
-        JOIN    [dbo].[ProductCategories] PC
-            ON  P.[categoryId] = PC.[id]
-        WHERE   P.[deleted] = 0;
+        IF (@IN_limit IS NULL) OR (@IN_limit < 1)
+        BEGIN
+            SELECT  P.[id],
+                    PC.[description] AS 'category',
+                    P.[name],
+                    P.[description],
+                    P.[imageUrl],
+                    P.[price],
+                    P.[available]
+            FROM    [dbo].[Products] P
+            JOIN    [dbo].[ProductCategories] PC
+                ON  P.[categoryId] = PC.[id]
+            WHERE   P.[deleted] = 0
+        END
+        ELSE
+        BEGIN
+            SELECT  TOP (@IN_limit)
+                    P.[id],
+                    PC.[description] AS 'category',
+                    P.[name],
+                    P.[description],
+                    P.[imageUrl],
+                    P.[price],
+                    P.[available]
+            FROM    [dbo].[Products] P
+            JOIN    [dbo].[ProductCategories] PC
+                ON  P.[categoryId] = PC.[id]
+            WHERE   P.[deleted] = 0
+        END
 
     END TRY
     BEGIN CATCH

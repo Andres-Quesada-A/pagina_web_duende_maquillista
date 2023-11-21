@@ -3,14 +3,20 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { messageSettings } from '../../utils/messageSettings';
 import Order from "../../components/cards/order";
+import { useAuthContext } from "../../context/AuthContext";
 
 function OrdersPage() {
-
+    const { getUserEmail, getUserType } = useAuthContext();
     const [data, setData] = useState([]);
-
+    const [admin, setAdmin] = useState(getUserType() == 1);
 
     useEffect(() => {
         const apiOrders = '/api/get_order_list'
+            + (
+                admin
+                    ? ''
+                    : `/?email=${encodeURIComponent(getUserEmail())}`
+            );
 
         axios.get(apiOrders).then((response) => {
             const dataOrders = response.data
@@ -36,17 +42,23 @@ function OrdersPage() {
         <>
             <div className="w-full min-h-screen flex flex-col items-center mt-16 py-14 px-10">
                 <header className="w-full max-w-4x1">
-                    <h1 className="font-medium text-3xl text-indigo-500">
-                        Órdenes
+                    <h1 className="font-semibold text-4xl text-indigo-500">
+                        { admin ? "Órdenes" : "Mis órdenes" }
                     </h1>
-                    <hr className="border-indigo-500 border-1 mt-2"></hr>
                 </header>
                 <section className="w-full max-w-4x1 grid grid-cols-1 md:grid-cols-3 gap-5 mt-6">
                     {
                     (data && data.length === 0) ? (
                         <h2>No hay órdenes</h2>
-                    ) : (data.map((objeto) => {
-                        return (<Order key={objeto.id} id={objeto.id} timestamp={formatDate(objeto.timestamp)} address={objeto.address.specificAddress} />)
+                    ) : (data.map((object) => {
+                        return (
+                            <Order
+                                key={object.id}
+                                id={object.id}
+                                timestamp={formatDate(object.timestamp)}
+                                administrativeAddress={`${object.address.district}, ${object.address.canton}, ${object.address.province}`}
+                                specificAddress={object.address.specificAddress}
+                            />)
                     })
                     )
 

@@ -102,18 +102,19 @@ BEGIN
         AND Deleted = 0
 
         INSERT INTO [dbo].[Tags] ([imageId], [description], [deleted])
-        SELECT 
+        SELECT DISTINCT
             @IN_ImageID AS [imageId], 
-            NT.tags AS [description], 
+            LTRIM(RTRIM(NT.tags)) AS [description], 
             0 AS [deleted]
         FROM @IN_Tags AS NT
         WHERE NT.tags IS NOT NULL
-        AND NT.tags NOT IN (
-        SELECT [description] 
-        FROM [dbo].[Tags] 
-        WHERE [description] IS NOT NULL 
-            AND imageId = @IN_ImageID 
-            AND deleted = 0
+        AND LTRIM(RTRIM(NT.tags)) != ''
+        AND LTRIM(RTRIM(NT.tags)) NOT IN (
+            SELECT [description] 
+            FROM [dbo].[Tags] 
+            WHERE [description] IS NOT NULL 
+                AND imageId = @IN_ImageID 
+                AND deleted = 0
         );
          
         UPDATE [dbo].[Tags]

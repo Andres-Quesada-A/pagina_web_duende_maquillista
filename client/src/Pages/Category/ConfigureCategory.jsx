@@ -44,10 +44,9 @@ function ConfigureCategory() {
   return (
     <div className="w-full min-h-screen flex flex-col items-center mt-16 py-14 px-5">
       <header className="w-full max-w-4xl">
-        <h1 className="font-medium text-3xl text-indigo-500">
-          Configurar categoría
+        <h1 className="font-semibold text-4xl text-indigo-500">
+          Configurar categorías (galería)
         </h1>
-        <hr className="border-indigo-500 border-1 mt-2"></hr>
       </header>
       <section className="grid grid-cols-2 gap-10 w-full max-w-4xl mt-10 ">
         <AddCategory APIURL={apiCategoryURL.post}/>

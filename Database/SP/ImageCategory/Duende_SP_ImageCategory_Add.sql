@@ -32,12 +32,6 @@ BEGIN
 	        BEGIN
 	        	RAISERROR('La categoría "%s" es inválida.', 16, 1,@IN_imageCategory)
 	        END;
-        
-        --palabras reservadas
-        IF (LTRIM(RTRIM(@IN_imageCategory)) LIKE '%,%')
-	        BEGIN
-	        	RAISERROR('La categoría "%s" no puede tener ",".', 16, 1,@IN_imageCategory)
-	        END;
 
 
         --previous existence

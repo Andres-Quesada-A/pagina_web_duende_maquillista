@@ -93,8 +93,10 @@ BEGIN
         -- Insert tags from TVP into Tags table
         INSERT INTO Tags
         (imageId, description, deleted)
-        SELECT @ImageID, tags, 0
-        FROM @IN_Tags;
+        SELECT DISTINCT
+            @ImageID, LTRIM(RTRIM(tags)), 0
+        FROM @IN_Tags
+        WHERE LTRIM(RTRIM(tags)) != '';
 
         SELECT 
             I.ID AS 'ImageID',
@@ -104,9 +106,11 @@ BEGIN
             I.Description AS Description,
             I.Date AS Date,
             (
-                SELECT STRING_AGG(description, ' ')
+                SELECT [description]
                 FROM Tags
                 WHERE ImageId = I.id
+                AND Deleted = 0
+                FOR JSON PATH
             ) AS Tags,
             I.ImageURL AS URL
         FROM 

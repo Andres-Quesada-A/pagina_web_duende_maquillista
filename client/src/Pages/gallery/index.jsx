@@ -11,6 +11,7 @@ import { getKeysCheckbox } from "../../utils/getkeysCheckbox";
 import { useAuthContext } from "../../context/AuthContext";
 
 function Gallery() {
+  const queryParams = new URLSearchParams(location.search);
   const [search, setSearch] = useState({});
   const [filters, setFilters] = useState({});
   const [Subcategoryfilters, setSubcategoryfilters] = useState({});
@@ -19,6 +20,7 @@ function Gallery() {
   const [category, setCategory] = useState([]);
   const { getLoginStatus, getUserType } = useAuthContext();
   const [admin, setAdmin] = useState(getLoginStatus() && getUserType() == 1);
+  const urlSearch = queryParams.get('search');
 
   function getSubcategories() {
     const selectedCategoryObject = category.find(item => item.category === filters.category);
@@ -42,7 +44,8 @@ function Gallery() {
 
     axios.delete(`${apiDeleteImageUrl}/${id}`, { withCredentials: true })
       .then(() => {
-        toast.success("Imagen eliminada.", messageSettings)
+        toast.success("Imagen eliminada exitosamente.", messageSettings);
+        setData(data.filter((item) => item.id !== id));
       })
       .catch((error) => {
         const errorMessage =
@@ -75,12 +78,25 @@ function Gallery() {
     })
   }, []);
 
-  const handleChange = (e) => {
+  useEffect(() => {
+    if (urlSearch && data && category) {
+      setSearch({ search: urlSearch });
+      document.getElementById("search").value = urlSearch;
+      handleSubmit();
+    }
+  }, [data, category]);
+
+  useEffect(() => {
+    // If an image is deleted
+    handleSubmit();
+  }, [data]);
+
+  const handleChangeSearch = (e) => {
     setSearch({ ...search, [e.target.id]: e.target.value });
   };
 
   const handleChangeFilters = (e) => {
-
+    console.log(filters);
     setFilters({ ...filters, [e.target.id]: e.target.value });
     setSubcategoryfilters({});
   };
@@ -91,13 +107,39 @@ function Gallery() {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    const keys = getKeysCheckbox(Subcategoryfilters)
-    //setImageFiltered( (data.filter(key => key.category === filters.category)).filter(key => keys.) )
-    const filteredImages = data.filter(image => image.category === filters.category &&
-      (keys.length === 0 || keys.some(subcategory => image.subcategory.includes(subcategory))));
+    e?.preventDefault();
+    const keys = getKeysCheckbox(Subcategoryfilters);
+    const searchTags =
+      search.search?.match(/#\S+/g)?.map((tag) => tag.replace("#", "").toLowerCase())
+      || []; // Extracts all words/entities starting with # from search.search and puts them in an array
+    const searchTerm = search.search?.replace(/#\S+/g, "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .trim()
+      .toLowerCase(); // Everything but the tags
+
+    const filteredImages = data.filter(image =>
+      (!filters.category || (image.category === filters.category &&
+      (keys.length === 0 || keys.some(subcategory => image.subcategory.includes(subcategory)))))
+      && (!searchTerm
+          || image.name
+              .toLowerCase()
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .includes(searchTerm)
+          ||
+            image.description
+              .toLowerCase()
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .includes(searchTerm)
+          )
+      && (!searchTags.length
+          || searchTags.every(tag => image.tags?.map((imageTag) => imageTag.toLowerCase()).includes(tag)))
+    );
     setImageFiltered(filteredImages);
   };
+
   const categoryOptions = category.map(item => ({
     value: item.category,
     label: item.category
@@ -126,11 +168,27 @@ function Gallery() {
               required={false}
             />
             <h4 className="mt-4 mb-3 font-semibold">Subcategorías</h4>
-            <SwitchFormInputs
-              HandleChange={handleChangeSubcategoryFilters}
-              data={Subcategoryfilters}
-              structureForm={subcategoryOptions}
-            />
+            {
+              filters.category ? 
+                (
+                  subcategoryOptions.length > 0 ?
+                    <SwitchFormInputs
+                      HandleChange={handleChangeSubcategoryFilters}
+                      data={Subcategoryfilters}
+                      structureForm={subcategoryOptions}
+                    />
+                    : <><p class="italic text-sm">No hay subcategorías</p></>
+                )
+                : <><p class="italic text-sm">Seleccione una categoría primero</p></>
+            }
+            <h4 className="mt-4 mb-3 font-semibold">Imágenes</h4>
+              <input
+                onChange={handleChangeSearch}
+                type="text"
+                placeholder="Buscar"
+                id="search"
+                className="h-10 bg-gray-50 border border-indigo-300 text-gray-900 text-base rounded-xl focus:outline-none focus:ring-4 focus:border-indigo-400 focus:ring-indigo-100 block w-full px-2.5"
+              />
             <button className="mt-3 bg-indigo-500 hover:bg-indigo-400 transition-colors py-1 font-medium text-white w-full text-lg rounded-md">
               Buscar
             </button>

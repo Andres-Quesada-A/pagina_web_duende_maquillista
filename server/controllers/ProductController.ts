@@ -8,8 +8,8 @@ export class ProductController {
         this.ProductDAO = new ProductDAO();
     }
 
-    async getProductList(): Promise<Product[]> {
-        const response = await this.ProductDAO.getProductList();
+    async getProductList(limit?: number): Promise<Product[]> {
+        const response = await this.ProductDAO.getProductList(limit);
         return response;
     }
 

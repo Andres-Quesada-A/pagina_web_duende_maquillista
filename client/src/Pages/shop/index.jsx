@@ -99,9 +99,9 @@ function Shop() {
     let filtered = JSON.parse(products); // Para cargarlos en el orden original
     if (search.search) {
       const searchTerm = search.search
-        .toLowerCase()
         .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "");
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase();
       filtered = filtered.filter((product) =>
         product.name
           .toLowerCase()

@@ -151,13 +151,13 @@ export class OrderDAO {
         });
     }
 
-    async getOrderList(): Promise<Order[]> {
+    async getOrderList(email?: string): Promise<Order[]> {
         const SQL = ConnectionDAO.getInstance();
         const damage: { customError: string | undefined }[] = [];
 
         return new Promise((resolve, reject) => {
             try{
-                SQL.query('Duende_SP_Orders_List')
+                SQL.query('Duende_SP_Orders_List', { 'IN_userEmail': email })
                 .then((result) => {
                     const orderlist = result?.recordset.map(
                         (order: any) =>{ 

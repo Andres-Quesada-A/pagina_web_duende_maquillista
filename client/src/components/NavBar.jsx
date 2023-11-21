@@ -22,9 +22,13 @@ const OPTIONS = {
     {
       name: "Tienda de Duende",
       link: "/shop",
-    },
+    }
   ],
   admin: [
+    {
+      name: "Inicio",
+      link: "/",
+    },
     {
       name: "Órdenes",
       link: "/orders",
