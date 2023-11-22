@@ -209,7 +209,7 @@ function Schedule() {
         </header>
         <div className="flex flex-row h-full gap-1">
           <div className={`h-screen w-screen lg:h-full lg:w-[20rem] top-0 bottom-0 ${toggleSearch ? "right-0" : "right-full"} absolute lg:static lg:opacity-100 transition-all bg-white lg:block flex flex-col items-center mt-24 lg:mt-0 z-50 gap-10 lg:gap-0`}>
-            <search className="rounded-2xl bg-slate-200 p-3 w-[20rem] lg:w-full">
+            <search className="rounded-2xl bg-slate-200 p-3 h-[18rem] w-[20rem] lg:w-full">
               <div className="flex flex-row w-full justify-between mb-2">
                 <p>{monthName(date)}</p>
                 <ul className="flex flex-row gap-1">
@@ -231,47 +231,49 @@ function Schedule() {
                   </li>
                 </ul>
               </div>
-              <ul className="flex flex-row flex-wrap w-full [&>li]:w-1/7 font-bold text-center">
-                <li>L</li>
-                <li>M</li>
-                <li>M</li>
-                <li>J</li>
-                <li>V</li>
-                <li>S</li>
-                <li>D</li>
-              </ul>
-              <ul className="flex flex-row flex-wrap w-full text-sm">
-                {visibleDays.map((month) =>
-                  month.days.map((day) => (
-                    <li
-                      key={month + "/" + day}
-                      className={`w-1/7 h-8 flex justify-center items-center rounded-full cursor-pointer transition-colors ${
-                        month.year == date.getFullYear() &&
-                        month.month == date.getMonth() + 1 &&
-                        day == date.getDate()
-                          ? "bg-indigo-500 text-white font-medium"
-                          : "hover:bg-gray-100 hover:shadow-md"
-                      } ${
-                        month.year == date.getFullYear() &&
-                        month.month == date.getMonth() + 1
-                          ? ""
-                          : "opacity-30"
-                      } ${
-                        month.year == currentDate.getFullYear() &&
-                        month.month == currentDate.getMonth() + 1 &&
-                        day == currentDate.getDate()
-                          ? "border border-indigo-500"
-                          : ""
-                      }`}
-                      onClick={() => {
-                        setDate(new Date(month.year, month.month - 1, day));
-                      }}
-                    >
-                      {day}
-                    </li>
-                  ))
-                )}
-              </ul>
+              <div className="flex flex-col h-full">
+                <ul className={`items-center flex flex-row flex-wrap w-full [&>li]:w-1/7 font-bold text-center ${visibleWeeks == 6 ? "h-1/7" : visibleWeeks == 5 ? "h-1/6" : "h-1/5"}`}>
+                  <li>L</li>
+                  <li>M</li>
+                  <li>M</li>
+                  <li>J</li>
+                  <li>V</li>
+                  <li>S</li>
+                  <li>D</li>
+                </ul>
+                <ul className="flex flex-row flex-wrap w-full text-sm h-full pb-6">
+                  {visibleDays.map((month) =>
+                    month.days.map((day) => (
+                      <li
+                        key={month + "/" + day}
+                        className={`w-1/7 flex justify-center items-center rounded-full cursor-pointer transition-colors ${
+                          month.year == date.getFullYear() &&
+                          month.month == date.getMonth() + 1 &&
+                          day == date.getDate()
+                            ? "bg-indigo-500 text-white font-medium"
+                            : "hover:bg-gray-100 hover:shadow-md"
+                        } ${
+                          month.year == date.getFullYear() &&
+                          month.month == date.getMonth() + 1
+                            ? ""
+                            : "opacity-30"
+                        } ${
+                          month.year == currentDate.getFullYear() &&
+                          month.month == currentDate.getMonth() + 1 &&
+                          day == currentDate.getDate()
+                            ? "border border-indigo-500"
+                            : ""
+                        } ${visibleWeeks == 6 ? "h-1/7" : visibleWeeks == 5 ? "h-1/6" : "h-1/5"}`}
+                        onClick={() => {
+                          setDate(new Date(month.year, month.month - 1, day));
+                        }}
+                      >
+                        {day}
+                      </li>
+                    ))
+                  )}
+                </ul>
+              </div>
             </search>
             <search className="flex flex-col items-start">
               <h4 className="text-gray-600 font-semibold text-2xl lg:mt-5 mb-2">
