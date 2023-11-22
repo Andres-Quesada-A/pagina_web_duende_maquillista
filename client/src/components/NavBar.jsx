@@ -41,6 +41,10 @@ const OPTIONS = {
       name: "Tienda",
       link: "/shop",
     },
+    {
+      name: "Agenda",
+      link: "/schedule",
+    }
   ],
 };
 function NavBar() {
