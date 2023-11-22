@@ -4,6 +4,7 @@ import { useShoppingCart } from "../context/ShoppingCartContext";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
 import { useState } from "react";
+import Notifications from "./Notifications";
 
 const OPTIONS = {
   client: [
@@ -118,6 +119,7 @@ function NavBar() {
               </div>
             )}
           </div>
+          <Notifications/>
         </div>
       </div>
     </nav>
