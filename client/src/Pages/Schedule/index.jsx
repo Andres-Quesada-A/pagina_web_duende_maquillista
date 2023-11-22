@@ -251,7 +251,7 @@ function Schedule() {
                           setDate(new Date(month.year, month.month - 1, day));
                         }}
                       >
-                        <div className="absolute top-3 flex flex-row gap-1">
+                        <div className={`absolute ${visibleWeeks == 6 ? "top-1" : visibleWeeks == 5 ? "top-2" : "top-4"} flex flex-row gap-1`}>
                           {categories.filter((category) => (events[month.year] &&
                               events[month.year][month.month] &&
                               events[month.year][month.month][day] &&
