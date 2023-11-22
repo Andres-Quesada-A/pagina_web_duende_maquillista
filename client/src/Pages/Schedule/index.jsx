@@ -9,9 +9,9 @@ import { Arrow, Search } from "../../components/Icons";
 const views = ["día", "semana", "mes"];
 
 const categoryColors = {
-  Otro: { background: "bg-sky-300", accent: "accent-sky-300" },
-  Servicio: { background: "bg-red-300", accent: "accent-red-300" },
-  Entrega: { background: "bg-emerald-300", accent: "accent-emerald-300" },
+  Otro: { background: "bg-sky-300", accent: "accent-sky-300", badge: "bg-sky-500" },
+  Servicio: { background: "bg-red-300", accent: "accent-red-300", badge: "bg-red-500" },
+  Entrega: { background: "bg-emerald-300", accent: "accent-emerald-300", badge: "bg-emerald-500" },
 };
 const allCategories = Object.keys(categoryColors);
 
@@ -209,7 +209,7 @@ function Schedule() {
         </header>
         <div className="flex flex-row h-full gap-1">
           <div className={`h-screen w-screen lg:h-full lg:w-[20rem] top-0 bottom-0 ${toggleSearch ? "right-0" : "right-full"} absolute lg:static lg:opacity-100 transition-all bg-white lg:block flex flex-col items-center mt-24 lg:mt-0 z-50 gap-10 lg:gap-0`}>
-            <search className="rounded-2xl bg-slate-200 p-3 h-[18rem] w-[20rem] lg:w-full">
+            <search className="rounded-2xl bg-slate-200 p-3 w-[20rem] lg:w-full">
               <div className="flex flex-row w-full justify-between mb-2">
                 <p>{monthName(date)}</p>
                 <ul className="flex flex-row gap-1">
@@ -232,7 +232,7 @@ function Schedule() {
                 </ul>
               </div>
               <div className="flex flex-col h-full">
-                <ul className={`items-center flex flex-row flex-wrap w-full [&>li]:w-1/7 font-bold text-center ${visibleWeeks == 6 ? "h-1/7" : visibleWeeks == 5 ? "h-1/6" : "h-1/5"}`}>
+                <ul className={`items-center flex flex-row flex-wrap w-full [&>li]:w-1/7 font-bold text-center h-8`}>
                   <li>L</li>
                   <li>M</li>
                   <li>M</li>
@@ -241,12 +241,25 @@ function Schedule() {
                   <li>S</li>
                   <li>D</li>
                 </ul>
-                <ul className="flex flex-row flex-wrap w-full text-sm h-full pb-6">
+                <ul className={`flex flex-row flex-wrap w-full text-sm h-[14rem]`}>
                   {visibleDays.map((month) =>
                     month.days.map((day) => (
                       <li
                         key={month + "/" + day}
-                        className={`w-1/7 flex justify-center items-center rounded-full cursor-pointer transition-colors ${
+                        className={`w-1/7 flex justify-center items-center ${visibleWeeks == 6 ? "h-1/6" : visibleWeeks == 5 ? "h-1/5" : "h-1/4"} relative`}
+                        onClick={() => {
+                          setDate(new Date(month.year, month.month - 1, day));
+                        }}
+                      >
+                        <div className="absolute top-3 flex flex-row gap-1">
+                          {categories.filter((category) => (events[month.year] &&
+                              events[month.year][month.month] &&
+                              events[month.year][month.month][day] &&
+                              events[month.year][month.month][day].find((event) => (event.category == category)))).map((category) => (
+                            <span className={`w-1 h-1 ${categoryColors[category].badge} rounded-lg`}></span>
+                          ))}
+                        </div>
+                        <p className={`rounded-full cursor-pointer transition-colors ${
                           month.year == date.getFullYear() &&
                           month.month == date.getMonth() + 1 &&
                           day == date.getDate()
@@ -263,12 +276,7 @@ function Schedule() {
                           day == currentDate.getDate()
                             ? "border border-indigo-500"
                             : ""
-                        } ${visibleWeeks == 6 ? "h-1/7" : visibleWeeks == 5 ? "h-1/6" : "h-1/5"}`}
-                        onClick={() => {
-                          setDate(new Date(month.year, month.month - 1, day));
-                        }}
-                      >
-                        {day}
+                        } w-8 h-8 p-2 text-center`}>{day}</p>
                       </li>
                     ))
                   )}
