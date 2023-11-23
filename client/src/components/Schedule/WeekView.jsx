@@ -39,7 +39,7 @@ function WeekView({
 
   return (
     <div
-      className={`flex flex-row flex-wrap h-full [&>div]:w-1/7 [&>div]:text-center [&>div]:border-l [&>div:nth-child(7n+1)]:border-l-0 [&>div]:pt-0 [&>div]:border-gray-300`}
+      className={`flex flex-row flex-wrap h-full w-full [&>div]:w-1/7 [&>div]:border-l [&>div:nth-child(7n+1)]:border-l-0 [&>div]:border-gray-300`}
     >
       {visibleWeek.map((month) => (
         month.days.map((day, index) => (
@@ -56,7 +56,6 @@ function WeekView({
               events[month.year][month.month][day] &&
               events[month.year][month.month][day].filter((event) => (categories.indexOf(event.category) > -1)) || []}
             categoryColors={categoryColors}
-            selectedMonth={month.month}
           />
         ))
       ))}

@@ -36,6 +36,7 @@ BEGIN
         INNER JOIN Users U ON N.userId = U.id
         INNER JOIN NotificationCategories C ON N.categoryId = C.id
         WHERE U.email = LTRIM(RTRIM(@IN_userEmail))
+        AND N.deleted = 0
         ORDER BY N.timestamp DESC;
 
     END TRY

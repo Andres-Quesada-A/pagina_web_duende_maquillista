@@ -87,6 +87,27 @@ BEGIN
             0
         );
 
+        DECLARE @NotificationID INT = SCOPE_IDENTITY();
+        
+        SELECT 
+            N.id as notificationId, 
+            N.categoryId as categoryID, 
+            N.title as title, 
+            N.description as description, 
+            N.moreDetailsURL as moreDetailsURL,
+            N.timestamp as timestamp, 
+            N.deleted as deleted,
+            U.id as userId,
+            U.name as userName,
+            U.lastName1 as userLastName1,
+            U.lastName2 as userLastName2,
+            U.email as userEmail,
+            U.password as userPassword,
+            U.token as userToken
+        FROM Notifications N
+        INNER JOIN Users U ON U.id = N.userId
+        WHERE N.id = @NotificationID;
+
         -- TRANSACTION COMMITTED
         IF @transactionBegun = 1
         BEGIN

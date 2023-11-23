@@ -26,7 +26,7 @@ function MonthView({ currentDate, date, visibleDays, visibleWeeks, events, categ
                 } h-full flex flex-col`}
               >
                 <span
-                  className={`whitespace-nowrap overflow-hidden md:text-sm rounded-full py-1 px-2 mb-1 self-center ${
+                  className={`whitespace-nowrap overflow-hidden text-xs md:text-sm rounded-full py-1 px-2 mb-1 self-center ${
                     month.year == currentDate.getFullYear() &&
                     month.month == currentDate.getMonth() + 1 &&
                     day == currentDate.getDate()
