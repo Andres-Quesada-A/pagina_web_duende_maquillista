@@ -1,4 +1,4 @@
-const languages = ["es-UY", "es-CR", "es"];
+export const languages = ["es-UY", "es-CR", "es"];
 
 export const dateOptions = {
   newMonth: { day: "numeric", month: "short" },
@@ -28,11 +28,15 @@ export const getWeekCount = (year, month) => {
   return rowCount;
 };
 
-export const timeString = (date) => {
+export const timeString = (date, short = false) => {
   // Some browsers mistakenly return 00:00 a. m. for 12:00 a. m., so we replace it with 12:00 a. m.
-  return new Date(date.endsWith("Z") ? date : date + "Z")
+  let result = new Date(date.endsWith("Z") ? date : date + "Z")
     .toLocaleTimeString(languages, timeOptions)
     .replace(/^0(0)?:/, "12:");
+  if (short) {
+    result = result.replace(/:00 /, " ");
+  }
+  return result;
 };
 
 export const monthName = (date) => {
@@ -45,3 +49,10 @@ export const monthName = (date) => {
     currentOptions
   ).toLowerCase();
 };
+
+export const durationStrings = (startTime, endTime) => {
+  let start = timeString(startTime.toISOString(), true).replace(/\s?([ap])\.\s?m\.$/, "$1");
+  let end = timeString(endTime.toISOString(), true).replace(/\s?([ap])\.\s?m\.$/, "$1");
+
+  return [start, end]
+}

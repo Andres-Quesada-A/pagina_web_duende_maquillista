@@ -2,6 +2,7 @@ import { Helmet } from "react-helmet-async";
 import { useState, useEffect } from "react";
 import { Events } from "../../mockups/Events";
 import MonthView from "../../components/Schedule/MonthView";
+import WeekView from "../../components/Schedule/WeekView";
 import WeekHeader from "../../components/Schedule/WeekHeader";
 import { getWeekCount, monthName } from "../../utils/dateFormatter";
 import { Arrow, Search } from "../../components/Icons";
@@ -24,6 +25,8 @@ function Schedule() {
   const [visibleDays, setVisibleDays] = useState([]); // Structure: [ { year: 2023, month: 10, days: [] }]
   const [visibleWeeks, setVisibleWeeks] = useState(0); // Ranges between 4 and 6, for the month view
   const [toggleSearch, setToggleSearch] = useState(false);
+  const [weekNumber, setWeekNumber] = useState();
+  const [currentMonth, setCurrentMonth] = useState();
 
   const handleViewChange = (e) => {
     setView(e.target.id);
@@ -56,8 +59,7 @@ function Schedule() {
   useEffect(() => {
     // Creates an array with the days to be displayed
     let numberOfDays = 7 * getWeekCount(date.getFullYear(), date.getMonth());
-    let days = [];
-    let firstDay;
+    let days = [], firstDay, dayCount = 0, weekNumber = null;
     setVisibleWeeks(numberOfDays / 7);
 
     // Sets firstDay to the first day displayed in the calendar
@@ -79,6 +81,11 @@ function Schedule() {
       for (let i = firstDay.getDate(); i <= totalDaysPreviousMonth; i++) {
         previousMonth.days.push(i);
         numberOfDays--;
+        if (weekNumber === null && previousMonth.month - 1 == date.getMonth() && i == date.getDate()) {
+          weekNumber = Math.floor(dayCount / 7);
+        } else {
+          dayCount++;
+        }
       }
       days.push(previousMonth);
       firstDay.setDate(totalDaysPreviousMonth + 1); // Sets firstDay to the first day of the current month
@@ -102,6 +109,11 @@ function Schedule() {
     ) {
       currentMonth.days.push(i);
       numberOfDays--;
+      if (weekNumber === null && currentMonth.month - 1 == date.getMonth() && i == date.getDate()) {
+        weekNumber = Math.floor(dayCount / 7);
+      } else {
+        dayCount++;
+      }
     }
     days.push(currentMonth);
     firstDay.setDate(totalDaysCurrentMonth + 1); // Sets firstDay to the first day of the next month
@@ -115,10 +127,17 @@ function Schedule() {
       };
       for (let i = 1; i <= numberOfDays; i++) {
         nextMonth.days.push(i);
+        if (weekNumber === null && nextMonth.month - 1 == date.getMonth() && i == date.getDate()) {
+          weekNumber = Math.floor(dayCount / 7);
+        } else {
+          dayCount++;
+        }
       }
       days.push(nextMonth);
     }
 
+    setCurrentMonth(currentMonth.month);
+    setWeekNumber(weekNumber);
     setVisibleDays(days);
   }, [date]);
 
@@ -135,7 +154,6 @@ function Schedule() {
       visibleDays.at(-1).month - 1,
       visibleDays.at(-1).days.at(-1)
     ).toISOString();
-    console.log(startDate, endDate);
 
     // Here would go the API call to retrieve the events
 
@@ -208,7 +226,7 @@ function Schedule() {
           </div>
         </header>
         <div className="flex flex-row h-full gap-1">
-          <div className={`h-screen w-screen lg:h-full lg:w-[20rem] top-0 bottom-0 ${toggleSearch ? "right-0" : "right-full"} absolute lg:static lg:opacity-100 transition-all bg-white lg:block flex flex-col items-center mt-24 lg:mt-0 z-50 gap-10 lg:gap-0`}>
+          <div className={`h-screen w-screen lg:h-full lg:w-[20rem] top-0 bottom-0 ${toggleSearch ? "right-0" : "right-full"} absolute lg:static lg:opacity-100 transition-all bg-white lg:block flex flex-col items-center mt-24 lg:mt-0 max-lg:z-50 gap-10 lg:gap-0`}>
             <search className="rounded-2xl bg-slate-200 p-3 w-[20rem] lg:w-full">
               <div className="flex flex-row w-full justify-between mb-2">
                 <p>{monthName(date)}</p>
@@ -256,7 +274,7 @@ function Schedule() {
                               events[month.year][month.month] &&
                               events[month.year][month.month][day] &&
                               events[month.year][month.month][day].find((event) => (event.category == category)))).map((category) => (
-                            <span className={`w-1 h-1 ${categoryColors[category].badge} rounded-lg`}></span>
+                            <span key={category} className={`w-1 h-1 ${categoryColors[category].badge} rounded-lg`}></span>
                           ))}
                         </div>
                         <p className={`rounded-full cursor-pointer transition-colors ${
@@ -310,20 +328,37 @@ function Schedule() {
               Aceptar
             </button>
           </div>
-          {view == "mes" || view == "semana" ? (
-            <article className="w-full h-full pb-10">
-              <WeekHeader />
-              <MonthView
-                currentDate={currentDate}
-                date={date}
-                visibleDays={visibleDays}
-                visibleWeeks={visibleWeeks}
-                events={events}
-                categoryColors={categoryColors}
-                categories={categories}
-              />
-            </article>
-          ) : null}
+          <article className="w-full h-full pb-10">
+            {view == "mes" || view == "semana" ? (
+              <>
+                <WeekHeader />
+                {
+                  view == "mes" ? (
+                    <MonthView
+                      currentDate={currentDate}
+                      date={date}
+                      visibleDays={visibleDays}
+                      visibleWeeks={visibleWeeks}
+                      events={events}
+                      categoryColors={categoryColors}
+                      categories={categories}
+                    />
+                  ) :
+                  <WeekView
+                    key={`${currentMonth}_${weekNumber}`}
+                    currentDate={currentDate}
+                    date={date}
+                    days={visibleDays}
+                    weekNumber={weekNumber}
+                    events={events}
+                    categoryColors={categoryColors}
+                    categories={categories} />
+                }
+              </>
+              ) : null}
+            
+          </article>
+          
         </div>
       </section>
     </>

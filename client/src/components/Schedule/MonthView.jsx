@@ -1,4 +1,4 @@
-import { dateOptions, timeString } from "../../utils/dateFormatter";
+import { languages, dateOptions, timeString } from "../../utils/dateFormatter";
 
 function MonthView({ currentDate, date, visibleDays, visibleWeeks, events, categoryColors, categories }) {
   return (
@@ -40,7 +40,7 @@ function MonthView({ currentDate, date, visibleDays, visibleWeeks, events, categ
                       month.month - 1,
                       day
                     ).toLocaleDateString(
-                      ["es-UY", "es-CR", "es"],
+                      languages,
                       day == month.days[0]
                         ? dateOptions.newMonth
                         : dateOptions.sameMonth
