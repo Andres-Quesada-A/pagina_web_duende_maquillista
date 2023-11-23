@@ -13,6 +13,7 @@ import { ProductController } from "./ProductController";
 import { OrderController } from "./OrderController";
 import ConnectionDAO from "../DAOS/ConnectionDAO";
 import { EmailController } from "./EmailController";
+import { NotificationController } from "./NotificationController";
 
 export class MasterController {
     constructor() {
@@ -537,6 +538,7 @@ export class MasterController {
         }
     }
 
+    // Method to get a list of orders
     async getOrderList(req: Request, res:Response): Promise<Response> {
         try{
             const OrderControllerObject = new OrderController();
@@ -547,7 +549,8 @@ export class MasterController {
             return res.status(400).json({ message: error[0] ? error[0].customError : undefined });
         }
     }
-
+    
+    // Method to get an order
     async getOrderDetails(req: Request, res:Response): Promise<Response> {
         try{
             const id = Number(req.params.id);
@@ -559,6 +562,7 @@ export class MasterController {
         }
     }
 
+    // Method to delete an order
     async deleteOrder(req: Request, res:Response): Promise<Response> {
         try{
             const id = Number(req.params.id);
@@ -571,7 +575,46 @@ export class MasterController {
             return res.status(400).json({ message: error[0] ? error[0].customError : undefined });
         }
     }
+    
+    // Method to get a list of notifications
+    async getNotificationList(req: Request, res:Response): Promise<Response> {
+        try{
+            const email = String(req.params.userEmail) 
+            const NotificationControllerObject = new NotificationController();
+            const response = await NotificationControllerObject.getNotificationList(email);
+            return res.json(response);
+        } catch (error: any) {
+            return res.status(400).json({ message: error[0] ? error[0].customError : undefined });
+        }
+    }
 
+    // Method to delete a notification
+    async deleteNotification(req: Request, res:Response): Promise<Response> {
+        try{
+            const id = Number(req.params.id);
+            const NotificationControllerObject = new NotificationController();
+            const response = await NotificationControllerObject.deleteNotification(id);
+            return response 
+            ? res.status(200).json({response: "Ok"}) 
+            : res.status(400).json({response:  undefined});
+        } catch (error: any) {
+            return res.status(400).json({ message: error[0] ? error[0].customError : undefined });
+        }
+    }
+
+    // async createNotification(req: Request, res:Response): Promise<Response> {
+    //     try{
+    //         const {category, userId, title, description, moreDetailsUrl} = req.body;
+    //         const NotificationControllerObject = new NotificationController();
+    //         const response = await NotificationControllerObject.createNotification(category, userId, title, description, moreDetailsUrl);
+    //         return response
+    //         ? res.status(200).json({response: "Ok"})
+    //         : res.status(400).json({response: undefined});
+    //     } catch(error:any){
+    //         return res.status(400).json({ message: error[0] ? error[0].customError : undefined });
+    //     }
+    // }
+    
     // Method to add a product to the shopping cart
     addProduct(product: Product): void {
         // Logic to add a product to the shopping cart

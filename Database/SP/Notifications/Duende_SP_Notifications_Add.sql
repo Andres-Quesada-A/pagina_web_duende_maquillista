@@ -6,7 +6,7 @@
 
 CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_Notifications_Add]
     @IN_category VARCHAR(32),
-    @IN_UserID INT,
+    @IN_userID INT,
     @IN_title VARCHAR(128),
     @IN_description VARCHAR(512),
     @IN_moreDetailsURL VARCHAR(512) = NULL
