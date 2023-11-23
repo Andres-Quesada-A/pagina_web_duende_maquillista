@@ -1,10 +1,3 @@
-import { Address } from "./Address";
-import { STATUSES } from "./STATUSES";
-import { ShoppingCart } from "./ShoppingCart";
-import { User } from "./User";
-import { OrderProduct } from "./OrderProduct";
-import { Product } from "./Product";
-
 export class Event {
   
   private id: number ;

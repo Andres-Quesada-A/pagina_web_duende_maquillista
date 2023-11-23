@@ -92,21 +92,12 @@ export class EventDAO {
         });
     }
 
-    async getEventList(startTime?: Date, endTime?: Date): Promise<Event[]> {
+    async getEventList(startTime: Date, endTime: Date): Promise<Event[]> {
         const SQL = ConnectionDAO.getInstance();
         const damage: { customError: string | undefined }[] = [];
 
         return new Promise((resolve, reject) => {
             try{
-
-                if (startTime === undefined) {
-                    damage.push({ customError: "Valor de la fecha inicio no válido" });
-                    throw new Error("Valor de la fecha no válido")
-                }
-                if (endTime === undefined) {
-                    damage.push({ customError: "Valor de la fecha final no válido" });
-                    throw new Error("Valor de la fecha no válido")
-                }
 
                 SQL.query('Duende_SP_Events_List', { 'IN_startTime': !isNaN(startTime.getTime())? startTime: null, 'IN_endTime': !isNaN(endTime.getTime())? endTime: null  })
                 .then((result) => {
@@ -159,7 +150,7 @@ export class EventDAO {
         });
     }
 
-    async getEventCategories(): Promise<EventCategory[]> {
+    async getEventCategoryList(): Promise<EventCategory[]> {
         const SQL = ConnectionDAO.getInstance();
         const damage: { customError: string | undefined }[] = [];
 

@@ -9,7 +9,7 @@ const ImageRouter = Router()
 //post -> body
 //put -> body
 //delete ->query
-ImageRouter.get(`/get_event_categories`, MasterControllerObject.getEventCategories);
+ImageRouter.get(`/get_event_categories`, MasterControllerObject.getEventCategoryList);
 ImageRouter.get(`/get_event_list/:startTime/:endTime`, MasterControllerObject.getEventList)
 ImageRouter.get(`/get_event/:id`, MasterControllerObject.getEvent)
 ImageRouter.post(`/create_event`, MasterControllerObject.createEvent)

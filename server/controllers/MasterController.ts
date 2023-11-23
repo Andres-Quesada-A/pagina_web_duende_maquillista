@@ -646,11 +646,11 @@ export class MasterController {
         return true; // Change this with real logic
     }
 
-    async getEventCategories(req:Request, res:Response): Promise<Response> {
+    async getEventCategoryList(req:Request, res:Response): Promise<Response> {
 
         try{
             const EventControllerObject = new EventController();
-            const response = await EventControllerObject.getEventCategories();
+            const response = await EventControllerObject.getEventCategoryList();
             return res.json(response)
         } catch (error: any) {
             return res.status(400).json({ message: error[0] ? error[0].customError : undefined });
@@ -659,8 +659,30 @@ export class MasterController {
     async getEventList(req: Request, res : Response): Promise<Response> {
 
         try{
-            const startTime = (req.params.startTime.trim() === "" || !isNaN((new Date(req.params.startTime)).getTime()) ) ? new Date(req.params.startTime) : undefined
-            const endTime = (req.params.endTime.trim() === "" || !isNaN((new Date(req.params.endTime)).getTime()) ) ? new Date(req.params.endTime) : undefined
+            var startTime
+            var endTime
+            //validacion startTime
+            if (req.params.startTime === undefined) {
+                startTime = new Date("")
+            } else {
+                startTime = ( typeof req.params.startTime === "string" && 
+                (req.params.startTime.trim() === "" || !isNaN((new Date(req.params.startTime)).getTime())) ) ? new Date(req.params.startTime) : undefined
+            }
+            //validacion endTime
+            if (req.params.endTime === undefined) {
+                endTime = new Date("")
+            } else {
+                endTime = ( typeof req.params.endTime === "string" && 
+                (req.params.endTime.trim() === "" || !isNaN((new Date(req.params.endTime)).getTime())) ) ? new Date(req.params.endTime) : undefined
+            }
+
+            if (startTime === undefined) {
+                return res.status(400).json({ message: "Fecha de inicio no válida" });
+            }
+            if (endTime === undefined) {
+                return res.status(400).json({ message: "Fecha de fin no válida" });
+            }
+            
             const EventControllerObject = new EventController();
             const response = await EventControllerObject.getEventList(startTime, endTime);
             return res.status(200).json(response)

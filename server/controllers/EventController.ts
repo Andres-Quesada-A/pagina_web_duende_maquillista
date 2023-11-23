@@ -15,7 +15,7 @@ export class EventController {
     }
 
     // gets the list of events
-    async getEventList(startTime?:Date , endTime?: Date): Promise<Event[]> {
+    async getEventList(startTime:Date , endTime: Date): Promise<Event[]> {
         return  await this.EventDAO.getEventList(startTime, endTime);
     }
 
@@ -26,8 +26,7 @@ export class EventController {
 
     // deletes an event
     async deleteEvent(id: number): Promise<boolean> {
-        const response = await this.EventDAO.deleteEvent(id);
-        return response;
+        return await this.EventDAO.deleteEvent(id);
     }
 
     // creates an event
@@ -35,9 +34,8 @@ export class EventController {
         return await this.EventDAO.createEvent(title, category, startTime , endTime, description, orderId);
     }
 
-    async getEventCategories(): Promise<EventCategory[]> {
-        const response = await this.EventDAO.getEventCategories();
-        return response;
+    async getEventCategoryList(): Promise<EventCategory[]> {
+        return await this.EventDAO.getEventCategoryList();
     }
 }
 
