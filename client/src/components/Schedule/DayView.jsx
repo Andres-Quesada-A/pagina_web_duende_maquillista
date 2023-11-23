@@ -38,10 +38,10 @@ function DayView({
   return (
     <div
       className={`${singleDay ? "w-full" : "w-1/7"} h-full pb-2 px-1 md:px-2 text-center`}
-      style={{ minHeight: `${heightPerHour * hours.length}px` }}
+      style={{ minHeight: `${heightPerHour * (hours.length -1)}px` }}
     >
       <span
-        className={`whitespace-nowrap overflow-hidden md:text-sm rounded-full py-1 px-2 mb-1 self-center ${
+        className={`whitespace-nowrap overflow-hidden text-sm md:text-sm rounded-full py-1 px-2 mb-1 self-center ${
           date.getFullYear() == currentDate.getFullYear() &&
           date.getMonth() == currentDate.getMonth() &&
           date.getDate() == currentDate.getDate()
@@ -104,17 +104,8 @@ function DayView({
                   )}
                 </span>
               </p>
-              {
-                false ?
-                <>
-                  <p style={{ lineHeight: "1rem" }}><span className="font-medium">{event.title}</span> <span className="font-bold inline">·</span> <span className="text-xs hyphens-auto">{event.description}</span></p>
-                </>
-                :
-                <>
-                  <p className={`font-medium`}>{event.title}</p>
-                  <p className={`text-xs hyphens-auto`}>{event.description}</p>
-                </>
-              }
+              <p className={`font-medium`}>{event.title}</p>
+              <p className={`text-xs hyphens-auto`}>{event.description}</p>
             </article>
           );
         })}

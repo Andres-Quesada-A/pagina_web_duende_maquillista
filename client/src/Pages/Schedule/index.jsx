@@ -29,6 +29,7 @@ function Schedule() {
   const [toggleSearch, setToggleSearch] = useState(false);
   const [weekNumber, setWeekNumber] = useState();
   const [currentMonth, setCurrentMonth] = useState();
+  const [dayEvents, setDayEvents] = useState([]);
 
   const handleViewChange = (e) => {
     setView(e.target.id);
@@ -188,6 +189,12 @@ function Schedule() {
     setEvents(events);
   }, [visibleDays]);
 
+  useEffect(() => {
+    // Filter the events for a specific day if view is "día"
+    if (view != "día") return;
+    setDayEvents([date.getFullYear()] && events[date.getFullYear()][date.getMonth() + 1] && events[date.getFullYear()][date.getMonth() + 1][date.getDate()] || []);
+  }, [categories, view]);
+
   return (
     <>
       <Helmet>
@@ -225,7 +232,7 @@ function Schedule() {
           </div>
         </header>
         <div className="flex flex-row h-full gap-1">
-          <div className={`h-screen w-screen lg:h-full lg:w-[20rem] top-0 bottom-0 ${toggleSearch ? "right-0" : "right-full"} absolute lg:static lg:opacity-100 transition-all bg-white lg:block flex flex-col items-center mt-24 lg:mt-0 max-lg:z-50 gap-10 lg:gap-0`}>
+          <div className={`h-screen w-screen lg:h-full lg:w-[20rem] top-0 bottom-0 ${toggleSearch ? "right-0" : "right-full"} fixed lg:static lg:opacity-100 transition-all bg-white lg:block flex flex-col items-center justify-center pt-16 lg:mt-0 max-lg:z-[49] gap-10 lg:gap-0`}>
             <search className="rounded-2xl bg-slate-200 p-3 w-[20rem] lg:w-full">
               <div className="flex flex-row w-full justify-between mb-2">
                 <p>{monthName(date)}</p>
@@ -327,7 +334,7 @@ function Schedule() {
               Aceptar
             </button>
           </div>
-          <article className={`w-full h-full pb-10 ${view == "mes" ? "" : "ml-5"}`}>
+          <article className={`w-full h-full pb-10 ${view == "mes" ? "" : "ml-6"}`}>
             {view == "mes" || view == "semana" ? (
               <>
                 <WeekHeader />
@@ -363,12 +370,13 @@ function Schedule() {
                     dayToShow={(date.getDay() + 6) % 7} />
                   <HourIndicators />
                   <DayView
-                    key={date}
+                    key={date + String(events)}
                     singleDay={true}
                     showMonth={true}
                     currentDate={currentDate}
                     date={date}
-                    events={events[date.getFullYear()] && events[date.getFullYear()][date.getMonth() + 1] && events[date.getFullYear()][date.getMonth() + 1][date.getDate()] || []}
+                    events={[date.getFullYear()] && events[date.getFullYear()][date.getMonth() + 1] && events[date.getFullYear()][date.getMonth() + 1][date.getDate()] && events[date.getFullYear()][date.getMonth() + 1][date.getDate()].filter((event) => (categories.indexOf(event.category) > -1)) || []}
+                    categories={categories}
                     categoryColors={categoryColors}
                   />
                 </>
