@@ -15,6 +15,8 @@ import ImageSubcategoryRouter from './routes/ImageSubcategory.routes'
 import ProductRouter from './routes/Product.routes'
 import ImageRouter from './routes/Image.routes';
 import OrderRouter from './routes/Order.routes';
+import NotificationRouter from './routes/Notification.routes';
+import EventRouter from './routes/Event.routes';
 
 const app = express(); // crear una instancia de la aplicación Express
 app.use(json()); // usar middleware para manejar datos JSON
@@ -34,6 +36,8 @@ app.use('/api', ImageSubcategoryRouter);
 app.use('/api', ProductRouter)
 app.use('/api', ImageRouter);
 app.use('/api', OrderRouter);
+app.use('/api', NotificationRouter);
+app.use('/api', EventRouter);
 app.get("*", (req, res) => {
     res.sendFile(path.join(CLIENT_FILES, 'index.html'));
 });

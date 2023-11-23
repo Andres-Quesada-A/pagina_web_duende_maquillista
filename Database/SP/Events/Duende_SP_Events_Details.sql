@@ -1,7 +1,7 @@
 ﻿--------------------------------------------------------------------------
 -- Autor:       Luis Fernando Molina
 -- Fecha:       2023-09-03
--- Descripci�n: listamos los Eventos en el rango de fechas
+-- Descripci�n: devolvemos el Evento
 --------------------------------------------------------------------------
 
 CREATE OR ALTER PROCEDURE [dbo].[Duende_SP_Events_Details]

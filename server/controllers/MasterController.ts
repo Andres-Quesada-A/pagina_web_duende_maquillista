@@ -13,6 +13,9 @@ import { ProductController } from "./ProductController";
 import { OrderController } from "./OrderController";
 import ConnectionDAO from "../DAOS/ConnectionDAO";
 import { EmailController } from "./EmailController";
+import { NotificationController } from "./NotificationController";
+import { EventController } from "./EventController";
+import { DateFormatter } from "../Utils/DateFormatter";
 
 export class MasterController {
     constructor() {
@@ -55,7 +58,7 @@ export class MasterController {
             }
             return res.status(200).json(response);
         } catch (error: any) {
-            console.log(error);
+            //console.log(error);
             return res.status(400).json({ message: error[0] ? error[0].customError : undefined });
         }
     }
@@ -87,10 +90,10 @@ export class MasterController {
     // Method to reset the user's password
     async resetPassword(req: Request, res:Response): Promise<Response> {
         try {
-            console.log(req.params)
+            //console.log(req.params)
             const UserControllerObject = new UserController();
             const { email, code, password } = req.params;
-            console.log(email, password, code)
+            //console.log(email, password, code)
             const response = await UserControllerObject.resetPassword(email, parseInt(code), password);
             return res.status(200).json({ message: "Ok" });
         } catch (error: any) {
@@ -208,7 +211,7 @@ export class MasterController {
                 ? res.status(200).json({ message: "Ok" })
                 : res.status(400).json({});
         } catch (error: any) {
-            console.log("error en master controller")
+            //console.log("error en master controller")
             return res.status(400).json({ message: error[0] ? error[0].customError : undefined } );
         }
     }
@@ -242,7 +245,7 @@ export class MasterController {
     async editProductCategory(req: Request, res: Response): Promise<Response> {
         try {
             const { description, newDescription } = req.body;
-            console.log(description, newDescription)
+            //console.log(description, newDescription)
             const ProductControllerObject = new ProductController();
             const response = await ProductControllerObject.editProductCategory(
                 description,
@@ -343,7 +346,7 @@ export class MasterController {
             } else{
                 texto = subcategory
             }
-            console.log(texto)
+            //console.log(texto)
             ImageControllerObject.editImageSubcategory(String(req.body.category), texto, String(req.body.newSubcategory)).then((result) => {
                 res.status(200).json({ message: "Ok" })
             }).catch((error)=>{
@@ -537,6 +540,7 @@ export class MasterController {
         }
     }
 
+    // Method to get a list of orders
     async getOrderList(req: Request, res:Response): Promise<Response> {
         try{
             const OrderControllerObject = new OrderController();
@@ -547,7 +551,8 @@ export class MasterController {
             return res.status(400).json({ message: error[0] ? error[0].customError : undefined });
         }
     }
-
+    
+    // Method to get an order
     async getOrderDetails(req: Request, res:Response): Promise<Response> {
         try{
             const id = Number(req.params.id);
@@ -559,6 +564,7 @@ export class MasterController {
         }
     }
 
+    // Method to delete an order
     async deleteOrder(req: Request, res:Response): Promise<Response> {
         try{
             const id = Number(req.params.id);
@@ -571,7 +577,46 @@ export class MasterController {
             return res.status(400).json({ message: error[0] ? error[0].customError : undefined });
         }
     }
+    
+    // Method to get a list of notifications
+    async getNotificationList(req: Request, res:Response): Promise<Response> {
+        try{
+            const email = String(req.params.userEmail) 
+            const NotificationControllerObject = new NotificationController();
+            const response = await NotificationControllerObject.getNotificationList(email);
+            return res.json(response);
+        } catch (error: any) {
+            return res.status(400).json({ message: error[0] ? error[0].customError : undefined });
+        }
+    }
 
+    // Method to delete a notification
+    async deleteNotification(req: Request, res:Response): Promise<Response> {
+        try{
+            const id = Number(req.params.id);
+            const NotificationControllerObject = new NotificationController();
+            const response = await NotificationControllerObject.deleteNotification(id);
+            return response 
+            ? res.status(200).json({response: "Ok"}) 
+            : res.status(400).json({response:  undefined});
+        } catch (error: any) {
+            return res.status(400).json({ message: error[0] ? error[0].customError : undefined });
+        }
+    }
+
+    // async createNotification(req: Request, res:Response): Promise<Response> {
+    //     try{
+    //         const {category, userId, title, description, moreDetailsUrl} = req.body;
+    //         const NotificationControllerObject = new NotificationController();
+    //         const response = await NotificationControllerObject.createNotification(category, userId, title, description, moreDetailsUrl);
+    //         return response
+    //         ? res.status(200).json({response: "Ok"})
+    //         : res.status(400).json({response: undefined});
+    //     } catch(error:any){
+    //         return res.status(400).json({ message: error[0] ? error[0].customError : undefined });
+    //     }
+    // }
+    
     // Method to add a product to the shopping cart
     addProduct(product: Product): void {
         // Logic to add a product to the shopping cart
@@ -599,5 +644,98 @@ export class MasterController {
         // Logic to notify
         // Returns true if the notification is successful, otherwise returns false
         return true; // Change this with real logic
+    }
+
+    async getEventCategories(req:Request, res:Response): Promise<Response> {
+
+        try{
+            const EventControllerObject = new EventController();
+            const response = await EventControllerObject.getEventCategories();
+            return res.json(response)
+        } catch (error: any) {
+            return res.status(400).json({ message: error[0] ? error[0].customError : undefined });
+        }
+    }
+    async getEventList(req: Request, res : Response): Promise<Response> {
+
+        try{
+            const startTime = (req.params.startTime.trim() === "" || !isNaN((new Date(req.params.startTime)).getTime()) ) ? new Date(req.params.startTime) : undefined
+            const endTime = (req.params.endTime.trim() === "" || !isNaN((new Date(req.params.endTime)).getTime()) ) ? new Date(req.params.endTime) : undefined
+            const EventControllerObject = new EventController();
+            const response = await EventControllerObject.getEventList(startTime, endTime);
+            return res.status(200).json(response)
+        } catch (error: any) {
+            return res.status(400).json({ message: error[0] ? error[0].customError : undefined });
+        }
+    }
+    async getEvent(req: Request, res : Response): Promise<Response> {
+
+        try{
+            const id = Number(req.params.id)
+            const EventControllerObject = new EventController();
+            const response = await EventControllerObject.getEvent(id);
+            return res.status(200).json(response)
+        } catch (error: any) {
+            return res.status(400).json({ message: error[0] ? error[0].customError : undefined });
+        }
+    }
+    async createEvent(req: Request, res : Response): Promise<Response> {
+
+        try{
+            const startTime = !isNaN((new Date(req.body.startTime)).getTime()) ? new Date(req.body.startTime) : undefined
+            const endTime = !isNaN((new Date(req.body.endTime)).getTime()) ? new Date(req.body.endTime) : undefined
+            const orderId = (typeof req.body.orderId === "number")? Number(req.body.orderId) : undefined
+            const {title, category, description} = req.body
+            const EventControllerObject = new EventController();
+            if (startTime === undefined || endTime === undefined) {
+                return res.status(400).json({ message: "Fecha para agregar es inválida" });
+            }
+            if (!DateFormatter.isUTCFormat(req.body.startTime) || !DateFormatter.isUTCFormat(req.body.endTime)) {
+                return res.status(400).json({ message: "Fecha para agregar no esta en formato UTC"}); 
+            }
+            const response = await EventControllerObject.createEvent(title, category, startTime, endTime, description, orderId);
+            return response 
+            ? res.status(200).json({response: "Ok"}) 
+            : res.status(400).json({response:  undefined});
+        } catch (error: any) {
+            return res.status(400).json({ message: error[0] ? error[0].customError : undefined });
+        }
+    }
+    async editEvent(req: Request, res : Response): Promise<Response> {
+
+        try{
+            const startTime = !isNaN((new Date(req.body.startTime)).getTime()) ? new Date(req.body.startTime) : undefined
+            const endTime = !isNaN((new Date(req.body.endTime)).getTime()) ? new Date(req.body.endTime) : undefined
+            const id = Number(req.body.id)
+            const orderId = (typeof req.body.orderId === "number")? Number(req.body.orderId) : undefined
+            const {title, category, description} = req.body
+            const EventControllerObject = new EventController();
+            if (startTime === undefined || endTime === undefined) {
+                return res.status(400).json({ message: "Fecha para modificar es inválida" });
+            }
+            if (!DateFormatter.isUTCFormat(req.body.startTime) || !DateFormatter.isUTCFormat(req.body.endTime)) {
+                return res.status(400).json({ message: "Fecha para modificar no esta en formato UTC"}); 
+            }
+
+            const response = await EventControllerObject.editEvent(id, title, category, startTime, endTime, description, orderId);
+            return response 
+            ? res.status(200).json({response: "Ok"}) 
+            : res.status(400).json({response:  undefined});
+        } catch (error: any) {
+            return res.status(400).json({ message: error[0] ? error[0].customError : undefined });
+        }
+    }
+    async deleteEvent(req: Request, res : Response): Promise<Response> {
+
+        try{
+            const id = Number(req.params.id)
+            const EventControllerObject = new EventController();
+            const response = await EventControllerObject.deleteEvent(id);
+            return response 
+            ? res.status(200).json({response: "Ok"}) 
+            : res.status(400).json({response:  undefined});
+        } catch (error: any) {
+            return res.status(400).json({ message: error[0] ? error[0].customError : undefined });
+        }
     }
 }

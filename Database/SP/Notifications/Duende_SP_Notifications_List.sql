@@ -27,13 +27,14 @@ BEGIN
 
         SELECT 
             N.id AS NotificationID,
--           N.categoryId AS CategoryID,
+            C.description AS Category,
             N.title AS Title,
             N.description AS Description,
             N.timestamp AS Timestamp,
             N.moreDetailsURL AS MoreDetailsURL
         FROM Notifications N
         INNER JOIN Users U ON N.userId = U.id
+        INNER JOIN NotificationCategories C ON N.categoryId = C.id
         WHERE U.email = LTRIM(RTRIM(@IN_userEmail))
         ORDER BY N.timestamp DESC;
 

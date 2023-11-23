@@ -22,11 +22,11 @@ BEGIN
     DECLARE @transactionBegun BIT = 0;
 
     BEGIN TRY
-        IF (@IN_endTime IS NOT NULL)
+        IF (@IN_endTime IS NOT NULL AND LTRIM(RTRIM(@IN_endTime)) != '')
 		BEGIN
 			SET @endTime = @IN_endTime
 		END
-		IF (@IN_startTime IS NOT NULL)
+		IF (@IN_startTime IS NOT NULL AND LTRIM(RTRIM(@IN_startTime)) != '')
 		BEGIN
 			SET @startTime = @IN_startTime
 		END
