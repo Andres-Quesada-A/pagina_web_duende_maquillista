@@ -73,9 +73,9 @@ export class EventDAO {
                     const EventObj = new Event(
                         event.id,
                         event.title,
+                        event.category,
                         event.startTime,
                         event.endTime,
-                        event.category,
                         event.description,
                         event.orderId? event.orderId: null
                     );
@@ -107,9 +107,9 @@ export class EventDAO {
                         const EventObj = new Event(
                             event.id,
                             event.title,
+                            event.category,
                             event.startTime,
                             event.endTime,
-                            event.category,
                             event.description,
                             event.orderId? event.orderId: null
                         );
