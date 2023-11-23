@@ -63,4 +63,10 @@ export class DateFormatter {
         return this.currentDate.getTime() -
         (timezone - currentTimezone) * 60 * 60 * 1000;
     }
+
+    static isUTCFormat(dateString:string): boolean{
+
+        const utcPattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/;
+        return utcPattern.test(dateString);
+    }
 };
