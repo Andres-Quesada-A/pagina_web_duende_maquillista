@@ -4,6 +4,8 @@ import { Events } from "../../mockups/Events";
 import MonthView from "../../components/Schedule/MonthView";
 import WeekView from "../../components/Schedule/WeekView";
 import WeekHeader from "../../components/Schedule/WeekHeader";
+import DayView from "../../components/Schedule/DayView";
+import HourIndicators from "../../components/Schedule/HourIndicators";
 import { getWeekCount, monthName } from "../../utils/dateFormatter";
 import { Arrow, Search } from "../../components/Icons";
 
@@ -199,9 +201,6 @@ function Schedule() {
           </h1>
           <div className="text-lg flex flex-row gap-2 items-center">
             <Search className="h-5 w-5 text-indigo-500 lg:hidden" onClick={() => setToggleSearch(!toggleSearch)} />
-            <label htmlFor="viewRange" className="font-bold hidden md:block">
-              Visualización:
-            </label>
             <div className="grid grid-cols-1 xs:grid-cols-3 border border-indigo-500 rounded-lg [&>div:first-child]:border-t-0 xs:[&>div:first-child]:border-l-0 overflow-hidden bg-indigo-100">
               {views.map((item) => (
                 <div
@@ -328,7 +327,7 @@ function Schedule() {
               Aceptar
             </button>
           </div>
-          <article className="w-full h-full pb-10">
+          <article className={`w-full h-full pb-10 ${view == "mes" ? "" : "ml-5"}`}>
             {view == "mes" || view == "semana" ? (
               <>
                 <WeekHeader />
@@ -344,18 +343,36 @@ function Schedule() {
                       categories={categories}
                     />
                   ) :
-                  <WeekView
-                    key={`${currentMonth}_${weekNumber}`}
-                    currentDate={currentDate}
-                    date={date}
-                    days={visibleDays}
-                    weekNumber={weekNumber}
-                    events={events}
-                    categoryColors={categoryColors}
-                    categories={categories} />
+                  <>
+                    <HourIndicators />
+                    <WeekView
+                      key={`${currentMonth}_${weekNumber}`}
+                      currentDate={currentDate}
+                      date={date}
+                      days={visibleDays}
+                      weekNumber={weekNumber}
+                      events={events}
+                      categoryColors={categoryColors}
+                      categories={categories} />
+                  </>
                 }
               </>
-              ) : null}
+              ) : (
+                <>
+                  <WeekHeader
+                    dayToShow={(date.getDay() + 6) % 7} />
+                  <HourIndicators />
+                  <DayView
+                    key={date}
+                    singleDay={true}
+                    showMonth={true}
+                    currentDate={currentDate}
+                    date={date}
+                    events={events[date.getFullYear()] && events[date.getFullYear()][date.getMonth() + 1] && events[date.getFullYear()][date.getMonth() + 1][date.getDate()] || []}
+                    categoryColors={categoryColors}
+                  />
+                </>
+              )}
             
           </article>
           
