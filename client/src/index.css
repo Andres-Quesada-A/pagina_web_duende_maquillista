@@ -9,6 +9,20 @@
     box-sizing: border-box;
 }
 
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+}
+
 :root {
     --toastify-font-family: initial;
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }

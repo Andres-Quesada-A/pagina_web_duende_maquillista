@@ -45,11 +45,12 @@ function Shop() {
         withCredentials: true,
       })
       .then((res) => {
-        setProducts(JSON.stringify(res.data));
+        const filteredProducts = res.data.filter(producto => producto.available)
+        setProducts(JSON.stringify(filteredProducts));
       })
       .catch((error) => {
         toast.error(
-          "Ocurrió un error al cargar las categorías.",
+          "Ocurrió un error al cargar los productos.",
           messageSettings
         );
       });
@@ -63,11 +64,11 @@ function Shop() {
           newCategories[category.description] = false;
         });
         setCategories(newCategories);
-        console.log(newCategories);
+        // console.log(newCategories);
       })
       .catch((error) => {
         toast.error(
-          "Ocurrió un error al cargar los productos.",
+          "Ocurrió un error al cargar las categorias.",
           messageSettings
         );
       });

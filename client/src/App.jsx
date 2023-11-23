@@ -28,6 +28,7 @@ import OrdersPage from "./Pages/orders";
 import OrderPage from "./Pages/orders/Order";
 import AboutUs from "./Pages/AboutUs";
 import Profile from "./Pages/Profile";
+import Schedule from "./Pages/Schedule";
 
 const noRequirement = [
   "/login",
@@ -183,6 +184,15 @@ function App() {
               element={
                 <RequiredAuth>
                   <Profile />
+                </RequiredAuth>
+              }
+            />
+            <Route
+              exact
+              path="/schedule"
+              element={
+                <RequiredAuth>
+                  <Schedule />
                 </RequiredAuth>
               }
             />
