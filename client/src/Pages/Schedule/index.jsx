@@ -4,6 +4,8 @@ import { Events } from "../../mockups/Events";
 import MonthView from "../../components/Schedule/MonthView";
 import WeekView from "../../components/Schedule/WeekView";
 import WeekHeader from "../../components/Schedule/WeekHeader";
+import DayView from "../../components/Schedule/DayView";
+import HourIndicators from "../../components/Schedule/HourIndicators";
 import { getWeekCount, monthName } from "../../utils/dateFormatter";
 import { Arrow, Search } from "../../components/Icons";
 
@@ -27,6 +29,7 @@ function Schedule() {
   const [toggleSearch, setToggleSearch] = useState(false);
   const [weekNumber, setWeekNumber] = useState();
   const [currentMonth, setCurrentMonth] = useState();
+  const [dayEvents, setDayEvents] = useState([]);
 
   const handleViewChange = (e) => {
     setView(e.target.id);
@@ -186,6 +189,12 @@ function Schedule() {
     setEvents(events);
   }, [visibleDays]);
 
+  useEffect(() => {
+    // Filter the events for a specific day if view is "día"
+    if (view != "día") return;
+    setDayEvents([date.getFullYear()] && events[date.getFullYear()][date.getMonth() + 1] && events[date.getFullYear()][date.getMonth() + 1][date.getDate()] || []);
+  }, [categories, view]);
+
   return (
     <>
       <Helmet>
@@ -199,9 +208,6 @@ function Schedule() {
           </h1>
           <div className="text-lg flex flex-row gap-2 items-center">
             <Search className="h-5 w-5 text-indigo-500 lg:hidden" onClick={() => setToggleSearch(!toggleSearch)} />
-            <label htmlFor="viewRange" className="font-bold hidden md:block">
-              Visualización:
-            </label>
             <div className="grid grid-cols-1 xs:grid-cols-3 border border-indigo-500 rounded-lg [&>div:first-child]:border-t-0 xs:[&>div:first-child]:border-l-0 overflow-hidden bg-indigo-100">
               {views.map((item) => (
                 <div
@@ -226,7 +232,7 @@ function Schedule() {
           </div>
         </header>
         <div className="flex flex-row h-full gap-1">
-          <div className={`h-screen w-screen lg:h-full lg:w-[20rem] top-0 bottom-0 ${toggleSearch ? "right-0" : "right-full"} absolute lg:static lg:opacity-100 transition-all bg-white lg:block flex flex-col items-center mt-24 lg:mt-0 max-lg:z-50 gap-10 lg:gap-0`}>
+          <div className={`h-screen w-screen lg:h-full lg:w-[20rem] top-0 bottom-0 ${toggleSearch ? "right-0" : "right-full"} fixed lg:static lg:opacity-100 transition-all bg-white lg:block flex flex-col items-center justify-center pt-16 lg:mt-0 max-lg:z-[49] gap-10 lg:gap-0`}>
             <search className="rounded-2xl bg-slate-200 p-3 w-[20rem] lg:w-full">
               <div className="flex flex-row w-full justify-between mb-2">
                 <p>{monthName(date)}</p>
@@ -328,7 +334,7 @@ function Schedule() {
               Aceptar
             </button>
           </div>
-          <article className="w-full h-full pb-10">
+          <article className={`w-full h-full pb-10 ${view == "mes" ? "" : "ml-6"}`}>
             {view == "mes" || view == "semana" ? (
               <>
                 <WeekHeader />
@@ -344,18 +350,37 @@ function Schedule() {
                       categories={categories}
                     />
                   ) :
-                  <WeekView
-                    key={`${currentMonth}_${weekNumber}`}
-                    currentDate={currentDate}
-                    date={date}
-                    days={visibleDays}
-                    weekNumber={weekNumber}
-                    events={events}
-                    categoryColors={categoryColors}
-                    categories={categories} />
+                  <>
+                    <HourIndicators />
+                    <WeekView
+                      key={`${currentMonth}_${weekNumber}`}
+                      currentDate={currentDate}
+                      date={date}
+                      days={visibleDays}
+                      weekNumber={weekNumber}
+                      events={events}
+                      categoryColors={categoryColors}
+                      categories={categories} />
+                  </>
                 }
               </>
-              ) : null}
+              ) : (
+                <>
+                  <WeekHeader
+                    dayToShow={(date.getDay() + 6) % 7} />
+                  <HourIndicators />
+                  <DayView
+                    key={date + String(events)}
+                    singleDay={true}
+                    showMonth={true}
+                    currentDate={currentDate}
+                    date={date}
+                    events={[date.getFullYear()] && events[date.getFullYear()][date.getMonth() + 1] && events[date.getFullYear()][date.getMonth() + 1][date.getDate()] && events[date.getFullYear()][date.getMonth() + 1][date.getDate()].filter((event) => (categories.indexOf(event.category) > -1)) || []}
+                    categories={categories}
+                    categoryColors={categoryColors}
+                  />
+                </>
+              )}
             
           </article>
           
