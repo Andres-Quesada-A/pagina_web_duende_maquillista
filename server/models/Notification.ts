@@ -1,4 +1,5 @@
 import { NotificationCategory } from "./NotificationCategory";
+import { User } from "./User";
 
 export class Notification {
     private id: number;
@@ -7,6 +8,7 @@ export class Notification {
     private timestamp: string;
     private category: NotificationCategory;
     private moreDetailsUrl?: string;
+    private user: User;
     
     constructor(
         id: number,
@@ -14,7 +16,8 @@ export class Notification {
         description: string,
         timestamp: string,
         category: NotificationCategory,
-        moreDetailsUrl?: string
+        user: User,
+        moreDetailsUrl?: string,
     ) {
         this.id = id;
         this.title = title;
@@ -22,6 +25,7 @@ export class Notification {
         this.timestamp = timestamp;
         this.category = category;
         this.moreDetailsUrl = moreDetailsUrl;
+        this.user = user;
     }
     
     getId(): number {
@@ -62,5 +66,21 @@ export class Notification {
     
     setCategory(category: NotificationCategory) {
         this.category = category;
+    }
+
+    getMoreDetailsUrl(): string | undefined {
+        return this.moreDetailsUrl;
+    }
+
+    setMoreDetailsUrl(moreDetailsUrl: string) {
+        this.moreDetailsUrl = moreDetailsUrl;
+    }
+
+    getUser(): User {
+        return this.user;
+    }
+
+    setUser(user: User) {
+        this.user = user;
     }
 }

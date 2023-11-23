@@ -1,6 +1,7 @@
 import { Notification } from "../models/Notification";
 import { NotificationCategory } from "../models/NotificationCategory";
 import ConnectionDAO from "./ConnectionDAO";
+import { User } from "../models/User";
 import sqlcon from 'mssql';
 
 export class NotificationDAO {
@@ -99,14 +100,26 @@ export class NotificationDAO {
                     "IN_moreDetailsUrl": moreDetailsUrl
                 }).then((result) => {
                     const notification :any = result?.recordset[0];
-                    const notificationObj = new Notification(
-                        notification.id,
+
+                    const user = new User(
+                        notification.userId,
+                        notification.userName,
+                        notification.userLastName1,
+                        notification.userLastName2,
+                        notification.userEmail,
+                        notification.userPassword,
+                        notification.userToken
+                      );
+
+                      const notificationObj = new Notification(
+                        notification.notificationId,
                         notification.title,
                         notification.description,
                         notification.timestamp,
-                        new NotificationCategory(notification.category),
-                        notification.moreDetailsUrl
-                    );
+                        new NotificationCategory(notification.categoryID),
+                        user,
+                        notification.moreDetailsURL
+                      );
                     resolve(notificationObj);
                 })
                 .catch((error) => {
