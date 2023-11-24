@@ -10,6 +10,7 @@ import { Arrow, Search } from "../../components/Icons";
 import axios from "axios";
 import { toast } from 'react-toastify';
 import { messageSettings } from '../../utils/messageSettings';
+import { useNavigate } from "react-router-dom";
 
 const views = ["día", "semana", "mes"];
 
@@ -21,6 +22,7 @@ const categoryColors = {
 const allCategories = Object.keys(categoryColors);
 
 function Schedule() {
+  const navigate = useNavigate();
   const currentDate = new Date();
   const [categories, setCategories] = useState(allCategories);
   const [view, setView] = useState("mes");
@@ -330,9 +332,14 @@ function Schedule() {
                 ))}
               </div>
             </search>
-            <button className="bg-indigo-500 text-white font-medium py-2 px-6 rounded-xl lg:hidden" onClick={() => {setToggleSearch(false)}}>
-              Aceptar
-            </button>
+            <div className="flex flex-row gap-2 w-full justify-center lg:mt-3">
+              <button className="bg-emerald-500 text-white font-medium py-2 px-6 rounded-xl" onClick={() => {navigate("/add_event")}}>
+                Crear evento
+              </button>
+              <button className="bg-indigo-500 text-white font-medium py-2 px-6 rounded-xl lg:hidden" onClick={() => {setToggleSearch(false)}}>
+                Aceptar
+              </button>
+            </div>
           </div>
           <article className={`w-full h-full pb-10 ${view == "mes" ? "" : "ml-6"}`}>
             {view == "mes" || view == "semana" ? (

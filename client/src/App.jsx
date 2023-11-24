@@ -29,6 +29,7 @@ import OrderPage from "./Pages/orders/Order";
 import AboutUs from "./Pages/AboutUs";
 import Profile from "./Pages/Profile";
 import Schedule from "./Pages/Schedule";
+import AddEvent from "./Pages/Schedule/AddEvent";
 
 const noRequirement = [
   "/login",
@@ -193,6 +194,15 @@ function App() {
               element={
                 <RequiredAuth>
                   <Schedule />
+                </RequiredAuth>
+              }
+            />
+            <Route
+              exact
+              path="/add_event"
+              element={
+                <RequiredAuth>
+                  <AddEvent />
                 </RequiredAuth>
               }
             />
