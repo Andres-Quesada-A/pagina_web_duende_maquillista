@@ -23,7 +23,7 @@ const OPTIONS = {
     {
       name: "Tienda de Duende",
       link: "/shop",
-    }
+    },
   ],
   admin: [
     {
@@ -45,7 +45,7 @@ const OPTIONS = {
     {
       name: "Agenda",
       link: "/schedule",
-    }
+    },
   ],
 };
 function NavBar() {
@@ -58,15 +58,23 @@ function NavBar() {
   const TypeUser = getUserType();
   return (
     <nav className="h-16 w-full bg-gray-800 z-50 fixed top-0">
-      <div className="flex flex-nowrap h-16 w-full max-w-5xl justify-between items-center px-5 mx-auto ">
+      <div className="flex flex-nowrap h-16 w-full max-w-6xl justify-between items-center px-5 mx-auto ">
         <img src={Logo} className="h-12" />
-          <div onClick={() => setOpen(!open)} className="cursor-pointer flex lg:hidden">
-          {
-            open ? <CloseIcon className="w-10 h-10 text-white"/>
-            : <MenuIcon className="w-10 h-10 text-white"/>
-          }
+        <div
+          onClick={() => setOpen(!open)}
+          className="cursor-pointer flex lg:hidden"
+        >
+          {open ? (
+            <CloseIcon className="w-10 h-10 text-white" />
+          ) : (
+            <MenuIcon className="w-10 h-10 text-white" />
+          )}
         </div>
-        <div className={`transition-all fixed top-16 lg:top-0 -pt-16 bg-white/90 w-full ${open ? "right-0" : "right-full"} lg:right-0 lg:bg-transparent h-screen lg:h-16 flex-col lg:flex-row justify-center lg:justify-end flex flex-nowrap gap-8 items-center px-3`}>
+        <div
+          className={`transition-all fixed lg:static top-16 lg:top-0 -pt-16 bg-white/90 w-full ${
+            open ? "right-0" : "right-full"
+          } lg:right-0 lg:bg-transparent h-screen lg:h-16 flex-col lg:flex-row justify-center lg:justify-end flex flex-nowrap gap-8 items-center px-3`}
+        >
           {TypeUser
             ? OPTIONS.admin.map(({ name, link }, index) => (
                 <a
@@ -98,7 +106,9 @@ function NavBar() {
             </a>
           ) : (
             <a
-              href={`/login?afterUrl=${encodeURIComponent(window.location.pathname)}`}
+              href={`/login?afterUrl=${encodeURIComponent(
+                window.location.pathname
+              )}`}
               onClick={() => setOpen(!open)}
               className="font-medium lg:font-normal text-xl lg:text-lg text-black lg:text-white hover:text-indigo-400 transition-colors uppercase"
             >
@@ -119,7 +129,7 @@ function NavBar() {
               </div>
             )}
           </div>
-          <Notifications/>
+          {LoginStatus && <Notifications />}
         </div>
       </div>
     </nav>
