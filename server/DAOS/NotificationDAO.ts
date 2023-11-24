@@ -28,13 +28,24 @@ export class NotificationDAO {
                 SQL.query("Duende_SP_Notifications_List", { "IN_userEmail": userEmail }).then((result) => {
                     if (result && result.recordset) {
                         const notifications: [] = result.recordset.map((notification: any) => {
+                            const user = new User(
+                                notification.userId,
+                                notification.userName,
+                                notification.userLastName1,
+                                notification.userLastName2,
+                                notification.userEmail,
+                                notification.userPassword,
+                                notification.userToken
+                              );
+
                             return new Notification(
                                 notification.NotificationID,
                                 notification.Title,
                                 notification.Description,
                                 notification.Timestamp,
                                 new NotificationCategory(notification.Category),
-                                notification.MoreDetailsUrl
+                                user,
+                                notification.MoreDetailsURL
                             );
                         });
                         resolve(notifications);

@@ -26,16 +26,16 @@ function Notifications() {
 
   const handleDelete = async () => {
     try {
-      const APIURL = `/api/delete_notification/${showDetails.id}`
-      await axios.delete(APIURL)
-      const newArray = data.filter(item => item.id != showDetails.id);
+      const APIURL = `/api/delete_notification/${showDetails.id}`;
+      await axios.delete(APIURL);
+      const newArray = data.filter((item) => item.id != showDetails.id);
       setData(newArray);
       setShowDetails([]);
       toast.success("Notificación eliminada", messageSettings);
     } catch (error) {
       toast.error("No se puede eliminar", messageSettings);
     }
-  } 
+  };
 
   const ClassNotification = {
     Information: "bg-blue-50 border-blue-400 hover:bg-blue-100",
@@ -77,9 +77,7 @@ function Notifications() {
                   } cursor-pointer border-l-4 `}
                 >
                   <p className="text-sm">{item.title}</p>
-                  <p className="line-clamp-1 text-xs">
-                    {item.description}
-                  </p>
+                  <p className="line-clamp-1 text-xs">{item.description}</p>
                 </li>
               );
             })}
@@ -95,6 +93,15 @@ function Notifications() {
           >
             <h4 className="font-medium text-lg mb-2">{showDetails?.title}</h4>
             <p className=" mb-2">{showDetails?.description}</p>
+            {showDetails?.moreDetailsUrl && (
+              <a
+                className="font-medium text-indigo-700 underline"
+                href={showDetails?.moreDetailsUrl}
+                target="_blank"
+              >
+                Ver más detalles
+              </a>
+            )}
             <p className=" mb-2">
               Fecha: {showDetails?.timestamp?.slice(0, 10)}
             </p>
@@ -111,7 +118,6 @@ function Notifications() {
               >
                 Eliminar
               </button>
-              
             </div>
           </div>
         </div>
