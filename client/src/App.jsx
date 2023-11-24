@@ -30,6 +30,7 @@ import AboutUs from "./Pages/AboutUs";
 import Profile from "./Pages/Profile";
 import Schedule from "./Pages/Schedule";
 import AddEvent from "./Pages/Schedule/AddEvent";
+import EditEvent from "./Pages/Schedule/EditEvent";
 
 const noRequirement = [
   "/login",
@@ -203,6 +204,15 @@ function App() {
               element={
                 <RequiredAuth>
                   <AddEvent />
+                </RequiredAuth>
+              }
+            />
+            <Route
+              exact
+              path="/edit_event/:idEvent"
+              element={
+                <RequiredAuth>
+                  <EditEvent />
                 </RequiredAuth>
               }
             />

@@ -56,3 +56,21 @@ export const durationStrings = (startTime, endTime) => {
 
   return [start, end]
 }
+
+export const localHtmlAttribute = (apiDateString) => {
+  const apiDate = new Date(
+    apiDateString + (apiDateString.endsWith("Z") ? "" : "Z")
+  );
+  return new Date(
+    Date.UTC(
+      apiDate.getFullYear(),
+      apiDate.getMonth(),
+      apiDate.getDate(),
+      apiDate.getHours(),
+      apiDate.getMinutes(),
+      apiDate.getSeconds()
+    )
+  )
+    .toISOString()
+    .split(".")[0];
+};
