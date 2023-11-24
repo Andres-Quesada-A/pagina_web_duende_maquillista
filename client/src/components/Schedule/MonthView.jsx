@@ -59,6 +59,7 @@ function MonthView({ currentDate, date, visibleDays, visibleWeeks, events, categ
                           categoryColors[event.category].background || "bg-gray-300"
                         } [&:hover]:bg-opacity-80 [&:hover]:cursor-pointer`}
                         key={event.id}
+                        title={`${event.title}\n${event.description}`}
                         onClick={() => {navigate(`/edit_event/${event.id}`)}}
                       >
                         <p

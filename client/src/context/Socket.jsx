@@ -28,7 +28,7 @@ const SocketClient = () => {
           <p className="text-lg font-bold">{message.title}</p>
           <p>{message.description}</p>
           {message.moreDetailsUrl && (
-            <a className="font-medium text-indigo-700 underline" href={message.moreDetailsUrl} target="_blank">
+            <a className="font-medium text-indigo-700 underline" href={message.moreDetailsUrl} target="_blank" rel="noreferrer">
               Ver más detalles
             </a>
           )}
