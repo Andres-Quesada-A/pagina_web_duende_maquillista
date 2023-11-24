@@ -1,5 +1,18 @@
 export const languages = ["es-UY", "es-CR", "es"];
 
+const dateOptions2 = {
+    month : { year: "numeric", month: "long" },
+    short: { year: "numeric", month: "short", day: "numeric" },
+    long: { year: "numeric", month: "long", day: "numeric" },
+    full: { weekday: "long", year: "numeric", month: "long", day: "numeric" },
+};
+const timeOptions2 = {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true,
+};
+
 export const dateOptions = {
   newMonth: { day: "numeric", month: "short" },
   sameMonth: { day: "numeric" },
@@ -73,4 +86,53 @@ export const localHtmlAttribute = (apiDateString) => {
   )
     .toISOString()
     .split(".")[0];
+};
+
+export const localDate = (apiDateString, dateType, capitalizeFirstLetter = false) => {
+  try {
+      const apiDate = new Date(apiDateString + (apiDateString.endsWith("Z") ? "" : "Z"));
+      const seletedOptions = { ...dateOptions2[dateType] } || { ...dateOptions2["short"] };
+
+      if (apiDate.getFullYear() === (new Date()).getFullYear()) {
+          delete seletedOptions.year;
+      }
+
+      const result = apiDate.toLocaleDateString(
+          languages,
+          seletedOptions
+      );
+
+      if (capitalizeFirstLetter) {
+          return result.charAt(0).toUpperCase() + result.slice(1);
+      } else {
+          return result;
+      }
+  } catch (error) {
+      return "";
+  }
+};
+
+export const localTime = (apiDateString, timeType = "short") => {
+  try {
+      const apiDate = new Date(apiDateString + (apiDateString.endsWith("Z") ? "" : "Z"));
+      const currentTimeOptions = timeOptions2;
+
+      if (timeType === "short") {
+          delete currentTimeOptions.second;
+      }
+
+      // Some browsers mistakenly return 00:00 a. m. for 12:00 a. m., so we replace it with 12:00 a. m.
+      return apiDate
+          .toLocaleTimeString(languages, currentTimeOptions)
+          .replace(/^00/, "12");
+  } catch (error) {
+      return "";
+  }
+};
+
+export const localDateTime = (apiDateString, dateType, timeType) => {
+  return `${localTime(apiDateString, timeType)}${dateType === "full" ? " el " : ", "}${localDate(
+      apiDateString,
+      dateType
+  )}`.trim();
 };

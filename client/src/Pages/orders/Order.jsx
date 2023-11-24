@@ -8,6 +8,7 @@ import { formatCurrency } from "../../utils/formatCurrency";
 import { BackArrowIcon } from "../../components/Icons";
 import SelectCustom from "../../components/form/SelectCustom";
 import { useAuthContext } from "../../context/AuthContext";
+import { localDate, localDateTime } from "../../utils/dateFormatter";
 
 function OrderPage() {
   const { getUserType } = useAuthContext();
@@ -121,6 +122,14 @@ function OrderPage() {
                 <b>
                   {" "}
                   {options.find((option) => option.value == status).label}{" "}
+                </b>
+              </p>
+            )}
+            {data.deliveryDate && (
+              <p className="text-2x1 font-medium text-gray-600">
+                Fecha estimada de envío:{" "}
+                <b>
+                  {localDate(data.deliveryDate, "full")}
                 </b>
               </p>
             )}

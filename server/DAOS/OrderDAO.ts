@@ -137,7 +137,8 @@ export class OrderDAO {
                         order.voucherImageUrl,
                         client,
                         address,
-                        STATUSES[order.OrderStatus as keyof typeof STATUSES]
+                        STATUSES[order.OrderStatus as keyof typeof STATUSES],
+                        order.DeliveryDate
                     );
                     resolve(orderObj);
                 }).catch((error) => {

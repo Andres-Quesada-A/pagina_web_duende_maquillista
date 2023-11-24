@@ -13,6 +13,7 @@ export class Order {
     private client: User;
     private address: Address;
     private status: STATUSES;
+    private deliveryDate?: string;
   
     constructor(
       id: number,
@@ -21,7 +22,8 @@ export class Order {
       voucherImageUrl: string,
       client: User,
       address: Address,
-      status: STATUSES
+      status: STATUSES,
+      deliveryDate?: string
     ) {
       this.id = id;
       this.products = products;
@@ -30,6 +32,7 @@ export class Order {
       this.client = client;
       this.address = address;
       this.status = status;
+      this.deliveryDate = deliveryDate;
     }
   
     getId(): number {
@@ -86,5 +89,13 @@ export class Order {
   
     setStatus(status: STATUSES) {
       this.status = status;
+    }
+
+    getDeliveryDate(): string | undefined {
+      return this.deliveryDate;
+    }
+
+    setDeliveryDate(deliveryDate?: string) {
+      this.deliveryDate = deliveryDate;
     }
   }

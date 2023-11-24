@@ -58,11 +58,13 @@ BEGIN
                     INNER JOIN OrderProducts OP ON P.id = OP.productId
                     WHERE OP.orderId = O.id
                     FOR JSON PATH
-            ) AS Products
+            ) AS Products,
+            E.startTime AS DeliveryDate
             FROM Orders O
             INNER JOIN OrderStatuses OS ON O.orderStatusId = OS.id
             INNER JOIN Users U ON O.userId = U.id
             INNER JOIN Addresses A ON O.addressId = A.id
+            LEFT JOIN Events E ON E.orderId = O.id AND (E.deleted = 0 OR E.deleted = NULL)
             WHERE O.id = @IN_OrderID
             AND O.deleted = 0;
 
