@@ -7,7 +7,7 @@ import { messageSettings } from "../../utils/messageSettings";
 import SelectCustom from "../../components/form/SelectCustom";
 import { AmountOptions } from "../../Structures/shopFilters";
 import { useShoppingCart } from "../../context/ShoppingCartContext";
-import { formatCurrency } from '../../utils/formatCurrency';
+import { formatCurrency } from "../../utils/formatCurrency";
 
 function ProductShop() {
   const { idProduct } = useParams();
@@ -20,6 +20,9 @@ function ProductShop() {
   };
 
   const addProductToCart = () => {
+    if (quantity == 0) {
+      toast.error("Debe seleccionar una cantidad", messageSettings);
+    }
     AddProductCar({ ...product, amount: quantity });
   };
   useEffect(() => {
