@@ -1,8 +1,19 @@
 import { Decorator } from "./Decorator";
+import { Notification } from "./Notification";
+import { EmailController } from "../controllers/EmailController";
 
 export class EmailDecorator extends Decorator {
-    notify(data:any) {
-        super.notify(data);
-        console.log("PushDecorator.notify");
+    async notify(data: any): Promise<Notification> {
+        const notification = await super.notify(data);
+
+        const emailController = new EmailController();
+
+        emailController.sendEmail(
+            [notification.getUser().getEmail()],
+             notification.getTitle(), 
+             `<p>${notification.getDescription()}</p>`,
+              notification.getMoreDetailsUrl()
+              );
+        return notification
     }
 }

@@ -15,7 +15,7 @@ export class AgendaListener implements Listener {
 
     if (data.status === "ACCEPTED") {
       const eventControl = new EventController()
-      eventControl.createEvent("Entrega de orden", "Entrega", data.deliveryDate.startDateTime , data.deliveryDate.endDateTime, `Orden #${data.id}`, Number(data.id))
+      eventControl.createEvent("Entrega de orden", "Entrega", data.deliveryDate.startDateTime, data.deliveryDate.endDateTime, `Orden #${data.id}`, Number(data.id))
     }
   }
 }
@@ -24,10 +24,14 @@ export class NotificationListener implements Listener {
   constructor() { }
   update(data: any): void {
     let stack = new BaseNotifier();
+
     stack = new EmailDecorator(stack);
-    stack = new PushDecorator(stack);
+
+
+    stack.notify(data);
   }
 }
+
 // Concrete Subject
 export class ListenersManager {
   private listeners: Listener[] = [];
@@ -46,6 +50,7 @@ export class ListenersManager {
   }
 
   addListener(listener: Listener): void {
+    console.log("ListenersManager.addListener");
     this.listeners.push(listener);
   }
   removeListener(listener: Listener): void {
@@ -56,21 +61,8 @@ export class ListenersManager {
   }
 }
 
-// Example usage
-//const observer1 = new AgendaListener("Observer 1");
-//const observer2 = new NotificationListener("Observer 2");
-//
-//const subject = new ListenersManager();
-//subject.addListener(observer1);
-//subject.addListener(observer2);
-//
-//subject.notifyListener("Data update 1");
-//// Output:
-//// Observer 1 received update: Data update 1
-//// Observer 2 received update: Data update 1
-//
-//subject.removeListener(observer1);
-//
-//subject.notifyListener("Data update 2");
-// Output:
-// Observer 2 received update: Data update 2
+let listenerManager = ListenersManager.getInstance();
+const agendaListener: AgendaListener = new AgendaListener();
+const notificationListener: NotificationListener = new NotificationListener();
+listenerManager.addListener(agendaListener);
+listenerManager.addListener(notificationListener);

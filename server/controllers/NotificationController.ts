@@ -25,7 +25,7 @@ export class NotificationController {
         userId: number,
         title: string,
         description: string,
-        moreDetailsUrl?: string): Promise<Notification | undefined> {
+        moreDetailsUrl?: string): Promise<Notification> {
         const response = await this.NotificationDAO.createNotification(category, userId, title, description, moreDetailsUrl);
         return response;
     }

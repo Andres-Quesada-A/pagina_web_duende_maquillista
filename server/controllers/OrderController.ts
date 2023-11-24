@@ -25,7 +25,7 @@ export class OrderController {
             const dateFormatter = new DateFormatter(deliveryDate.startDateTime.getTime() / 1000);
 
             let category = "";
-            let title = `Cambio en estado de su orden #${id}}`
+            let title = `Cambio en estado de su orden #${id}`
             const url = `https://duendemaquillista.azurewebsites.net/order/${id}`;
             let description = `Su orden ha sido ${options.find(option => option.value === status)?.label}`;
 

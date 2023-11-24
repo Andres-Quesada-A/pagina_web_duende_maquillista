@@ -85,7 +85,7 @@ export class NotificationDAO {
         title: string,
         description: string,
         moreDetailsUrl?: string
-    ): Promise<Notification | undefined> {
+    ): Promise<Notification> {
 
         const SQL = ConnectionDAO.getInstance();
         const damage: { customError: string | undefined }[] = [];
