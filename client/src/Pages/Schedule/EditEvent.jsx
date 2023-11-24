@@ -6,6 +6,7 @@ import { EventStructure } from "../../Structures/EventStructure";
 import axios from "axios";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { localHtmlAttribute } from "../../utils/dateFormatter";
+import ConfirmationButton from "../../components/Modals/ConfirmationButton";
 
 function EditEvent() {
   const { idEvent } = useParams();
@@ -51,6 +52,20 @@ function EditEvent() {
       toast.error(errorMessage, messageSettings);
     }
   };
+
+  const handleDelete = (e) => {
+    e?.preventDefault();
+
+    axios.delete(`/api/delete_event/${idEvent}`, { withCredentials: true }).then((res) => {
+      toast.success("Evento eliminado exitosamente.", messageSettings);
+      navigate("/schedule");
+    }).catch((error) => {
+      const errorMessage =
+          error?.response?.data?.message ||
+          defaultError;
+      toast.error(errorMessage, messageSettings);
+    });
+  }
   
   return (
     <div className="w-full min-h-screen flex flex-col items-center mt-16 py-14 px-5">
@@ -88,7 +103,7 @@ function EditEvent() {
             </button>
           </div>
         </div>
-        <div className="flex flex-col gap-5 items-center">
+        <div className="flex flex-col gap-5 items-center [&>button]:bg-red-500 [&>button:hover]:bg-red-400">
           <label className="text-xl font-medium text-gray-700 w-full">
             Información adicional
           </label>
@@ -104,6 +119,7 @@ function EditEvent() {
             :
             <p className="text-slate-400 text-lg">No hay más información</p>
           }
+          <ConfirmationButton title={"Confirmación"} description={"¿Está seguro de querer eliminar este evento?"} handleDelete={handleDelete} />
         </div>
       </form>
     </div>
