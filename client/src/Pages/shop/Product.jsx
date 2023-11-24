@@ -22,6 +22,7 @@ function ProductShop() {
   const addProductToCart = () => {
     if (quantity == 0) {
       toast.error("Debe seleccionar una cantidad", messageSettings);
+      return;
     }
     AddProductCar({ ...product, amount: quantity });
   };
