@@ -21,7 +21,6 @@ import { ListenersManager, AgendaListener, NotificationListener} from "../models
 export class MasterController {
 
     constructor() {
-        console.log("MasterController.constructor");
         ConnectionDAO.getInstance()
     }
 

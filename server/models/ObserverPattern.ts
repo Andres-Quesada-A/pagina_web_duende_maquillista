@@ -12,10 +12,17 @@ export class AgendaListener implements Listener {
   constructor() { }
 
   update(data: any): void {
-
+    const eventControl = new EventController();
+    
     if (data.status === "ACCEPTED") {
-      const eventControl = new EventController()
       eventControl.createEvent("Entrega de orden", "Entrega", data.deliveryDate.startDateTime, data.deliveryDate.endDateTime, `Orden #${data.id}`, Number(data.id))
+    } else {
+      // Tries to delete the event, if it doesn't exist, it does nothing
+      try {
+        eventControl.deleteEvent(undefined, Number(data.id));
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 }

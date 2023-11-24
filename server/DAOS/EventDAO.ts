@@ -129,13 +129,13 @@ export class EventDAO {
         });
     }
 
-    async deleteEvent(id: number): Promise<boolean> {
+    async deleteEvent(id?: number, orderId?: number): Promise<boolean> {
         const SQL = ConnectionDAO.getInstance();
         const damage: { customError: string | undefined }[] = [];
 
         return new Promise((resolve, reject) => {
             try{
-                SQL.query('Duende_SP_Events_Delete', { 'IN_eventId': id })
+                SQL.query('Duende_SP_Events_Delete', { 'IN_eventId': id, 'IN_orderId': orderId })
                 .then((result) => {
                     resolve(true);
                 }).catch((error) => {

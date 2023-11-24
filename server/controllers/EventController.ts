@@ -25,8 +25,8 @@ export class EventController {
     }
 
     // deletes an event
-    async deleteEvent(id: number): Promise<boolean> {
-        return await this.EventDAO.deleteEvent(id);
+    async deleteEvent(id?: number, orderId?: number): Promise<boolean> {
+        return await this.EventDAO.deleteEvent(id, orderId);
     }
 
     // creates an event
