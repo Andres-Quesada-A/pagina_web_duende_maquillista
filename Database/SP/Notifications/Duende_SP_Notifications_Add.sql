@@ -91,7 +91,7 @@ BEGIN
         
         SELECT 
             N.id as notificationId, 
-            N.categoryId as categoryID, 
+            NC.description as category, 
             N.title as title, 
             N.description as description, 
             N.moreDetailsURL as moreDetailsURL,
@@ -106,6 +106,7 @@ BEGIN
             U.token as userToken
         FROM Notifications N
         INNER JOIN Users U ON U.id = N.userId
+        INNER JOIN NotificationCategories NC ON NC.id = N.categoryId
         WHERE N.id = @NotificationID;
 
         -- TRANSACTION COMMITTED

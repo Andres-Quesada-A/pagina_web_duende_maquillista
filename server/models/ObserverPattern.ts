@@ -24,9 +24,8 @@ export class NotificationListener implements Listener {
   constructor() { }
   update(data: any): void {
     let stack = new BaseNotifier();
-
     stack = new EmailDecorator(stack);
-
+    stack = new PushDecorator(stack);
 
     stack.notify(data);
   }

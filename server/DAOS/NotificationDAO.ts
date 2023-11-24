@@ -116,7 +116,7 @@ export class NotificationDAO {
                         notification.title,
                         notification.description,
                         notification.timestamp,
-                        new NotificationCategory(notification.categoryID),
+                        new NotificationCategory(notification.category),
                         user,
                         notification.moreDetailsURL
                       );

@@ -31,6 +31,7 @@ import Profile from "./Pages/Profile";
 import Schedule from "./Pages/Schedule";
 import AddEvent from "./Pages/Schedule/AddEvent";
 import EditEvent from "./Pages/Schedule/EditEvent";
+import SocketClient from "./context/Socket";
 
 const noRequirement = [
   "/login",
@@ -233,6 +234,7 @@ function App() {
           pauseOnHover
           theme="light"
         />
+        <SocketClient />
       </AuthContextProvider>
     </ShoppingCartProvider>
   );

@@ -3,6 +3,7 @@ import cors from 'cors'
 import cookieParser from 'cookie-parser';
 import { createServer } from "http";
 import path from 'path';
+import { Socket } from './socket/WebSocket';
 var debug = require("debug")("duendemaquillista:server");
 
 // CLIENT FILES
@@ -50,7 +51,7 @@ app.set("port", port);
  */
 
 var server = createServer(app);
-
+Socket.getInstance({ server });
 /**
  * Listen on provided port, on all network interfaces.
  */

@@ -31,7 +31,7 @@ export class OrderController {
 
             if (status === "ACCEPTED") {
                 category="Success";
-                description += ` y será entregada el ${dateFormatter.localDateText()}.`;
+                description += ` y será enviada el ${dateFormatter.localDateText()}.`;
             } else{
                 category="Error";
                 description += ".";
