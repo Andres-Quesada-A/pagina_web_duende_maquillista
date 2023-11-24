@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { messageSettings } from "../utils/messageSettings";
 import axios from "axios";
 import { useAuthContext } from "../context/AuthContext";
+import { localDateTime } from "../utils/dateFormatter";
 
 function Notifications() {
   const [show, setShow] = useState(false);
@@ -102,8 +103,11 @@ function Notifications() {
                 Ver más detalles
               </a>
             )}
-            <p className=" mb-2">
-              Fecha: {showDetails?.timestamp?.slice(0, 10)}
+            <p className="text-sm mb-2">
+              <b>Enviada:</b>{" "}
+              {
+                localDateTime(showDetails?.timestamp, "long", "short")
+              }
             </p>
             <div className="flex gap-3 flex-row mt-6">
               <button
