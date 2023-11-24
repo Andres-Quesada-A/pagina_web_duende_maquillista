@@ -24,7 +24,7 @@ BEGIN
     -- Variable declaration
     DECLARE @idCategory INT = -1
 	DECLARE @useOrderID INT = NULL
-	DECLARE @categoryWithCollision VARCHAR(32) = 'Maquillaje'
+	DECLARE @categoryWithCollision VARCHAR(32) = 'Servicio'
 	DECLARE @valuesInRange AS TABLE(
 		[id] INT, 
 		[title] VARCHAR(64), 
@@ -51,7 +51,7 @@ BEGIN
 
 		IF(LTRIM(RTRIM(@IN_category)) = '')
 	        BEGIN
-	        	RAISERROR('No se ingresó texto para la categoria', 16, 1)
+	        	RAISERROR('No se ingresó texto para la categoría', 16, 1)
 	        END;
 
         SELECT @idCategory = CASE WHEN EC.id IS NULL THEN -1 ELSE EC.id END
@@ -61,12 +61,12 @@ BEGIN
 		
 		IF (@idCategory = -1)
 			BEGIN
-				RAISERROR('La categoria: "%s" no es reconocida', 16, 1,@IN_category)
+				RAISERROR('La categoría "%s" no es reconocida', 16, 1,@IN_category)
 			END;
 
 		IF(@IN_endTime <= @IN_startTime)
 		BEGIN
-			RAISERROR('Fecha final es menor o igual que la fecha de inicio', 16, 1)
+			RAISERROR('La fecha final es menor o igual que la fecha de inicio', 16, 1)
 		END;
 
 		IF NOT (@IN_orderId = -1)
@@ -102,17 +102,30 @@ BEGIN
 				   FROM @valuesInRange E
 				   WHERE E.category = @categoryWithCollision
 				   AND E.id != @IN_eventId
-				   AND ( (E.startTime <= @IN_startTime AND @IN_startTime <= E.endTime) -- event starts midway
-					   OR (E.startTime <= @IN_endTime AND @IN_endTime <= E.endTime) -- event finish midway
+				   AND ( (E.startTime <= @IN_startTime AND @IN_startTime < E.endTime) -- event starts midway
+					   OR (E.startTime < @IN_endTime AND @IN_endTime <= E.endTime) -- event finish midway
 				       OR (E.startTime <= @IN_startTime AND @IN_endTime <= E.endTime)-- old encapsulates new
 				       OR (@IN_startTime <= E.startTime AND E.endTime <= @IN_endTime) -- new encapsulates old
 					   )
 				  )
 			BEGIN
 				-- la orden colisiona con un maquillaje
-				RAISERROR('El evento indicado tiene al menos una colisión con un Maquillaje', 16, 1)
+				RAISERROR('El evento indicado tiene al menos una colisión con un servicio', 16, 1)
 			END
 
+		IF @categoryWithCollision = @IN_category AND EXISTS (SELECT 1 
+				FROM @valuesInRange E
+				WHERE ( (E.startTime <= @IN_startTime AND @IN_startTime < E.endTime) -- event starts midway
+					OR (E.startTime < @IN_endTime AND @IN_endTime <= E.endTime) -- event finish midway
+					OR (E.startTime <= @IN_startTime AND @IN_endTime <= E.endTime)-- old encapsulates new
+					OR (@IN_startTime <= E.startTime AND E.endTime <= @IN_endTime) -- new encapsulates old
+					)
+					AND E.id != @IN_eventId
+				)
+		BEGIN
+			-- la orden colisiona con un maquillaje
+			RAISERROR('El servicio tiene al menos una colisión con otro evento', 16, 1)
+		END
 
 
 		-- TRANSACTION BEGIN

@@ -22,7 +22,7 @@ export class EventDAO {
                     }).catch((error) => {
                         //fail in the execution of the query
                         damage.push({ customError: error.customError });
-                        reject(false);
+                        reject(damage);
                     })
             } catch (error) {
                 // any errors that occur during the process
@@ -52,7 +52,7 @@ export class EventDAO {
                     }).catch((error) => {
                         //fail in the execution of the query
                         damage.push({ customError: error.customError });
-                        reject(false);
+                        reject(damage);
                     })
             } catch (error) {
                 // any errors that occur during the process
