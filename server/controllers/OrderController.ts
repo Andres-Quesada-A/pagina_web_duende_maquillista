@@ -43,7 +43,9 @@ export class OrderController {
                 description,
                 category,
                 url,
-                deliveryDate
+                deliveryDate,
+                status,
+                id
             });
             
         }

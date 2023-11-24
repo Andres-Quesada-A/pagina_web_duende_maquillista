@@ -1,3 +1,4 @@
+import { EventController } from "../controllers/EventController";
 import { BaseNotifier } from "./BaseNotifier";
 import { EmailDecorator } from "./EmailDecorator";
 import { PushDecorator } from "./PushDecorator";
@@ -11,7 +12,11 @@ export class AgendaListener implements Listener {
   constructor() { }
 
   update(data: any): void {
-    console.log(` requiere la implementacion de las intrucciones correctas: ${data}`);
+
+    if (data.status === "ACCEPTED") {
+      const eventControl = new EventController()
+      eventControl.createEvent("Entrega de orden", "Entrega", data.deliveryDate.startDateTime , data.deliveryDate.endDateTime, `Orden #${data.id}`, Number(data.id))
+    }
   }
 }
 // Concrete listener 2
