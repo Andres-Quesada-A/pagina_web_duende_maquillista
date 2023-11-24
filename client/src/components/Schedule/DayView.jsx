@@ -20,6 +20,8 @@ function DayView({
   const navigate = useNavigate();
   const [current, setCurrent] = useState(currentDate);
   const [currentTimeOffset, setCurrentTimeOffset] = useState(null);
+  const [columnIndex, setColumnIndex] = useState([]);
+  const [maxConcurrentEvents, setMaxConcurrentEvents] = useState(1);
 
   const updateOffset = () => {
     const current = new Date();
@@ -43,6 +45,40 @@ function DayView({
   useEffect(() => {
     updateOffset();
   }, [currentDate]);
+
+  useEffect(() => {
+    calculateConcurrentEvents(events);
+  }, [events]);
+
+  const calculateConcurrentEvents = (events) => {
+    // Sort events by start time
+    const columnIndex = [];
+  
+    let maxConcurrentEvents = 0;
+    const eventStack = [];
+  
+    events.forEach((event) => {
+      // As long as the event at the top of the stack ends before the current event starts, remove it from the stack
+      while (eventStack.length > 0 && event.startTime >= eventStack[0].endTime) {
+        // Removes the first event from the stack
+        eventStack.shift();
+      }
+      
+      // Set the column index of the current event
+      event.columnIndex = eventStack.length;
+
+      // Add the current event to the stack
+      eventStack.push(event);
+  
+      // Update the maximum number of concurrent events
+      if (eventStack.length > maxConcurrentEvents) {
+        maxConcurrentEvents = eventStack.length;
+      }
+    });
+  
+    setMaxConcurrentEvents(maxConcurrentEvents);
+    setColumnIndex(columnIndex);
+  }
 
   return (
     <div
@@ -117,12 +153,15 @@ function DayView({
               key={event.id}
               className={`${
                 categoryColors[event.category].background || "bg-gray-300"
-              } rounded-md absolute w-full py-1 px-1 md:p-2 overflow-auto no-scrollbar hyphens-auto text-start [&:hover]:bg-opacity-80 [&:hover]:cursor-pointer z-[2]`}
+              } rounded-lg absolute py-1 px-1 md:p-2 overflow-auto no-scrollbar hyphens-auto text-start [&:hover]:bg-opacity-80 [&:hover]:cursor-pointer z-[2]`}
               style={{
                 height: `${heightPerHour * trimmedDuration}px`,
                 top: `${heightPerHour * hoursFromMidnight}px`,
+                left: `calc(${(100 / maxConcurrentEvents) * event.columnIndex}% + 2px)`,
+                width: `calc(${100 / maxConcurrentEvents}% - 4px)`,
               }}
               onClick={() => navigate(`/edit_event/${event.id}`)}
+              title={`${durationStrings(startTime, endTime, false).join(" - ")}\n${event.title}\n${event.description}`}
             >
               <p className="font-medium text-xs">
                 {times[0]} - {times[1]}

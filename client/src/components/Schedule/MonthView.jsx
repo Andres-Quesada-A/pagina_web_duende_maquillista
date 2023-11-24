@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { languages, dateOptions, timeString } from "../../utils/dateFormatter";
+import { languages, dateOptions, timeString, durationStrings } from "../../utils/dateFormatter";
 
 function MonthView({ currentDate, date, visibleDays, visibleWeeks, events, categoryColors, categories }) {
   const navigate = useNavigate()
@@ -59,7 +59,7 @@ function MonthView({ currentDate, date, visibleDays, visibleWeeks, events, categ
                           categoryColors[event.category].background || "bg-gray-300"
                         } [&:hover]:bg-opacity-80 [&:hover]:cursor-pointer`}
                         key={event.id}
-                        title={`${event.title}\n${event.description}`}
+                        title={`${durationStrings((new Date(event.startTime)), (new Date(event.endTime)), false).join(" - ")}\n${event.title}\n${event.description}`}
                         onClick={() => {navigate(`/edit_event/${event.id}`)}}
                       >
                         <p

@@ -63,9 +63,14 @@ export const monthName = (date) => {
   ).toLowerCase();
 };
 
-export const durationStrings = (startTime, endTime) => {
-  let start = timeString(startTime.toISOString(), true).replace(/\s?([ap])\.\s?m\.$/, "$1");
-  let end = timeString(endTime.toISOString(), true).replace(/\s?([ap])\.\s?m\.$/, "$1");
+export const durationStrings = (startTime, endTime, short = true) => {
+  let start = timeString(startTime.toISOString(), true);
+  let end = timeString(endTime.toISOString(), true);
+
+  if (short) {
+    start = start.replace(/\s?([ap])\.\s?m\.$/, "$1");
+    end = end.replace(/\s?([ap])\.\s?m\.$/, "$1");
+  }
 
   return [start, end]
 }
