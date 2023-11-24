@@ -197,6 +197,12 @@ function Schedule() {
     });
   }, [visibleDays]);
 
+  const currentDateFullYear = currentDate.getFullYear()
+  const currentDateMonth = currentDate.getMonth()
+  const currentDateInfo = currentDate.getDate()
+  const dateFullYearSelected = date.getFullYear()
+  const dateMonthSelected = date.getMonth()
+  const dateSelected = date.getDate()
   return (
     <>
       <Helmet>
@@ -285,24 +291,24 @@ function Schedule() {
                             <span key={category} className={`w-1 h-1 ${categoryColors[category].badge} rounded-lg`}></span>
                           ))}
                         </div>
-                        <p className={`rounded-full cursor-pointer transition-colors ${
-                          month.year == date.getFullYear() &&
-                          month.month == date.getMonth() + 1 &&
-                          day == date.getDate()
+                        <p className={`rounded-full flex justify-center items-center cursor-pointer transition-colors ${
+                          month.year == dateFullYearSelected &&
+                          month.month == dateMonthSelected + 1 &&
+                          day == dateSelected
                             ? "bg-indigo-500 text-white font-medium"
                             : "hover:bg-gray-100 hover:shadow-md"
                         } ${
-                          month.year == date.getFullYear() &&
-                          month.month == date.getMonth() + 1
+                          month.year == dateFullYearSelected &&
+                          month.month == dateMonthSelected + 1
                             ? ""
                             : "opacity-30"
                         } ${
-                          month.year == currentDate.getFullYear() &&
-                          month.month == currentDate.getMonth() + 1 &&
-                          day == currentDate.getDate()
+                          month.year == currentDateFullYear &&
+                          month.month == currentDateMonth + 1 &&
+                          day == currentDateInfo
                             ? "border border-indigo-500"
                             : ""
-                        } w-8 h-8 p-2 text-center`}>{day}</p>
+                        } w-8 h-8 text-center`}>{day}</p>
                       </li>
                     ))
                   )}

@@ -63,7 +63,6 @@ function Gallery() {
     axios.get(apiImageURL, { withCredentials: true }).then((response) => {
       const dataImage = response.data
       setImageFiltered(dataImage)
-      console.log(response)
       setData(dataImage);
     }).catch((error) => {
       toast.error("Ocurrió un error al cargar las imágenes.", messageSettings);
@@ -71,7 +70,6 @@ function Gallery() {
 
     axios.get(apiCategoryURL, { withCredentials: true }).then((response) => {
       const dataCategories = response.data
-      console.log(response)
       setCategory(dataCategories);
     }).catch((error) => {
       toast.error("Ocurrió un error al cargar las categorías.", messageSettings);
@@ -96,7 +94,6 @@ function Gallery() {
   };
 
   const handleChangeFilters = (e) => {
-    console.log(filters);
     setFilters({ ...filters, [e.target.id]: e.target.value });
     setSubcategoryfilters({});
   };
@@ -177,9 +174,9 @@ function Gallery() {
                       data={Subcategoryfilters}
                       structureForm={subcategoryOptions}
                     />
-                    : <><p class="italic text-sm">No hay subcategorías</p></>
+                    : <><p className="italic text-sm">No hay subcategorías</p></>
                 )
-                : <><p class="italic text-sm">Seleccione una categoría primero</p></>
+                : <><p className="italic text-sm">Seleccione una categoría primero</p></>
             }
             <h4 className="mt-4 mb-3 font-semibold">Imágenes</h4>
               <input

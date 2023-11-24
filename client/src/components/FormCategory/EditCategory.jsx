@@ -19,7 +19,6 @@ function EditCategory({ Categories, APIURL}) {
   const HandleSubmit = (e) => {
     e.preventDefault();
     const fullData = {...data, ...category}
-    console.log(fullData)
     axios.put(APIURL, fullData, { withCredentials: true })
       .then(() => {
         toast.success("Categoría actualizada.", messageSettings)

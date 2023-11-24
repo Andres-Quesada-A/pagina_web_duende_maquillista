@@ -1,7 +1,7 @@
 import { languages, dateOptions, timeString } from "../../utils/dateFormatter";
 
 function MonthView({ currentDate, date, visibleDays, visibleWeeks, events, categoryColors, categories }) {
-    console.log("e", events)
+    
   return (
     <div
       className={`flex flex-row flex-wrap h-full [&>div]:w-1/7 ${

@@ -51,8 +51,6 @@ function DeleteSubcategory({ Raw, APIURL }) {
     }
 
     const fullData = {...selectedSubcategory, ...selectedCategory}
-    console.log(fullData)
-    console.log(APIURL)
     axios.delete(`${APIURL}/${fullData.category}/${fullData.subcategory}`, { withCredentials: true })
       .then(() => {
         toast.success("Subcategoría eliminada.", messageSettings)

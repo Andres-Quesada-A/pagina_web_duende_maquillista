@@ -37,11 +37,9 @@ function LoginPage() {
       //await axios.post(`/api/login/${data.email}/${data.password}`, undefined, { withCredentials: true })
       const response = await axios.post(`/api/login/${data.email}/${data.password}`, undefined, { withCredentials: true })
       // const response = await axios.post(`/api/login/${data.email}/${data.password}`)
-      console.log(response, "response")
       dispatch({ type: 'LOGIN', payload: response.data })
       redirect();
     } catch (error) {
-      console.log(error?.response?.data?.message);
       const errorMessage =
           error?.response?.data?.message ||
           defaultError;

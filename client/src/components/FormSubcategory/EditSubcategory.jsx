@@ -57,8 +57,7 @@ function EditSubcategory({ Raw, APIURL }) {
     }
 
     const fullData = {...selectedNewSubcategory, ...selectedSubcategory, ...selectedCategory}
-    console.log(fullData)
-    console.log(APIURL)
+    
     axios.put(APIURL, fullData)
       .then(() => {
         toast.success("Subcategoría modificada.", messageSettings)
@@ -70,7 +69,6 @@ function EditSubcategory({ Raw, APIURL }) {
         toast.error(errorMessage, messageSettings)
       });
   };
-  console.log([selectedCategory, selectedSubcategory, selectedNewSubcategory])
   return (
     <form className="flex flex-col gap-4" onSubmit={HandleSubmit}>
       <h4 className="text-xl font-medium">Modificar subcategoría</h4>

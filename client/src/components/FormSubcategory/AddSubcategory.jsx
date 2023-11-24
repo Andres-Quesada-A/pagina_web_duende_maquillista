@@ -19,7 +19,6 @@ function AddSubcategory({ Categories, APIURL}) {
   const HandleSubmit = (e) => {
     e.preventDefault();
     const fullData = {...data, ...category}
-    console.log(fullData)
     axios.post(APIURL, fullData, { withCredentials: true })
       .then(() => {
         toast.success("Subcategoría añadida.", messageSettings)

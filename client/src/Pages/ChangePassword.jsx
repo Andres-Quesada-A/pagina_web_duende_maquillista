@@ -33,7 +33,7 @@ function ChangePasswordPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log(data)
+      
       await axios.put(`/api/reset_password/${data.email}/${data.code}/${data.password}`)
       toast.success("Contraseña actualizada. Ya puede iniciar sesión.", messageSettings);
       navigate(`/login?afterUrl=${encodedAfterUrl}`);

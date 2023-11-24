@@ -6,7 +6,7 @@ import {
 } from "../../utils/dateFormatter";
 
 export const heightPerHour = 40;
-export const hours = Array.from({length: 25}, (_, i) => i);
+export const hours = Array.from({ length: 25 }, (_, i) => i);
 
 function DayView({
   singleDay,
@@ -23,13 +23,20 @@ function DayView({
     const current = new Date();
     setCurrent(current);
 
-    if (date.getFullYear() == current.getFullYear() && date.getMonth() == current.getMonth() && date.getDate() == current.getDate()) {
-      setCurrentTimeOffset(heightPerHour * current.getHours() + heightPerHour * current.getMinutes() / 60);
+    if (
+      date.getFullYear() == current.getFullYear() &&
+      date.getMonth() == current.getMonth() &&
+      date.getDate() == current.getDate()
+    ) {
+      setCurrentTimeOffset(
+        heightPerHour * current.getHours() +
+          (heightPerHour * current.getMinutes()) / 60
+      );
       setTimeout(() => {
         updateOffset();
-      }, (1000 * 60) - current.getTime() % (1000 * 60)); // Update every minute
+      }, 1000 * 60 - (current.getTime() % (1000 * 60))); // Update every minute
     }
-  }
+  };
 
   useEffect(() => {
     updateOffset();
@@ -37,8 +44,10 @@ function DayView({
 
   return (
     <div
-      className={`${singleDay ? "w-full" : "w-1/7"} h-full pb-2 px-1 md:px-2 text-center`}
-      style={{ minHeight: `${heightPerHour * (hours.length -1)}px` }}
+      className={`${
+        singleDay ? "w-full" : "w-1/7"
+      } h-full pb-2 px-1 md:px-2 text-center`}
+      style={{ minHeight: `${heightPerHour * (hours.length - 1)}px` }}
     >
       <span
         className={`whitespace-nowrap overflow-hidden text-sm md:text-sm rounded-full py-1 px-2 mb-1 self-center ${
@@ -60,27 +69,45 @@ function DayView({
         {
           // Add lines for every hour, except midnight
           hours.map((hour) => (
-            <hr key={hour} className="absolute w-full border-gray-200 z-1" style={{ top: `${heightPerHour * hour}px` }} />
+            <hr
+              key={hour}
+              className="absolute w-full border-gray-200 z-1"
+              style={{ top: `${heightPerHour * hour}px` }}
+            />
           ))
         }
         {
           // Add a line for the current time if it's today
-          currentTimeOffset !== null &&
-          <>
-            <span className="absolute h-2 w-2 rounded-lg bg-red-500 z-[3] left-0 -translate-y-1/2" style={{ top: `${currentTimeOffset}px` }} ></span>
-            <hr className="absolute w-full border-red-500 z-[3]" style={{ top: `${currentTimeOffset}px` }} />
-          </>
+          currentTimeOffset !== null && (
+            <>
+              <span
+                className="absolute h-2 w-2 rounded-lg bg-red-500 z-[3] left-0 -translate-y-1/2"
+                style={{ top: `${currentTimeOffset}px` }}
+              ></span>
+              <hr
+                className="absolute w-full border-red-500 z-[3]"
+                style={{ top: `${currentTimeOffset}px` }}
+              />
+            </>
+          )
         }
         {events.map((event) => {
-          const startTime = new Date(event.startTime.endsWith("Z") ? event.startTime : event.startTime + "Z");
-          const endTime = new Date(event.endTime.endsWith("Z") ? event.endTime : event.endTime + "Z");
+          const startTime = new Date(
+            event.startTime.endsWith("Z")
+              ? event.startTime
+              : event.startTime + "Z"
+          );
+          const endTime = new Date(
+            event.endTime.endsWith("Z") ? event.endTime : event.endTime + "Z"
+          );
           const times = durationStrings(startTime, endTime);
           const duration = (endTime.getTime() - startTime.getTime()) / 3600000;
           if (startTime.getDate() != endTime.getDate()) {
             // If the event is longer than a day, we need to set the end time to the end of the day
             endTime.setHours(0, 0, 0, -1);
           }
-          const trimmedDuration = (endTime.getTime() - startTime.getTime()) / 3600000;
+          const trimmedDuration =
+            (endTime.getTime() - startTime.getTime()) / 3600000;
           const hoursFromMidnight =
             startTime.getHours() + startTime.getMinutes() / 60;
           return (

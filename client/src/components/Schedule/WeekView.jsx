@@ -32,8 +32,6 @@ function WeekView({
         visibleDays.push(currentMonth);
       }
     }
-
-    console.log(visibleDays);
     setVisibleWeek(visibleDays);
   }, []);
 

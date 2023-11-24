@@ -30,7 +30,6 @@ function AddImage() {
                     label: item.category,
                     subcategories: item.subcategory,
                 }));
-                console.log(Formated)
                 setCategories([{ label: "Seleccione", value: "", subcategories: null }, ...Formated]);
 
             } catch (error) {
@@ -79,14 +78,14 @@ function AddImage() {
 
     const handleChange = (e) => {
         setData({ ...data, [e.target.id]: e.target.value });
-        console.log(data)
+        
     };
 
     const handleChangeCategory = (e) => {
         const category = categories.find((item) => item.value === e.target.value);
         setCategorySelected(category);
         setData({ ...data, [e.target.id]: e.target.value, imageSubcategory: category.subcategories[0] });
-        console.log(data)
+        
     };
 
 

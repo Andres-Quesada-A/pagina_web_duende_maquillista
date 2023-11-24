@@ -37,7 +37,7 @@ function EditImage() {
         setCategories([{ label: "Seleccione", value: "", subcategories: null }, ...Formated]);
         categoryList.push(...Formated);
       } catch (error) {
-        console.log("No se")
+        
         toast.info("Ocurrió un error al cargar las categorías.", messageSettings);
       }
       try {
@@ -54,7 +54,6 @@ function EditImage() {
         document.getElementById("imageCategory").value = response.data.category;
         setPreviewURL(response.data.imageUrl);
         const category = categoryList.find((item) => item.value === response.data.category);
-        console.log(response.data.category, categoryList)
         setCategorySelected(category)
         document.getElementById("imageSubcategory").value = response.data.subcategory;
 
@@ -115,14 +114,14 @@ function EditImage() {
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.id]: e.target.value });
-    console.log(data)
+    
   };
 
   const handleChangeCategory = (e) => {
     const category = categories.find((item) => item.value === e.target.value);
     setCategorySelected(category);
     setData({ ...data, [e.target.id]: e.target.value, imageSubcategory: category.subcategories[0] });
-    console.log(data)
+    
   };
 
 

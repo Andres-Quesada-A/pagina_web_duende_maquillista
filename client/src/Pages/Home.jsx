@@ -35,14 +35,6 @@ function Home() {
       });
   }, []);
 
-  useEffect(() => {
-    console.log(products);
-  }, [products]);
-
-  useEffect(() => {
-    console.log(images);
-  }, [images]);
-
   return (
     <div className="w-full min-h-screen flex flex-col items-center mt-16">
       <img src={Image} className="aspect-video object-cover" />

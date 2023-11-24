@@ -71,7 +71,6 @@ function OrderPage() {
     e.preventDefault();
     const apiOrders = "/api/edit_order/";
 
-    console.log({ id: parseInt(idOrder), status: status });
     axios
       .put(apiOrders, { id: parseInt(idOrder), status: status })
       .then((response) => {
