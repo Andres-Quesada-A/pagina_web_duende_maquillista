@@ -1,7 +1,8 @@
+import { useNavigate } from "react-router-dom";
 import { languages, dateOptions, timeString } from "../../utils/dateFormatter";
 
 function MonthView({ currentDate, date, visibleDays, visibleWeeks, events, categoryColors, categories }) {
-    
+  const navigate = useNavigate()
   return (
     <div
       className={`flex flex-row flex-wrap h-full [&>div]:w-1/7 ${
@@ -58,6 +59,7 @@ function MonthView({ currentDate, date, visibleDays, visibleWeeks, events, categ
                           categoryColors[event.category].background || "bg-gray-300"
                         } [&:hover]:bg-opacity-80 [&:hover]:cursor-pointer`}
                         key={event.id}
+                        onClick={() => {navigate(`/edit_event/${event.id}`)}}
                       >
                         <p
                           className={`my-1 ml-1 md:m-2 whitespace-nowrap overflow-x-hidden md:whitespace-normal line-clamp-2 hyphens-auto text-xs`}

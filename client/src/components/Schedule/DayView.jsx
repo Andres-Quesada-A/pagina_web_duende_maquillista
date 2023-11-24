@@ -4,6 +4,7 @@ import {
   dateOptions,
   durationStrings,
 } from "../../utils/dateFormatter";
+import { useNavigate } from "react-router-dom";
 
 export const heightPerHour = 40;
 export const hours = Array.from({ length: 25 }, (_, i) => i);
@@ -16,6 +17,7 @@ function DayView({
   events,
   categoryColors,
 }) {
+  const navigate = useNavigate();
   const [current, setCurrent] = useState(currentDate);
   const [currentTimeOffset, setCurrentTimeOffset] = useState(null);
 
@@ -120,6 +122,7 @@ function DayView({
                 height: `${heightPerHour * trimmedDuration}px`,
                 top: `${heightPerHour * hoursFromMidnight}px`,
               }}
+              onClick={() => navigate(`/edit_event/${event.id}`)}
             >
               <p className="font-medium text-xs">
                 {times[0]} - {times[1]}

@@ -18,6 +18,7 @@ function ConfirmationButton({ title, description, handleDelete }) {
       <button
         className="flex justify-center items-center mx-auto text-white bg-indigo-500 hover:bg-indigo-400 transition-colors rounded-md w-full max-w-[280px] font-medium py-2"
         onClick={toggleModal}
+        type="button"
       >
         Eliminar
       </button>

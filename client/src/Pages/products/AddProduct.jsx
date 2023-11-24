@@ -164,6 +164,7 @@ function AddProduct() {
             <button
               className="text-lg w-full py-2 rounded-md text-indigo-500 bg-transparent hover:bg-indigo-500 hover:text-white border-2 border-indigo-500 transition-colors"
               onClick={() => history.back()}
+              type="button"
             >
               Cancelar
             </button>

@@ -1,9 +1,6 @@
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { useEffect, useState } from "react";
-import { storage } from "../../config/firebase";
+import { useState } from "react";
 import { messageSettings, defaultError } from "../../utils/messageSettings";
 import { toast } from "react-toastify";
-import ImagePlaceholder from "../../images/placeholderImage.jpeg";
 import SwitchFormInputs from "../../components/form/SwitchFormInputs";
 import { EventStructure } from "../../Structures/EventStructure";
 import axios from "axios";
@@ -52,7 +49,7 @@ function AddEvent() {
         </h1>
       </header>
       <form
-        className="w-full max-w-xl grid grid-cols-1 gap-4 mt-10 pb-10"
+        className="w-full max-w-xl grid grid-cols-1 gap-2 mt-10 pb-10"
         onSubmit={handleSubmit}
       >
         <h4 className="text-xl font-medium text-gray-700 w-full">
@@ -73,6 +70,7 @@ function AddEvent() {
         <button
             className="text-lg w-full py-2 rounded-md text-indigo-500 bg-transparent hover:bg-indigo-500 hover:text-white border-2 border-indigo-500 transition-colors"
             onClick={() => history.back()}
+            type="button"
         >
             Cancelar
         </button>
