@@ -72,14 +72,15 @@ function DayView({
           </>
         }
         {events.map((event) => {
-          const startTime = new Date(event.startTime + "Z");
-          const endTime = new Date(event.endTime + "Z");
+          const startTime = new Date(event.startTime.endsWith("Z") ? event.startTime : event.startTime + "Z");
+          const endTime = new Date(event.endTime.endsWith("Z") ? event.endTime : event.endTime + "Z");
           const times = durationStrings(startTime, endTime);
+          const duration = (endTime.getTime() - startTime.getTime()) / 3600000;
           if (startTime.getDate() != endTime.getDate()) {
             // If the event is longer than a day, we need to set the end time to the end of the day
             endTime.setHours(0, 0, 0, -1);
           }
-          const duration = (endTime.getTime() - startTime.getTime()) / 3600000;
+          const trimmedDuration = (endTime.getTime() - startTime.getTime()) / 3600000;
           const hoursFromMidnight =
             startTime.getHours() + startTime.getMinutes() / 60;
           return (
@@ -89,7 +90,7 @@ function DayView({
                 categoryColors[event.category].background || "bg-gray-300"
               } rounded-md absolute w-full py-1 px-1 md:p-2 overflow-auto no-scrollbar hyphens-auto text-start [&:hover]:bg-opacity-80 [&:hover]:cursor-pointer z-[2]`}
               style={{
-                height: `${heightPerHour * duration}px`,
+                height: `${heightPerHour * trimmedDuration}px`,
                 top: `${heightPerHour * hoursFromMidnight}px`,
               }}
             >
@@ -97,7 +98,7 @@ function DayView({
                 {times[0]} - {times[1]}
                 <span className="float-right opacity-60 max-2xl:hidden">
                   {Math.floor(duration)}&nbsp;h
-                  {duration % 1 ? (
+                  {Math.round((duration % 1) * 60) ? (
                     <>&nbsp;{Math.round((duration % 1) * 60)}&nbsp;m</>
                   ) : (
                     ""

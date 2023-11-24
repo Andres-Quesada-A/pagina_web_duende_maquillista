@@ -1,6 +1,7 @@
 import { languages, dateOptions, timeString } from "../../utils/dateFormatter";
 
 function MonthView({ currentDate, date, visibleDays, visibleWeeks, events, categoryColors, categories }) {
+    console.log("e", events)
   return (
     <div
       className={`flex flex-row flex-wrap h-full [&>div]:w-1/7 ${
@@ -47,7 +48,7 @@ function MonthView({ currentDate, date, visibleDays, visibleWeeks, events, categ
                     ) /* To show the name of the month only once per month */
                   }
                 </span>
-                <ul className="flex flex-col gap-1 md:gap-2 overflow-y-auto">
+                <ul className="flex flex-col gap-1 md:gap-2 overflow-y-auto no-scrollbar">
                   {events[month.year] &&
                     events[month.year][month.month] &&
                     events[month.year][month.month][day] &&

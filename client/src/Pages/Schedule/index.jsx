@@ -1,6 +1,5 @@
 import { Helmet } from "react-helmet-async";
 import { useState, useEffect } from "react";
-import { Events } from "../../mockups/Events";
 import MonthView from "../../components/Schedule/MonthView";
 import WeekView from "../../components/Schedule/WeekView";
 import WeekHeader from "../../components/Schedule/WeekHeader";
@@ -8,6 +7,9 @@ import DayView from "../../components/Schedule/DayView";
 import HourIndicators from "../../components/Schedule/HourIndicators";
 import { getWeekCount, monthName } from "../../utils/dateFormatter";
 import { Arrow, Search } from "../../components/Icons";
+import axios from "axios";
+import { toast } from 'react-toastify';
+import { messageSettings } from '../../utils/messageSettings';
 
 const views = ["día", "semana", "mes"];
 
@@ -29,7 +31,6 @@ function Schedule() {
   const [toggleSearch, setToggleSearch] = useState(false);
   const [weekNumber, setWeekNumber] = useState();
   const [currentMonth, setCurrentMonth] = useState();
-  const [dayEvents, setDayEvents] = useState([]);
 
   const handleViewChange = (e) => {
     setView(e.target.id);
@@ -147,53 +148,52 @@ function Schedule() {
   // Retrieve events after visibleDays is updated
   useEffect(() => {
     if (visibleDays.length == 0) return;
+
+    // Here would go the API call to retrieve the events
     const startDate = new Date(
       visibleDays[0].year,
       visibleDays[0].month - 1,
       visibleDays[0].days[0]
     ).toISOString();
+
     const endDate = new Date(
       visibleDays.at(-1).year,
       visibleDays.at(-1).month - 1,
-      visibleDays.at(-1).days.at(-1)
+      visibleDays.at(-1).days.at(-1) + 1 // To get the events of the very last day
     ).toISOString();
 
-    // Here would go the API call to retrieve the events
+    axios.get(`/api/get_event_list/${startDate}/${endDate}`).then((response) => { 
+      const result = response.data;
+      const events = {};
+      result.forEach((event) => {
+        const date = new Date(
+          event.startTime.endsWith("Z") ? event.startTime : event.startTime + "Z"
+        );
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+        if (!events[year]) events[year] = {};
+        if (!events[year][month]) events[year][month] = {};
+        if (!events[year][month][day]) events[year][month][day] = [];
+        events[year][month][day].push(event);
+      });
 
-    const result = Events;
-    const events = {};
-    result.forEach((event) => {
-      const date = new Date(
-        event.startTime.endsWith("Z") ? event.startTime : event.startTime + "Z"
-      );
-      const year = date.getFullYear();
-      const month = date.getMonth() + 1;
-      const day = date.getDate();
-      if (!events[year]) events[year] = {};
-      if (!events[year][month]) events[year][month] = {};
-      if (!events[year][month][day]) events[year][month][day] = [];
-      events[year][month][day].push(event);
-    });
-
-    // Sorts the events by start time
-    Object.keys(events).forEach((year) => {
-      Object.keys(events[year]).forEach((month) => {
-        Object.keys(events[year][month]).forEach((day) => {
-          events[year][month][day].sort(
-            (a, b) => new Date(a.startTime) - new Date(b.startTime)
-          );
+      // Sorts the events by start time
+      Object.keys(events).forEach((year) => {
+        Object.keys(events[year]).forEach((month) => {
+          Object.keys(events[year][month]).forEach((day) => {
+            events[year][month][day].sort(
+              (a, b) => new Date(a.startTime) - new Date(b.startTime)
+            );
+          });
         });
       });
+
+      setEvents(events);
+    }).catch((error) => {
+      toast.error("Ocurrió un error al cargar los eventos.", messageSettings);
     });
-
-    setEvents(events);
   }, [visibleDays]);
-
-  useEffect(() => {
-    // Filter the events for a specific day if view is "día"
-    if (view != "día") return;
-    setDayEvents([date.getFullYear()] && events[date.getFullYear()][date.getMonth() + 1] && events[date.getFullYear()][date.getMonth() + 1][date.getDate()] || []);
-  }, [categories, view]);
 
   return (
     <>
@@ -232,7 +232,7 @@ function Schedule() {
           </div>
         </header>
         <div className="flex flex-row h-full gap-1">
-          <div className={`h-screen w-screen lg:h-full lg:w-[20rem] top-0 bottom-0 ${toggleSearch ? "right-0" : "right-full"} fixed lg:static lg:opacity-100 transition-all bg-white lg:block flex flex-col items-center justify-center pt-16 lg:mt-0 max-lg:z-[49] gap-10 lg:gap-0`}>
+          <div className={`h-screen w-screen lg:h-full lg:w-[20rem] top-0 bottom-0 ${toggleSearch ? "right-0" : "right-full"} fixed lg:static lg:opacity-100 transition-all bg-white lg:block flex flex-col items-center max-lg:justify-center max-lg:pt-16 lg:mt-0 max-lg:z-[49] gap-10 lg:gap-0`}>
             <search className="rounded-2xl bg-slate-200 p-3 w-[20rem] lg:w-full">
               <div className="flex flex-row w-full justify-between mb-2">
                 <p>{monthName(date)}</p>
