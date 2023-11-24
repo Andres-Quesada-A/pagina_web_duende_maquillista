@@ -61,22 +61,23 @@ export class OrderDAO {
 
     }
 
-    async editOrder(id: number, status: string): Promise<boolean> {
+    async editOrder(id: number, status: string): Promise<{userId?:number,success:boolean}> {
         const SQL = ConnectionDAO.getInstance();
         const damage: { customError: string | undefined }[] = [];
 
         return new Promise((resolve, reject) => {
-            try {
+            try { 
                 SQL.query('Duende_SP_Orders_Edit',
                     {
                         'IN_OrderID': id,
                         'IN_NewStatus': status
                     }).then((result) => {
-                        resolve(true);
+                        const response = result?.recordset[0];
+                        resolve({userId: response.userId, success: true});
                     }).catch((error) => {
                         //fail in the execution of the query
                         damage.push({ customError: error.customError });
-                        reject(false);
+                        reject(damage);
                     })
             } catch (error) {
                 // any errors that occur during the process

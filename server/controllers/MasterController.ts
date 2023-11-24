@@ -16,10 +16,17 @@ import { EmailController } from "./EmailController";
 import { NotificationController } from "./NotificationController";
 import { EventController } from "./EventController";
 import { DateFormatter } from "../Utils/DateFormatter";
+import { ListenersManager, AgendaListener, NotificationListener} from "../models/ObserverPattern";
 
 export class MasterController {
+    private listenerManager: ListenersManager;
     constructor() {
         ConnectionDAO.getInstance()
+        this.listenerManager = ListenersManager.getInstance();
+        const agendaListener:AgendaListener= new AgendaListener();
+        const notificationListener:NotificationListener= new NotificationListener();
+        this.listenerManager.addListener(agendaListener);
+        this.listenerManager.addListener(notificationListener);
     }
 
     // Method to register a new user

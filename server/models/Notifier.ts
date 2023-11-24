@@ -1,3 +1,3 @@
 export interface Notifier {
-    notify(): void;
+    notify(data:any): void;
 }

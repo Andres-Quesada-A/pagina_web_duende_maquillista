@@ -56,6 +56,9 @@ BEGIN
         SET orderStatusId = @IN_NewStatusID
         WHERE ID = @IN_OrderID;
 
+        SELECT O.userId from Orders O
+        WHERE O.ID = @IN_OrderID
+
         -- TRANSACTION COMMITTED
         IF @transactionBegun = 1
         BEGIN

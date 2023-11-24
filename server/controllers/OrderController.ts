@@ -1,6 +1,8 @@
-import { OrderDAO} from "../DAOS/OrderDAO";
+import { OrderDAO } from "../DAOS/OrderDAO";
 import { Order } from "../models/Order";
 import { ShippingDate } from "../models/ShippingDate";
+import { ListenersManager } from "../models/ObserverPattern";
+import { DateFormatter } from "../Utils/DateFormatter"
 
 const TIMEZONE_OFFSET = -6; // UTC-6 (Costa Rican Timezone)
 const deliveryDays = [2, 4, 6]; // Array of days that the delivery service works (0 = Sunday, 1 = Monday, etc.)
@@ -14,8 +16,39 @@ export class OrderController {
 
     // edits the status of an order
     async editOrder(id: number, status: string): Promise<boolean> {
-        const response = await this.OrderDAO.editOrder(id, status);
-        return response;
+        const listenersManager = ListenersManager.getInstance();
+        const { userId, success } = await this.OrderDAO.editOrder(id, status);
+        const options = [{ label: "Pendiente", value: "PENDING" }, { label: "aceptada", value: "ACCEPTED" }, { label: "rechazada", value: "REJECTED" }]
+
+        if (status !== "PENDING") {
+            const deliveryDate = this.calculateShippingDate();
+            const dateFormatter = new DateFormatter(deliveryDate.startDateTime.getTime() / 1000);
+
+            let category = "";
+            let title = `Cambio en estado de su orden #${id}}`
+            const url = `https://duendemaquillista.azurewebsites.net/order/${id}`;
+            let description = `Su orden ha sido ${options.find(option => option.value === status)?.label}`;
+
+            if (status === "ACCEPTED") {
+                category="Success";
+                description += ` y será entregada el ${dateFormatter.localDateText()}.`;
+            } else{
+                category="Error";
+                description += ".";
+            }
+
+            listenersManager.notifyListener({
+                userId,
+                title,
+                description,
+                category,
+                url,
+                deliveryDate
+            });
+            
+        }
+
+        return success;
     }
 
     // gets the list of orders
@@ -60,7 +93,7 @@ export class OrderController {
 
         // Filter out days that have already passed. If there are no days left, start from the beginning of the week
         const deliveryDateOffset = (
-                (
+            (
                 deliveryDays.filter((day) => day >= nextDayOfTheWeek)[0]
                 || deliveryDays[0]
             ) - currentTime.getUTCDay() + 7
@@ -76,7 +109,7 @@ export class OrderController {
             0,
             0
         ));
-        
+
         const deliveryDateEnd = new Date(deliveryDateStart);
         deliveryDateEnd.setUTCHours(deliveryHours[1] - TIMEZONE_OFFSET);
 

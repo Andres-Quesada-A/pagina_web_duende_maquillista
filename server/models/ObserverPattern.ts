@@ -1,3 +1,6 @@
+import { BaseNotifier } from "./BaseNotifier";
+import { EmailDecorator } from "./EmailDecorator";
+import { PushDecorator } from "./PushDecorator";
 
 // listener interface
 interface Listener {
@@ -5,30 +8,46 @@ interface Listener {
 }
 // Concrete listener 1
 export class AgendaListener implements Listener {
-  constructor(private name: string) {}
+  constructor() { }
 
   update(data: any): void {
-    console.log(`${this.name} requiere la implementacion de las intrucciones correctas: ${data}`);
+    console.log(` requiere la implementacion de las intrucciones correctas: ${data}`);
   }
 }
 // Concrete listener 2
 export class NotificationListener implements Listener {
-  constructor(private name: string) {}
+  constructor() { }
   update(data: any): void {
-    console.log(`${this.name} requiere la implementacion de las intrucciones correctas: ${data}`);
+    let stack = new BaseNotifier();
+    stack = new EmailDecorator(stack);
+    stack = new PushDecorator(stack);
   }
 }
 // Concrete Subject
 export class ListenersManager {
-  private liseteners: Listener[] = [];
-  addListener(lisetener: Listener): void {
-    this.liseteners.push(lisetener);
+  private listeners: Listener[] = [];
+
+  private static instance: ListenersManager;
+
+  private constructor() {
+    // Singleton
   }
-  removeListener(lisetener: Listener): void {
-    this.liseteners = this.liseteners.filter(lisetenerObject => lisetenerObject !== lisetener);
+
+  public static getInstance(): ListenersManager {
+    if (!ListenersManager.instance) {
+      ListenersManager.instance = new ListenersManager();
+    }
+    return ListenersManager.instance;
+  }
+
+  addListener(listener: Listener): void {
+    this.listeners.push(listener);
+  }
+  removeListener(listener: Listener): void {
+    this.listeners = this.listeners.filter(listenerObject => listenerObject !== listener);
   }
   notifyListener(data: any): void {
-    this.liseteners.forEach(listener => listener.update(data));
+    this.listeners.forEach(listener => listener.update(data));
   }
 }
 
